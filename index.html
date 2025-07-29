@@ -1,142 +1,147 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>The Human Unity Era</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Courier New", monospace;
+      background-color: #0e0e0e;
+      color: #f2f2f2;
       margin: 0;
       padding: 0;
-      background: #000;
-      color: #f0f0f0;
-      transition: background 0.4s ease;
+      animation: fadeIn 1s ease-in;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(1.02); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
     header {
-      background: #111;
-      padding: 2rem;
-      text-align: center;
-      background-image: url('banner-image.jpg');
-      background-size: cover;
-      background-position: center;
-      color: #f04;
-      text-shadow: 0 0 10px #000;
-    }
-    nav {
       background-color: #1a1a1a;
+      padding: 1rem;
       text-align: center;
-      padding: 1rem 0;
+      border-bottom: 1px solid #444;
     }
-    nav a {
-      color: #0ff;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-weight: bold;
-      position: relative;
-    }
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
+
+    header img {
       width: 100%;
-      height: 2px;
-      background-color: #0ff;
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-      transform-origin: left;
+      max-height: 300px;
+      object-fit: cover;
+      margin-bottom: 1rem;
     }
-    nav a:hover::after {
-      transform: scaleX(1);
+
+    nav {
+      background-color: #121212;
+      text-align: center;
+      padding: 0.5rem;
     }
-    main {
+
+    nav a {
+      color: #f05a28;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
       padding: 2rem;
       max-width: 800px;
       margin: auto;
+      border-bottom: 1px solid #333;
     }
-    section {
-      margin-bottom: 3rem;
-      animation: glitchFadeIn 1s ease-in-out;
+
+    h2 {
+      color: #f05a28;
     }
-    @keyframes glitchFadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
-        filter: blur(3px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-      }
+
+    .button-group {
+      margin: 1rem 0;
     }
-    a.button {
+
+    .button-group a {
       display: inline-block;
+      margin: 0.5rem;
       padding: 0.5rem 1rem;
-      background: #f04;
-      color: #fff;
-      margin-top: 0.5rem;
-      text-decoration: none;
+      border: 1px solid #f05a28;
       border-radius: 5px;
+      color: #f05a28;
+      text-decoration: none;
+      transition: background-color 0.3s;
     }
-    a.button:hover {
-      background: #c00;
-    }
-    footer {
-      background-color: #111;
-      color: #888;
-      text-align: center;
-      padding: 2rem;
+
+    .button-group a:hover {
+      background-color: #f05a28;
+      color: #0e0e0e;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>HUMAN UNITY ERA</h1>
-    <p>This is not a petition. It’s a civilian system override.</p>
+    <img src="https://raw.githubusercontent.com/HumanUnityNow/human-unity-era/main/banner.jpg" alt="Human Unity Era Banner">
+    <h1>Human Unity Era</h1>
+    <p>A global framework for civilian power, peace, and accountability.</p>
   </header>
+
   <nav>
-    <a href="#declaration">Declaration</a>
-    <a href="#cewic">CEWIC</a>
-    <a href="#charter">Charter</a>
-    <a href="#author">Author</a>
-    <a href="#overview">Overview</a>
+    <a href="#">Home</a>
+    <a href="#">CEWIC</a>
+    <a href="#">Governance Charter</a>
+    <a href="#">Declaration</a>
+    <a href="#">Overview</a>
+    <a href="#">Author</a>
   </nav>
-  <main>
-    <section id="declaration">
-      <h2>The Human Unity Era Declaration</h2>
-      <p>A global call to transition from a war-based world order to one rooted in repair, truth, and civilian power.</p>
-      <a href="/docs/declaration.html" class="button">View Online</a>
-      <a href="https://drive.google.com/uc?export=download&id=1axmEwWsgH2PHYjGv554M9ggL2slZe_bm" class="button">Download PDF</a>
-    </section>
-    <section id="cewic">
-      <h2>CEWIC – Civilian Early Warning Input Channel</h2>
-      <p>A global infrastructure to expose, prevent, and respond to emerging crises before they escalate. Built for transparency and accountability.</p>
-      <a href="/docs/cewic.html" class="button">View Online</a>
-      <a href="https://drive.google.com/uc?export=download&id=1_TzX4uDBwVGT8gIapB6A9_IWnJ4GmEjv" class="button">Download PDF</a>
-    </section>
-    <section id="charter">
-      <h2>Global Governance Charter</h2>
-      <p>The formal structure, values, and leadership architecture of the Human Unity Era. Includes ethical safeguards and implementation plans.</p>
-      <a href="/docs/charter.html" class="button">View Online</a>
-      <a href="https://drive.google.com/uc?export=download&id=1u8op1g0umSb51_eZhgjoSvoWSsUkQEP0" class="button">Download PDF</a>
-    </section>
-    <section id="overview">
-      <h2>One-Page Overview</h2>
-      <p>A condensed visual summary of the Human Unity Era framework and its revolutionary mechanisms.</p>
-      <a href="/docs/overview.html" class="button">View Online</a>
-      <a href="https://drive.google.com/uc?export=download&id=1_2gbPRg7mw1aOhL6vZuxfThLabFAP28l" class="button">Download PDF</a>
-    </section>
-    <section id="author">
-      <h2>Author Statement</h2>
-      <p>A personal declaration by Kaileb Abrey-Blackmore on how and why this framework was created — and why civilian-led peace is not only possible, but necessary.</p>
-      <a href="/docs/author.html" class="button">View Online</a>
-      <a href="https://drive.google.com/uc?export=download&id=1vywrKQUbEExBQQVrMNft1p4NU0zlv3ph" class="button">Download PDF</a>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 The Human Unity Era | Designed for Revolution. Built for the People.</p>
-  </footer>
+
+  <section>
+    <h2>📄 Civilian Early Warning Input Channel (CEWIC)</h2>
+    <p>A global system for identifying red flags, alerting institutions, and preventing abuse before escalation. Designed for use under the Human Unity Era governance model.</p>
+    <div class="button-group">
+      <a href="https://drive.google.com/uc?export=download&id=1_TzX4uDBwVGT8gIapB6A9_IWnJ4GmEjv">Download PDF</a>
+      <a href="CEWIC.html">View Online</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>📜 Global Governance Charter</h2>
+    <p>Establishes the long-term systems, roles, and public oversight functions that define the Human Unity Era. Includes democratic safeguards, emergency clauses, and civilian rights.</p>
+    <div class="button-group">
+      <a href="https://drive.google.com/uc?export=download&id=1u8op1g0umSb51_eZhgjoSvoWSsUkQEP0">Download PDF</a>
+      <a href="charter.html">View Online</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>🕊️ The Human Unity Era Declaration</h2>
+    <p>The founding vision that exposes global collapse and offers a people-led blueprint to build a just, unified, peaceful future. Designed for both governments and civilians.</p>
+    <div class="button-group">
+      <a href="https://drive.google.com/uc?export=download&id=1axmEwWsgH2PHYjGv554M9ggL2slZe_bm">Download PDF</a>
+      <a href="declaration.html">View Online</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>🧭 One-Page Overview</h2>
+    <p>Get the full framework in one visual sheet. Perfect for sharing with officials, media, and analysts who need a quick reference.</p>
+    <div class="button-group">
+      <a href="https://drive.google.com/uc?export=download&id=1_2gbPRg7mw1aOhL6vZuxfThLabFAP28l">Download PDF</a>
+      <a href="overview.html">View Online</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>🖋️ Author Statement</h2>
+    <p>A personal message from the creator of the Human Unity Era. Explains the mission, intent, and civilian-led origins of the framework.</p>
+    <div class="button-group">
+      <a href="https://drive.google.com/uc?export=download&id=1vywrKQUbEExBQQVrMNft1p4NU0zlv3ph">Download PDF</a>
+      <a href="author.html">View Online</a>
+    </div>
+  </section>
 </body>
 </html>
 update homepage
