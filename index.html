@@ -6,181 +6,80 @@
 <title>Human Unity Era — Broadcast</title>
 <meta name="color-scheme" content="dark">
 <style>
-:root{
-  --bg:#0a0a0a; --fg:#eaeaea;
-  --loop:40s; /* hero master timeline */
-}
+:root{ --bg:#0a0a0a; --fg:#eaeaea; --loop:40s; }
 
 /* Base */
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 
-/* ===== PAGE BACKGROUND GLITCH LINES (chromatic + flicker) ===== */
+/* Background scanlines + flicker */
 .pageBG{position:fixed; inset:0; z-index:-3; pointer-events:none; opacity:.18}
-.pageBG::before,
-.pageBG::after{
-  content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
-  background:
-    repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 5px);
-  opacity:.65;
-  animation: bgFlick 6.5s infinite steps(2,end), bgDrift 14s linear infinite;
+.pageBG::before,.pageBG::after{
+  content:""; position:absolute; inset:0; mix-blend-mode:screen;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 5px);
+  opacity:.65; animation: bgFlick 6.5s steps(2,end) infinite, bgDrift 14s linear infinite;
 }
-.pageBG::before{ filter:hue-rotate(205deg) }
-.pageBG::after { filter:hue-rotate(355deg) }
-@keyframes bgDrift { 0%{transform:translateY(0)} 100%{transform:translateY(-6px)} }
-@keyframes bgFlick {
-  0%,86%{opacity:.65}
-  86.5%{opacity:.35}
-  87%{opacity:.8}
-  96%{opacity:.55}
-  100%{opacity:.65}
-}
+.pageBG::before{ filter:hue-rotate(205deg) } .pageBG::after{ filter:hue-rotate(355deg) }
+@keyframes bgDrift{0%{transform:translateY(0)}100%{transform:translateY(-6px)}}
+@keyframes bgFlick{0%,86%{opacity:.65}86.5%{opacity:.35}87%{opacity:.8}96%{opacity:.55}100%{opacity:.65}}
 
-/* ===== SITE-WIDE “BLEED” GLITCH (RGB slice sweeps across whole page) ===== */
+/* Site-wide bleed glitch */
 .bleed{position:fixed; inset:0; z-index:-2; pointer-events:none}
-.bleed::before, .bleed::after{
-  content:""; position:absolute; inset:0; mix-blend-mode:screen; opacity:.28; pointer-events:none;
+.bleed::before,.bleed::after{
+  content:""; position:absolute; inset:0; mix-blend-mode:screen; opacity:.28;
   background:linear-gradient(0deg,transparent 0%,rgba(255,255,255,.12) 50%,transparent 100%);
   clip-path: inset(0 0 0 0);
 }
 .bleed::before{ filter:hue-rotate(355deg); animation: bleedShiftR 9.5s infinite, bleedSliceA 9.5s steps(6,end) infinite }
 .bleed::after { filter:hue-rotate(205deg); animation: bleedShiftC 11s infinite 1.2s, bleedSliceB 11s steps(6,end) infinite 1.2s }
-
-@keyframes bleedShiftR{
-  0%,12%{transform:translateX(0) skewY(0deg)}
-  13%{transform:translateX(-2.4px) skewY(-.5deg)}
-  18%{transform:translateX(2.8px) skewY(.6deg)}
-  24%{transform:translateX(-1.6px)}
-  100%{transform:translateX(0)}
-}
-@keyframes bleedShiftC{
-  0%,10%{transform:translateX(0) skewY(0deg)}
-  11%{transform:translateX(2.2px) skewY(.5deg)}
-  16%{transform:translateX(-2.6px) skewY(-.6deg)}
-  22%{transform:translateX(1.4px)}
-  100%{transform:translateX(0)}
-}
-/* moving horizontal “tears” */
-@keyframes bleedSliceA{
-  0%{clip-path: inset(0 0 0 0)}
-  8%{clip-path: inset(12% 0 64% 0)}
-  16%{clip-path: inset(70% 0 8% 0)}
-  24%{clip-path: inset(36% 0 40% 0)}
-  32%{clip-path: inset(55% 0 18% 0)}
-  40%{clip-path: inset(4% 0 84% 0)}
-  100%{clip-path: inset(0 0 0 0)}
-}
-@keyframes bleedSliceB{
-  0%{clip-path: inset(0 0 0 0)}
-  9%{clip-path: inset(78% 0 10% 0)}
-  18%{clip-path: inset(18% 0 70% 0)}
-  27%{clip-path: inset(60% 0 20% 0)}
-  36%{clip-path: inset(30% 0 48% 0)}
-  45%{clip-path: inset(6% 0 84% 0)}
-  100%{clip-path: inset(0 0 0 0)}
-}
-/* subtle container wobble so content feels affected */
-.siteWrap{transition:transform .25s}
-@keyframes siteSkew{
-  0%,100%{transform:skewX(0) translateZ(0)}
-  40%{transform:skewX(.3deg)}
-  42%{transform:skewX(-.25deg)}
-  44%{transform:skewX(.15deg)}
-  46%{transform:skewX(0)}
-}
+@keyframes bleedShiftR{0%,12%{transform:translateX(0) skewY(0)}13%{translate:-2.4px skewY(-.5deg)}18%{translate:2.8px skewY(.6deg)}24%{translate:-1.6px}100%{translate:0}}
+@keyframes bleedShiftC{0%,10%{transform:translateX(0) skewY(0)}11%{translate:2.2px skewY(.5deg)}16%{translate:-2.6px skewY(-.6deg)}22%{translate:1.4px}100%{translate:0}}
+@keyframes bleedSliceA{0%{clip-path:inset(0)}8%{clip-path:inset(12% 0 64% 0)}16%{inset:70% 0 8% 0}24%{inset:36% 0 40% 0}32%{inset:55% 0 18% 0}40%{inset:4% 0 84% 0}100%{clip-path:inset(0)}}
+@keyframes bleedSliceB{0%{clip-path:inset(0)}9%{inset:78% 0 10% 0}18%{inset:18% 0 70% 0}27%{inset:60% 0 20% 0}36%{inset:30% 0 48% 0}45%{inset:6% 0 84% 0}100%{clip-path:inset(0)}}
 .siteWrap{animation: siteSkew 12s infinite}
+@keyframes siteSkew{0%,100%{transform:skewX(0)}40%{skewX(.3deg)}42%{skewX(-.25deg)}44%{skewX(.15deg)}46%{skewX(0)}}
 
-/* ===== HACK-IN PRELOADER (forced) ===== */
-#preload{
-  position:fixed; inset:0; z-index:9999; background:#000; display:flex;
-  align-items:center; justify-content:center; transition:opacity .4s ease;
-}
-#preVid{
-  max-width:100vw; max-height:100vh; object-fit:cover;
-  filter:contrast(110%) saturate(110%);
-}
-#preSkip{
-  position:fixed; right:14px; top:14px; z-index:10000; cursor:pointer;
-  font:700 13px/1 system-ui,Arial; color:#eee; background:#111a; border:1px solid #2a2a2a;
-  padding:10px 12px; border-radius:999px; backdrop-filter:blur(3px)
-}
-#preSkip:hover{ background:#151515 }
-/* fallback if video can’t autoplay */
-.preFallback{
-  position:absolute; inset:0; pointer-events:none; background:
-   repeating-linear-gradient(0deg,rgba(255,255,255,.09) 0 1px, transparent 1px 4px),
-   repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px, transparent 2px 4px);
-  animation: preScan 7s linear infinite;
-  opacity:.28;
-}
+/* Preloader (forced every visit while we debug) */
+#preload{position:fixed; inset:0; z-index:9999; background:#000; display:flex; align-items:center; justify-content:center; transition:opacity .4s ease}
+#preVid{max-width:100vw; max-height:100vh; object-fit:cover; filter:contrast(110%) saturate(110%)}
+#preSkip{position:fixed; right:14px; top:14px; z-index:10000; cursor:pointer; font:700 13px/1 system-ui,Arial; color:#eee; background:#111a; border:1px solid #2a2a2a; padding:10px 12px; border-radius:999px; backdrop-filter:blur(3px)}
+#preSkip:hover{background:#151515}
+.preFallback{position:absolute; inset:0; pointer-events:none; background:
+  repeating-linear-gradient(0deg,rgba(255,255,255,.09) 0 1px, transparent 1px 4px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px, transparent 2px 4px);
+  animation: preScan 7s linear infinite; opacity:.28;}
 @keyframes preScan{0%{transform:translateY(0)}100%{transform:translateY(-4px)}}
-/* hide when done */
-#preload.done{ opacity:0; pointer-events:none }
+#preload.done{opacity:0; pointer-events:none}
 
-@media (prefers-reduced-motion: reduce){
-  #preVid{ display:none } .preFallback{ animation:none }
-  .pageBG,.bleed,.siteWrap{ animation:none !important; transform:none !important }
-}
-
-/* ===== HERO STAGE ===== */
+/* Hero */
 .hero{position:relative;height:100vh;background:#000;overflow:hidden;border-bottom:1px solid #121212}
 .layer{position:absolute;inset:0;display:grid;place-items:center;opacity:0;will-change:opacity,transform}
-.skipBtn{
-  position:absolute; top:12px; right:12px; z-index:10;
-  font:700 13px/1 system-ui,Arial; padding:10px 12px; border-radius:999px;
-  color:#eee; background:#111a; border:1px solid #2a2a2a; cursor:pointer;
-  backdrop-filter: blur(3px);
-}
-.skipBtn:hover{background:#151515;}
-
-/* Canvas static + overlays */
+.skipBtn{position:absolute; top:12px; right:12px; z-index:10; font:700 13px/1 system-ui,Arial; padding:10px 12px; border-radius:999px; color:#eee; background:#111a; border:1px solid #2a2a2a; cursor:pointer; backdrop-filter: blur(3px)}
+.skipBtn:hover{background:#151515}
 canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
-.scanlines{position:absolute;inset:0;pointer-events:none;opacity:.23;
-  background:
-    repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px, transparent 1px 3px),
-    repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 2px, transparent 2px 4px);
-  animation:scanDrift 7s linear infinite;
-}
+.scanlines{position:absolute;inset:0;pointer-events:none;opacity:.23;background:
+  repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px, transparent 1px 3px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 2px, transparent 2px 4px);
+  animation:scanDrift 7s linear infinite}
 @keyframes scanDrift{0%{transform:translateY(0)}100%{transform:translateY(-3px)}}
 .deadMask{position:absolute;inset:0;background:#000;opacity:0}
 
-/* ===== TEXT ===== */
-.text h1,.text p{margin:0;text-align:center;color:#111}
+/* TEXT — now light for readability */
+.text h1,.text p{margin:0;text-align:center;color:#eaeaea}
 .text h1{font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:clamp(44px,10vw,140px)}
 .text p{font-weight:800;letter-spacing:.01em;padding:0 6vw;font-size:clamp(18px,3.8vw,30px)}
 @keyframes jitter{0%,100%{transform:translate(0,0)}25%{transform:translate(.35px,-.4px)}50%{transform:translate(-.45px,.25px)}75%{transform:translate(.25px,.35px)}}
 .activeText{animation: jitter 3s steps(2,end) infinite}
 
-/* ===== EMBLEM ===== */
-.ghostBehind img{
-  width:min(68vw,820px);height:auto;opacity:.07;
-  filter:grayscale(100%) contrast(120%) brightness(.7);
-  animation:ghostBreath var(--loop) linear infinite;
-}
-@keyframes ghostBreath{
-  0%,10%{opacity:.04}12%,20%{opacity:.08}22%,36%{opacity:.06}
-  38%,48%{opacity:.09}50%,60%{opacity:.05}62%,70%{opacity:.07}
-  72%,80%{opacity:.05}82%,100%{opacity:.04}
-}
-.emblemMain img,.ghostEmblem img{
-  width:min(70vw,860px);height:auto;object-fit:contain;
-  filter:contrast(115%) saturate(115%) brightness(.9);
-}
-@keyframes emblemPulse{
-  0%,35% {filter:grayscale(60%) saturate(.7) brightness(.85);opacity:.55;transform:scale(1)}
-  37%,52%{filter:saturate(1.22) brightness(1.06);opacity:.98;transform:scale(1.01) rotate(0.15deg)}
-  54%,69%{filter:grayscale(45%) saturate(.85) brightness(.9);opacity:.72;transform:scale(.998)}
-  71%,86%{filter:saturate(1.28) brightness(1.1);opacity:1;transform:scale(1.014) rotate(-0.12deg)}
-  88%,100%{filter:saturate(1.05) brightness(.98);opacity:.86;transform:scale(1)}
-}
-@keyframes emblemGlitch{
-  0%,100%{transform:translate(0,0)}
-  45%{transform:translate(-.6px,.5px)}
-  55%{transform:translate(.8px,-.6px)}
-}
+/* Emblem */
+.ghostBehind img{width:min(68vw,820px);height:auto;opacity:.07;filter:grayscale(100%) contrast(120%) brightness(.7);animation:ghostBreath var(--loop) linear infinite}
+@keyframes ghostBreath{0%,10%{opacity:.04}12%,20%{opacity:.08}22%,36%{opacity:.06}38%,48%{opacity:.09}50%,60%{opacity:.05}62%,70%{opacity:.07}72%,80%{opacity:.05}82%,100%{opacity:.04}}
+.emblemMain img,.ghostEmblem img{width:min(70vw,860px);height:auto;object-fit:contain;filter:contrast(115%) saturate(115%) brightness(.9)}
+@keyframes emblemPulse{0%,35%{filter:grayscale(60%) saturate(.7) brightness(.85);opacity:.55;transform:scale(1)}37%,52%{filter:saturate(1.22) brightness(1.06);opacity:.98;transform:scale(1.01) rotate(.15deg)}54%,69%{filter:grayscale(45%) saturate(.85) brightness(.9);opacity:.72;transform:scale(.998)}71%,86%{filter:saturate(1.28) brightness(1.1);opacity:1;transform:scale(1.014) rotate(-.12deg)}88%,100%{filter:saturate(1.05) brightness(.98);opacity:.86;transform:scale(1)}}
+@keyframes emblemGlitch{0%,100%{transform:translate(0,0)}45%{transform:translate(-.6px,.5px)}55%{transform:translate(.8px,-.6px)}}
 .emblemFX{animation: emblemPulse var(--loop) linear infinite, emblemGlitch 2.6s steps(2,end) infinite}
 
-/* ===== TIMELINE WINDOWS (final text slide is longer) ===== */
+/* Timeline windows (final text longer) */
 .winTS{animation:winTS var(--loop) linear infinite}
 .winS1{animation:winS1 var(--loop) linear infinite}
 .winS2{animation:winS2 var(--loop) linear infinite}
@@ -197,78 +96,22 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 .s1 .text p{animation: showS1 var(--loop) linear infinite, jitter 3.4s steps(2,end) infinite}
 @keyframes showS1{10%,12%{opacity:0;filter:blur(6px)}12.6%,22.5%{opacity:1;filter:blur(0)}22.6%,100%{opacity:0}}
 .s2 .text p{animation: showS2 var(--loop) linear infinite, jitter 3.6s steps(2,end) infinite}
-@keyframes showS2{
-  22.5%,24%{opacity:0;filter:blur(6px)}
-  24.6%,47%{opacity:1;filter:blur(0)}
-  47.1%,100%{opacity:0}
-}
+@keyframes showS2{22.5%,24%{opacity:0;filter:blur(6px)}24.6%,47%{opacity:1;filter:blur(0)}47.1%,100%{opacity:0}}
 
-/* ===== AGGRESSIVE TORN RGB GLITCH (for headings/hero text) ===== */
-.glitch{
-  position:relative; display:inline-block; color:#eaf7ff; font-weight:900;
-  letter-spacing:.02em; text-shadow:0 0 0 #000;
-}
-.glitch.big{ font-size:clamp(44px,10vw,140px) }
-.glitch.torn{ filter:contrast(110%) }
-.glitch::before,.glitch::after{
-  content:attr(data-text); position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
-}
-.glitch::before{ color:#29d7ff }
-.glitch::after { color:#ff3b2e }
-@keyframes baseJitter{
-  0%,100%{ transform:translate(0,0) }
-  25%{ transform:translate(.8px,-.6px) }
-  50%{ transform:translate(-.9px,.6px) }
-  75%{ transform:translate(.6px,.8px) }
-}
-.glitch{ animation: baseJitter 2.8s steps(2,end) infinite }
-@keyframes tornMaskA{
-  0%{ clip-path: inset(0 0 0 0) }
-  6%{ clip-path: inset(12% 0 64% 0) }
-  12%{ clip-path: inset(70% 0 8% 0) }
-  18%{ clip-path: inset(36% 0 40% 0) }
-  24%{ clip-path: inset(55% 0 18% 0) }
-  30%{ clip-path: inset(4% 0 84% 0) }
-  36%{ clip-path: inset(80% 0 6% 0) }
-  42%{ clip-path: inset(26% 0 50% 0) }
-  48%{ clip-path: inset(44% 0 32% 0) }
-  54%{ clip-path: inset(9% 0 79% 0) }
-  60%,100%{ clip-path: inset(0 0 0 0) }
-}
-@keyframes tornMaskB{
-  0%{ clip-path: inset(0 0 0 0) }
-  7%{ clip-path: inset(78% 0 10% 0) }
-  14%{ clip-path: inset(18% 0 70% 0) }
-  21%{ clip-path: inset(60% 0 20% 0) }
-  28%{ clip-path: inset(30% 0 48% 0) }
-  35%{ clip-path: inset(6% 0 84% 0) }
-  42%{ clip-path: inset(72% 0 12% 0) }
-  49%{ clip-path: inset(42% 0 34% 0) }
-  56%{ clip-path: inset(24% 0 56% 0) }
-  63%,100%{ clip-path: inset(0 0 0 0) }
-}
-@keyframes rgbShiftC{
-  0%{ transform:translate(0,0) }
-  12%{ transform:translate(2.2px,-.8px) skewY(.6deg) }
-  22%{ transform:translate(-1.8px,.8px) skewY(-.5deg) }
-  38%{ transform:translate(3px,-1.2px) }
-  54%{ transform:translate(-2.6px,.6px) }
-  70%{ transform:translate(1.4px,-.6px) }
-  100%{ transform:translate(0,0) }
-}
-@keyframes rgbShiftR{
-  0%{ transform:translate(0,0) }
-  12%{ transform:translate(-2px,.8px) skewY(-.6deg) }
-  22%{ transform:translate(1.6px,-.8px) skewY(.5deg) }
-  38%{ transform:translate(-2.8px,1.2px) }
-  54%{ transform:translate(2.4px,-.6px) }
-  70%{ transform:translate(-1.2px,.6px) }
-  100%{ transform:translate(0,0) }
-}
-.glitch.torn::before{ animation: rgbShiftC 2.2s steps(2,end) infinite, tornMaskA 2.2s steps(6,end) infinite }
-.glitch.torn::after { animation: rgbShiftR 2.2s steps(2,end) infinite, tornMaskB 2.2s steps(6,end) infinite }
+/* Headings glitch */
+.glitch{position:relative; display:inline-block; color:#eaf7ff; font-weight:900; letter-spacing:.02em; text-shadow:0 0 0 #000; animation: baseJitter 2.8s steps(2,end) infinite}
+.glitch.big{font-size:clamp(44px,10vw,140px)}
+.glitch.torn{filter:contrast(110%)}
+.glitch::before,.glitch::after{content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen}
+.glitch::before{color:#29d7ff; animation: rgbShiftC 2.2s steps(2,end) infinite, tornMaskA 2.2s steps(6,end) infinite}
+.glitch::after {color:#ff3b2e; animation: rgbShiftR 2.2s steps(2,end) infinite, tornMaskB 2.2s steps(6,end) infinite}
+@keyframes baseJitter{0%,100%{transform:translate(0,0)}25%{transform:translate(.8px,-.6px)}50%{transform:translate(-.9px,.6px)}75%{transform:translate(.6px,.8px)}}
+@keyframes tornMaskA{0%{clip-path:inset(0)}6%{inset:12% 0 64% 0}12%{inset:70% 0 8% 0}18%{inset:36% 0 40% 0}24%{inset:55% 0 18% 0}30%{inset:4% 0 84% 0}36%{inset:80% 0 6% 0}42%{inset:26% 0 50% 0}48%{inset:44% 0 32% 0}54%{inset:9% 0 79% 0}60%,100%{clip-path:inset(0)}}
+@keyframes tornMaskB{0%{clip-path:inset(0)}7%{inset:78% 0 10% 0}14%{inset:18% 0 70% 0}21%{inset:60% 0 20% 0}28%{inset:30% 0 48% 0}35%{inset:6% 0 84% 0}42%{inset:72% 0 12% 0}49%{inset:42% 0 34% 0}56%{inset:24% 0 56% 0}63%,100%{clip-path:inset(0)}}
+@keyframes rgbShiftC{0%{transform:translate(0,0)}12%{transform:translate(2.2px,-.8px) skewY(.6deg)}22%{translate:-1.8px .8px skewY(-.5deg)}38%{translate:3px -1.2px}54%{translate:-2.6px .6px}70%{translate:1.4px -.6px}100%{translate:0}}
+@keyframes rgbShiftR{0%{transform:translate(0,0)}12%{transform:translate(-2px,.8px) skewY(-.6deg)}22%{translate:1.6px -.8px skewY(.5deg)}38%{translate:-2.8px 1.2px}54%{translate:2.4px -.6px}70%{translate:-1.2px .6px}100%{translate:0}}
 
-/* ===== MAIN CONTENT ===== */
+/* Main content */
 main{max-width:1000px;margin:0 auto;padding:28px 18px 60px}
 .lead{opacity:.9}
 .hFlex{display:flex;gap:10px;align-items:center}
@@ -283,231 +126,157 @@ footer{padding:16px 18px;border-top:1px solid #121212;color:#9a9a9a}
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important;transition:none !important}
 }
-
-/* Skip state: hide hero after skip */
 body.skipped .hero{display:none}
 </style>
 </head>
 <body>
 
-<!-- Global background glitch layers -->
 <div class="pageBG" aria-hidden="true"></div>
 <div class="bleed" aria-hidden="true"></div>
 
-<div class="siteWrap"><!-- everything visual sits inside -->
-
-<!-- ===== HACK-IN PRELOADER (FORCED) ===== -->
-<div id="preload" aria-hidden="true">
-  <video id="preVid" muted playsinline preload="auto">
-    <!-- Use your exact filename (case-sensitive) -->
-    <source src="media/v0f025gc0000cf218nrc77u5ht46f9e0.MP4" type="video/mp4" />
-  </video>
-  <button id="preSkip" aria-label="Skip intro">Skip ▷</button>
-  <div class="preFallback"></div>
-</div>
-
-<!-- ===== HERO BROADCAST ===== -->
-<section class="hero" aria-label="Emergency broadcast">
-  <button class="skipBtn" id="skip">Skip intro ▷</button>
-  <canvas id="noise"></canvas>
-  <div class="scanlines"></div>
-
-  <!-- faint emblem behind everything -->
-  <div class="layer ghostBehind" style="opacity:1">
-    <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost)">
+<div class="siteWrap">
+  <!-- Preloader -->
+  <div id="preload" aria-hidden="true">
+    <video id="preVid" muted playsinline preload="auto">
+      <source src="media/hack-intro.mp4" type="video/mp4" />
+    </video>
+    <button id="preSkip" aria-label="Skip intro">Skip ▷</button>
+    <div class="preFallback"></div>
   </div>
 
-  <!-- 0–4s : TIME'S UP -->
-  <div class="layer winTS ts">
-    <div class="text">
-      <h1 class="glitch torn big" data-text="TIME’S UP">TIME’S UP</h1>
+  <!-- HERO -->
+  <section class="hero" aria-label="Emergency broadcast">
+    <button class="skipBtn" id="skip">Skip intro ▷</button>
+    <canvas id="noise"></canvas>
+    <div class="scanlines"></div>
+
+    <div class="layer ghostBehind" style="opacity:1">
+      <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost)">
     </div>
-  </div>
 
-  <!-- 4–9s : Slide 1 -->
-  <div class="layer winS1 s1">
-    <div class="text">
-      <p class="glitchline activeText"
-         data-text="We are the people. We are the majority. We are the ones that matter.">
-        We are the people. We are the majority. We are the ones that matter.
-      </p>
+    <div class="layer winTS ts">
+      <div class="text">
+        <h1 class="glitch torn big" data-text="TIME’S UP">TIME’S UP</h1>
+      </div>
     </div>
-  </div>
 
-  <!-- 9–19.6s : Slide 2 (longer) -->
-  <div class="layer winS2 s2">
-    <div class="text">
-      <p class="glitchline activeText"
-         data-text="The time of allowing ego-driven “world leaders” to lead us into war for profit is over. We, the people of the world, will have the final say.">
-        The time of allowing ego-driven “world leaders” to lead us into war for profit is over.
-        We, the people of the world, will have the final say.
-      </p>
+    <div class="layer winS1 s1">
+      <div class="text">
+        <p class="activeText">We are the people. We are the majority. We are the ones that matter.</p>
+      </div>
     </div>
-  </div>
 
-  <!-- 19.6–24s : Emblem breakthrough -->
-  <div class="layer winEm emblemMain">
-    <img class="emblemFX" src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem">
-  </div>
+    <div class="layer winS2 s2">
+      <div class="text">
+        <p class="activeText">The time of allowing ego-driven “world leaders” to lead us into war for profit is over. We, the people of the world, will have the final say.</p>
+      </div>
+    </div>
 
-  <!-- 24–31s : Dead static + ghost emblem -->
-  <div class="deadMask" aria-hidden="true"></div>
-  <div class="layer winDead ghostEmblem">
-    <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost flicker)">
-  </div>
-</section>
+    <div class="layer winEm emblemMain">
+      <img class="emblemFX" src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem">
+    </div>
 
-<!-- ===== MAIN CONTENT ===== -->
-<main id="main">
-  <p class="lead"><span class="badge">Live</span> Civilian-led. Peace-driven. AI-readable.</p>
+    <div class="deadMask" aria-hidden="true"></div>
+    <div class="layer winDead ghostEmblem">
+      <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost flicker)">
+    </div>
+  </section>
 
-  <h2 class="glitch torn" data-text="🌍 The Human Unity Era">🌍 The Human Unity Era</h2>
-  <p>Created by Kaileb Abrey-Blackmore<br/>Civilian Architect of Global Coordination</p>
+  <!-- MAIN -->
+  <main id="main">
+    <p class="lead"><span class="badge">Live</span> Civilian-led. Peace-driven. AI-readable.</p>
 
-  <div class="hr"></div>
+    <h2 class="glitch torn" data-text="🌍 The Human Unity Era">🌍 The Human Unity Era</h2>
+    <p>Created by Kaileb Abrey-Blackmore<br/>Civilian Architect of Global Coordination</p>
 
-  <h3 class="glitch torn" data-text="🏠 Welcome">🏠 Welcome</h3>
-  <p>Welcome to the official Human Unity Era digital platform — a transparent, accessible framework designed to rebuild global cooperation, dignity, and peace from the ground up. This is not a petition. It is a blueprint.</p>
+    <div class="hr"></div>
 
-  <div class="hr"></div>
+    <h3 class="glitch torn" data-text="🏠 Welcome">🏠 Welcome</h3>
+    <p>Welcome to the official Human Unity Era digital platform — a transparent, accessible framework designed to rebuild global cooperation, dignity, and peace from the ground up. This is not a petition. It is a blueprint.</p>
 
-  <h3 class="glitch torn" data-text="📚 Explore the Framework">📚 Explore the Framework</h3>
-  <div class="section">
-    <p class="hFlex"><strong>🕊️ <a href="declaration.html">The Human Unity Era Declaration</a></strong></p>
-    <ul>
-      <li>Founding Declaration</li>
-      <li>Author Statement</li>
-      <li>One-Page Overview</li>
-    </ul>
-    <p class="hFlex"><strong>⚙️ <a href="systems.html">Systems of Civilian Power</a></strong></p>
-    <ul>
-      <li>Governance Charter</li>
-      <li>CEWIC Proposal</li>
-      <li>Treaty-born Institutions (e.g., MPOB)</li>
-    </ul>
-    <p class="hFlex"><strong>🌍 <a href="framework.html">Ukraine–Russia Peace Framework</a></strong></p>
-    <ul>
-      <li>UN-style Treaty</li>
-      <li>Post-Treaty Agenda</li>
-      <li>Peace Dividend</li>
-      <li>Sanctions &amp; Reconstruction</li>
-    </ul>
-    <p class="hFlex"><strong>💡 <a href="tools.html">Civilian Involvement Tools</a></strong></p>
-    <ul>
-      <li>Join the Movement</li>
-      <li>Protest Toolkit</li>
-      <li>Posters, Flyers, Templates</li>
-    </ul>
-  </div>
+    <div class="hr"></div>
 
-  <div class="hr"></div>
+    <h3 class="glitch torn" data-text="📚 Explore the Framework">📚 Explore the Framework</h3>
+    <div class="section">
+      <p class="hFlex"><strong>🕊️ <a href="declaration.html">The Human Unity Era Declaration</a></strong></p>
+      <ul><li>Founding Declaration</li><li>Author Statement</li><li>One-Page Overview</li></ul>
+      <p class="hFlex"><strong>⚙️ <a href="systems.html">Systems of Civilian Power</a></strong></p>
+      <ul><li>Governance Charter</li><li>CEWIC Proposal</li><li>Treaty-born Institutions (e.g., MPOB)</li></ul>
+      <p class="hFlex"><strong>🌍 <a href="framework.html">Ukraine–Russia Peace Framework</a></strong></p>
+      <ul><li>UN-style Treaty</li><li>Post-Treaty Agenda</li><li>Peace Dividend</li><li>Sanctions &amp; Reconstruction</li></ul>
+      <p class="hFlex"><strong>💡 <a href="tools.html">Civilian Involvement Tools</a></strong></p>
+      <ul><li>Join the Movement</li><li>Protest Toolkit</li><li>Posters, Flyers, Templates</li></ul>
+    </div>
 
-  <h3 class="glitch torn" data-text="📬 Contact + Media">📬 Contact + Media</h3>
-  <p>📧 Email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
-  <p>🎥 TikTok Embed: (Paste your video or link here)</p>
-  <p>📰 Press Kit (optional): (Link or upload your PDF)</p>
+    <div class="hr"></div>
 
-  <div class="hr"></div>
+    <h3 class="glitch torn" data-text="📬 Contact + Media">📬 Contact + Media</h3>
+    <p>📧 Email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
+    <p>🎥 TikTok Embed: (Paste your video or link here)</p>
+    <p>📰 Press Kit (optional): (Link or upload your PDF)</p>
 
-  <h3 class="glitch torn" data-text="✊ Join the Movement">✊ Join the Movement</h3>
-  <p>Want to help build this new era?</p>
-  <ul>
-    <li>Translate or share the documents</li>
-    <li>Test the CEWIC model</li>
-    <li>Join our Founding Civilian circle</li>
-  </ul>
-  <p><a href="#">[Sign-Up Form Link Here]</a></p>
-</main>
+    <div class="hr"></div>
 
-<footer>© 2025 Human Unity Era</footer>
+    <h3 class="glitch torn" data-text="✊ Join the Movement">✊ Join the Movement</h3>
+    <p>Want to help build this new era?</p>
+    <ul><li>Translate or share the documents</li><li>Test the CEWIC model</li><li>Join our Founding Civilian circle</li></ul>
+    <p><a href="#">[Sign-Up Form Link Here]</a></p>
+  </main>
+
+  <footer>© 2025 Human Unity Era</footer>
 </div><!-- /siteWrap -->
 
 <script>
-/* ===== HACK-IN PRELOADER CONTROL (forced every visit) ===== */
+/* Preloader: force-run, 5s safety timeout */
 (function(){
   const overlay = document.getElementById('preload');
   const vid = document.getElementById('preVid');
   const skip = document.getElementById('preSkip');
-
-  // Force-play every visit (no localStorage gate while we debug)
-  const hardTimeout = setTimeout(finish, 5000); // safety: auto-hide after 5s max
-
+  const safety = setTimeout(done, 5000);
   function start(){ vid.muted = true; vid.play().catch(()=>{}); }
   if(document.readyState === 'complete') start(); else window.addEventListener('load', start, {once:true});
-
   vid.addEventListener('canplay', ()=>{ vid.muted = true; vid.play().catch(()=>{}); });
-  vid.addEventListener('ended', finish);
-
-  function finish(){
-    clearTimeout(hardTimeout);
-    overlay.classList.add('done');
-  }
-  skip.addEventListener('click', e=>{ e.stopPropagation(); finish(); });
-  window.addEventListener('keydown', finish, {once:true});
-  window.addEventListener('click', finish, {once:true});
-  window.addEventListener('wheel', finish, {once:true, passive:true});
+  vid.addEventListener('ended', done);
+  function done(){ clearTimeout(safety); overlay.classList.add('done'); }
+  skip.addEventListener('click', e=>{ e.stopPropagation(); done(); });
+  window.addEventListener('keydown', done, {once:true});
+  window.addEventListener('click', done, {once:true});
+  window.addEventListener('wheel', done, {once:true, passive:true});
 })();
 
-/* ===== Upgraded VHS/Poltergeist static (single canvas) ===== */
+/* Static noise canvas */
 let stopNoise=false;
 (function(){
   const c=document.getElementById('noise'); const g=c.getContext('2d');
   function fit(){const r=c.parentElement.getBoundingClientRect(); c.width=Math.max(320,r.width|0); c.height=Math.max(180,r.height|0);}
   addEventListener('resize',fit,{passive:true}); fit();
-
   const rC=document.createElement('canvas'), gC=document.createElement('canvas'), bC=document.createElement('canvas');
   const rX=rC.getContext('2d'), gX=gC.getContext('2d'), bX=bC.getContext('2d');
-
-  function drawNoise(ctx,w,h){
-    const id=ctx.createImageData(w,h), d=id.data;
-    for(let i=0;i<d.length;i+=4){
-      const v=(Math.random()*255)|0;
-      d[i]=d[i+1]=d[i+2]=v; d[i+3]=220;
-    }
-    ctx.putImageData(id,0,0);
-  }
-
+  function noise(ctx,w,h){const id=ctx.createImageData(w,h), d=id.data; for(let i=0;i<d.length;i+=4){const v=(Math.random()*255)|0; d[i]=d[i+1]=d[i+2]=v; d[i+3]=220;} ctx.putImageData(id,0,0);}
   function frame(t){
     if(stopNoise) return;
     const w=c.width,h=c.height; if(!w||!h){requestAnimationFrame(frame);return;}
     if(rC.width!==w||rC.height!==h){[rC,gC,bC].forEach(x=>{x.width=w;x.height=h});}
-
-    drawNoise(rX,w,h); drawNoise(gX,w,h); drawNoise(bX,w,h);
+    noise(rX,w,h); noise(gX,w,h); noise(bX,w,h);
     g.clearRect(0,0,w,h);
-
-    const roll = Math.sin((t||0)/900)*4;
-    const tearY = (Math.random()<.07)? (Math.random()*h|0) : -1;
-
+    const roll=Math.sin((t||0)/900)*4; const tearY=(Math.random()<.07)?(Math.random()*h|0):-1;
     g.globalCompositeOperation='screen';
-    g.globalAlpha=0.35; g.filter='hue-rotate(355deg)'; g.drawImage(rC,  1, roll);
-    g.globalAlpha=0.35; g.filter='hue-rotate(115deg)'; g.drawImage(gC, -1,-roll);
-    g.globalAlpha=0.35; g.filter='hue-rotate(205deg)'; g.drawImage(bC,  0, 0);
-
-    if(tearY>0){
-      g.globalAlpha=.18; g.filter='none';
-      g.fillStyle='rgba(255,255,255,.18)'; g.fillRect(0,tearY,w,2);
-      g.globalAlpha=.08; g.fillRect(0,tearY+3,w,1);
-    }
-    g.globalAlpha=1; g.filter='none';
-    requestAnimationFrame(frame);
+    g.globalAlpha=.35; g.filter='hue-rotate(355deg)'; g.drawImage(rC,1,roll);
+    g.globalAlpha=.35; g.filter='hue-rotate(115deg)'; g.drawImage(gC,-1,-roll);
+    g.globalAlpha=.35; g.filter='hue-rotate(205deg)'; g.drawImage(bC,0,0);
+    if(tearY>0){ g.globalAlpha=.18; g.filter='none'; g.fillStyle='rgba(255,255,255,.18)'; g.fillRect(0,tearY,w,2); g.globalAlpha=.08; g.fillRect(0,tearY+3,w,1); }
+    g.globalAlpha=1; g.filter='none'; requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
 })();
 
-/* ===== Skip intro: click, scroll, key, or button ===== */
+/* Skip to main */
 (function(){
-  const body=document.body;
-  const main=document.getElementById('main');
-  const skipBtn=document.getElementById('skip');
-  function skip(){
-    if(body.classList.contains('skipped')) return;
-    body.classList.add('skipped');
-    stopNoise=true; // stop canvas loop
-    if(main) main.scrollIntoView({behavior:'smooth'});
-  }
+  const body=document.body, main=document.getElementById('main'), btn=document.getElementById('skip');
+  function skip(){ if(body.classList.contains('skipped')) return; body.classList.add('skipped'); stopNoise=true; if(main) main.scrollIntoView({behavior:'smooth'}); }
   ['click','keydown'].forEach(ev=>window.addEventListener(ev, skip, {once:true}));
   window.addEventListener('wheel', skip, {once:true, passive:true});
-  if(skipBtn) skipBtn.addEventListener('click', e=>{ e.stopPropagation(); skip(); });
+  if(btn) btn.addEventListener('click', e=>{ e.stopPropagation(); skip(); });
 })();
 </script>
 </body>
