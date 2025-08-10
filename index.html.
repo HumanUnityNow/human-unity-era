@@ -1,0 +1,34 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Broadcast Test</title>
+<style>
+html,body{margin:0;height:100%;background:#000;color:#0ff;font:700 5vw/1.2 system-ui,Arial}
+.hero{position:fixed;inset:0;background:#000;overflow:hidden}
+.layer{position:absolute;inset:0;display:grid;place-items:center;opacity:0}
+h1,p{margin:0;text-align:center}
+h1{font-size:12vw}
+p{font-size:4.6vw;padding:0 6vw}
+canvas#n{position:absolute;inset:0;opacity:.12;mix-blend-mode:screen}
+.scan{position:absolute;inset:0;opacity:.18;background:repeating-linear-gradient(0deg,rgba(255,255,255,.16) 0 1px, transparent 1px 3px)}
+:root{--T:30s}
+.winA{animation:winA var(--T) linear infinite}@keyframes winA{0%,10%{opacity:1}10.1%,100%{opacity:0}}
+.winB{animation:winB var(--T) linear infinite}@keyframes winB{10%,40%{opacity:1}0%,9.9%,40.1%,100%{opacity:0}}
+.winC{animation:winC var(--T) linear infinite}@keyframes winC{40%,70%{opacity:1}0%,39.9%,70.1%,100%{opacity:0}}
+</style>
+<section class="hero">
+  <canvas id="n"></canvas><div class="scan"></div>
+  <div class="layer winA"><h1>TIME’S UP</h1></div>
+  <div class="layer winB"><p>We are the people. We are the majority.<br>We are the ones that matter.</p></div>
+  <div class="layer winC"><p>The old page is gone. If you can read this, the new index is live.</p></div>
+</section>
+<script>
+const c=document.getElementById('n'),x=c.getContext('2d');
+const fit=()=>{const r=c.parentElement.getBoundingClientRect();c.width=r.width;c.height=r.height};
+addEventListener('resize',fit,{passive:true});fit();
+(function loop(){
+  const w=c.width,h=c.height,im=x.createImageData(w,h),d=im.data;
+  for(let i=0;i<d.length;i+=4){const v=(Math.random()*255)|0;d[i]=d[i+1]=d[i+2]=v;d[i+3]=215}
+  x.putImageData(im,0,0);
+  if(Math.random()<.3){const y=(Math.random()*h)|0;x.fillStyle='rgba(255,255,255,.12)';x.fillRect(0,y,w,2)}
+  requestAnimationFrame(loop);
+})();
+</script>
