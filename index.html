@@ -1,34 +1,265 @@
-<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Broadcast Test</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Human Unity Era — Broadcast</title>
+<meta name="color-scheme" content="dark">
 <style>
-html,body{margin:0;height:100%;background:#000;color:#0ff;font:700 5vw/1.2 system-ui,Arial}
-.hero{position:fixed;inset:0;background:#000;overflow:hidden}
+:root{
+  --bg:#0a0a0a; --fg:#eaeaea;
+  --accent:#ff3b2e;
+  --glowR: rgba(203,62,39,.65);
+  --glowR2: rgba(203,62,39,.35);
+  --scan: rgba(255,255,255,.16);
+  --loop: 40s; /* hero master timeline */
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+
+/* ===== HERO ===== */
+.hero{position:relative;height:100vh;background:#000;overflow:hidden;border-bottom:1px solid #121212}
 .layer{position:absolute;inset:0;display:grid;place-items:center;opacity:0}
-h1,p{margin:0;text-align:center}
-h1{font-size:12vw}
-p{font-size:4.6vw;padding:0 6vw}
-canvas#n{position:absolute;inset:0;opacity:.12;mix-blend-mode:screen}
-.scan{position:absolute;inset:0;opacity:.18;background:repeating-linear-gradient(0deg,rgba(255,255,255,.16) 0 1px, transparent 1px 3px)}
-:root{--T:30s}
-.winA{animation:winA var(--T) linear infinite}@keyframes winA{0%,10%{opacity:1}10.1%,100%{opacity:0}}
-.winB{animation:winB var(--T) linear infinite}@keyframes winB{10%,40%{opacity:1}0%,9.9%,40.1%,100%{opacity:0}}
-.winC{animation:winC var(--T) linear infinite}@keyframes winC{40%,70%{opacity:1}0%,39.9%,70.1%,100%{opacity:0}}
+canvas#noise{position:absolute;inset:0;opacity:.12;mix-blend-mode:screen}
+.scanlines{position:absolute;inset:0;pointer-events:none;opacity:.18;background:repeating-linear-gradient(0deg,var(--scan) 0 1px,transparent 1px 3px)}
+.deadMask{position:absolute;inset:0;background:#000;opacity:0}
+
+/* Text */
+.text h1,.text p{margin:0;text-align:center;color:#111}
+.text h1{
+  font-size:clamp(44px,10vw,140px);font-weight:900;letter-spacing:.06em;text-transform:uppercase;
+  text-shadow:0 0 0 #111,0 0 14px var(--glowR),0 0 32px var(--glowR2);
+  animation:jitter 3s steps(2,end) infinite;
+}
+.text p{
+  font-size:clamp(18px,3.8vw,30px);font-weight:800;letter-spacing:.01em;padding:0 6vw;
+  text-shadow:0 0 0 #111,0 0 12px var(--glowR),0 0 26px var(--glowR2);
+  animation:jitter 3s steps(2,end) infinite;
+}
+@keyframes jitter{
+  0%,100%{transform:translate(0,0)}
+  25%{transform:translate(.35px,-.4px)}
+  50%{transform:translate(-.45px,.25px)}
+  75%{transform:translate(.25px,.35px)}
+}
+
+/* Emblem visuals */
+.ghostBehind img{
+  width:min(68vw,820px);height:auto;opacity:.065;
+  filter:grayscale(100%) contrast(120%) brightness(.7);
+  animation:ghostBreath var(--loop) linear infinite;
+}
+@keyframes ghostBreath{
+  0%,10%{opacity:.04} 12%,20%{opacity:.08} 22%,36%{opacity:.06}
+  38%,48%{opacity:.09} 50%,60%{opacity:.05} 62%,70%{opacity:.07}
+  72%,80%{opacity:.05} 82%,100%{opacity:.04}
+}
+.emblemMain img,.ghostEmblem img{
+  width:min(70vw,860px);height:auto;object-fit:contain;
+  filter:contrast(115%) saturate(115%) brightness(.9);
+}
+@keyframes emblemPulse{
+  0%,35% {filter:grayscale(60%) saturate(.7) brightness(.85);opacity:.55;transform:scale(1)}
+  37%,52%{filter:saturate(1.20) brightness(1.05);opacity:.95;transform:scale(1.008) rotate(0.15deg)}
+  54%,69%{filter:grayscale(45%) saturate(.85) brightness(.9);opacity:.7;transform:scale(.998)}
+  71%,86%{filter:saturate(1.25) brightness(1.08);opacity:1;transform:scale(1.012) rotate(-0.12deg)}
+  88%,100%{filter:saturate(1.05) brightness(.98);opacity:.85;transform:scale(1)}
+}
+@keyframes emblemGlitch{
+  0%,100%{transform:translate(0,0)}
+  45%{transform:translate(-.4px,.4px)}
+  55%{transform:translate(.6px,-.5px)}
+}
+
+/* Dead-static ghost sequence */
+@keyframes ghostSeq{
+  0%,8%   {opacity:.07;filter:grayscale(100%) saturate(.7)}
+  10%,26% {opacity:.18;filter:grayscale(70%) saturate(.9)}
+  28%,44% {opacity:.24;filter:saturate(1.1) brightness(1.02)}
+  46%,62% {opacity:.30;filter:saturate(1.15)}
+  64%,76% {opacity:.08;filter:grayscale(100%) saturate(.7)}
+  100%    {opacity:.07}
+}
+
+/* Timeline windows */
+.winTS{animation:winTS var(--loop) linear infinite}
+.winS1{animation:winS1 var(--loop) linear infinite}
+.winS2{animation:winS2 var(--loop) linear infinite}
+.winEm{animation:winEm var(--loop) linear infinite}
+.winDead{animation:winDead var(--loop) linear infinite}
+@keyframes winTS{0%,10%{opacity:1}10.1%,100%{opacity:0}}
+@keyframes winS1{10%,22.5%{opacity:1}0%,9.9%,22.6%,100%{opacity:0}}
+@keyframes winS2{22.5%,40%{opacity:1}0%,22.4%,40.1%,100%{opacity:0}}
+@keyframes winEm{40%,55%{opacity:1}0%,39.9%,55.1%,100%{opacity:0}}
+@keyframes winDead{55%,72.5%{opacity:1}0%,54.9%,72.6%,100%{opacity:0}}
+.ts h1{animation:tsIn var(--loop) linear infinite,jitter 3s steps(2,end) infinite}
+@keyframes tsIn{0%,1%{opacity:0;filter:blur(6px)}2%,10%{opacity:1;filter:blur(0)}10.1%,100%{opacity:0}}
+.s1 p{animation:s1In var(--loop) linear infinite}
+@keyframes s1In{10%,12%{opacity:0;filter:blur(6px)}12.6%,22.5%{opacity:1;filter:blur(0)}22.6%,100%{opacity:0}}
+.s2 p{animation:s2In var(--loop) linear infinite}
+@keyframes s2In{22.5%,24%{opacity:0;filter:blur(6px)}24.6%,40%{opacity:1;filter:blur(0)}40.1%,100%{opacity:0}}
+.emblemMain img{animation:emblemPulse var(--loop) linear infinite,emblemGlitch 2.8s steps(2,end) infinite}
+.deadMask{animation:deadWin var(--loop) linear infinite}
+@keyframes deadWin{55%,72.5%{opacity:.85}0%,54.9%,72.6%,100%{opacity:0}}
+.ghostEmblem img{animation:ghostSeq var(--loop) linear infinite}
+
+/* ===== MAIN CONTENT (after hero) ===== */
+main{max-width:1000px;margin:0 auto;padding:28px 18px 60px}
+.lead{opacity:.9}
+.hFlex{display:flex;gap:10px;align-items:center}
+.badge{font-weight:800;color:#fff;background:#1b1b1b;border:1px solid #2b2b2b;padding:2px 8px;border-radius:999px;font-size:.82rem}
+
+/* Flicker headings */
+h2,h3{margin:24px 0 10px}
+.flicker{
+  display:inline-block; position:relative; font-weight:900; letter-spacing:.02em;
+  text-shadow:0 0 10px rgba(255,59,46,.25),0 0 22px rgba(255,59,46,.15);
+  animation:flick 6s infinite steps(2,end);
+}
+@keyframes flick{
+  0%,6%{opacity:.92;transform:none}
+  6.5%{opacity:.45;transform:translate(.4px,-.4px)}
+  7%{opacity:1;transform:none}
+  38%{opacity:.97}
+  39%{opacity:.5;transform:translate(-.6px,.5px)}
+  40%{opacity:1;transform:none}
+  74%{opacity:.96}
+  75%{opacity:.5}
+  76%,100%{opacity:1}
+}
+
+/* Section links */
+.section a{color:#ddd;text-decoration:none;border-bottom:1px solid #333}
+.section a:hover{color:#fff;border-color:#666}
+
+/* divider */
+.hr{height:1px;background:#171717;margin:26px 0}
+footer{padding:16px 18px;border-top:1px solid #121212;color:#9a9a9a}
+
+/* small devices text size */
+@media (max-width:420px){
+  .lead{font-size:.97rem}
+}
 </style>
-<section class="hero">
-  <canvas id="n"></canvas><div class="scan"></div>
-  <div class="layer winA"><h1>TIME’S UP</h1></div>
-  <div class="layer winB"><p>We are the people. We are the majority.<br>We are the ones that matter.</p></div>
-  <div class="layer winC"><p>The old page is gone. If you can read this, the new index is live.</p></div>
+</head>
+<body>
+
+<!-- ===== HERO BROADCAST ===== -->
+<section class="hero" aria-label="Emergency broadcast">
+  <canvas id="noise"></canvas>
+  <div class="scanlines"></div>
+
+  <!-- faint emblem behind text -->
+  <div class="layer ghostBehind" style="opacity:1">
+    <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost)">
+  </div>
+
+  <!-- 0–4s -->
+  <div class="layer winTS ts"><div class="text"><h1>TIME’S UP</h1></div></div>
+
+  <!-- 4–9s -->
+  <div class="layer winS1 s1"><div class="text">
+    <p>We are the people. We are the majority.<br/>We are the ones that matter.</p>
+  </div></div>
+
+  <!-- 9–16s -->
+  <div class="layer winS2 s2"><div class="text">
+    <p>The time of allowing ego-driven “world leaders” to lead us into war for profit is over.<br/>We, the people of the world, will have the final say.</p>
+  </div></div>
+
+  <!-- 16–22s emblem breakthrough -->
+  <div class="layer winEm emblemMain">
+    <img src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem">
+  </div>
+
+  <!-- 22–29s dead static + ghost emblem -->
+  <div class="deadMask" aria-hidden="true"></div>
+  <div class="layer winDead ghostEmblem">
+    <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost)">
+  </div>
 </section>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main>
+  <p class="lead"><span class="badge">Live</span> Civilian-led. Peace-driven. AI-readable.</p>
+
+  <h2 class="flicker">🌍 The Human Unity Era</h2>
+  <p>Created by Kaileb Abrey-Blackmore<br/>Civilian Architect of Global Coordination</p>
+
+  <div class="hr"></div>
+
+  <h3 class="flicker">🏠 Welcome</h3>
+  <p>Welcome to the official Human Unity Era digital platform — a transparent, accessible framework designed to rebuild global cooperation, dignity, and peace from the ground up. This is not a petition. It is a blueprint.</p>
+
+  <div class="hr"></div>
+
+  <h3 class="flicker">📚 Explore the Framework</h3>
+  <div class="section">
+    <p class="hFlex"><strong>🕊️ <a href="declaration.html">The Human Unity Era Declaration</a></strong></p>
+    <ul>
+      <li>Founding Declaration</li>
+      <li>Author Statement</li>
+      <li>One-Page Overview</li>
+    </ul>
+    <p class="hFlex"><strong>⚙️ <a href="systems.html">Systems of Civilian Power</a></strong></p>
+    <ul>
+      <li>Governance Charter</li>
+      <li>CEWIC Proposal</li>
+      <li>Treaty-born Institutions (e.g. MPOB)</li>
+    </ul>
+    <p class="hFlex"><strong>🌍 <a href="framework.html">Ukraine–Russia Peace Framework</a></strong></p>
+    <ul>
+      <li>UN-style Treaty</li>
+      <li>Post-Treaty Agenda</li>
+      <li>Peace Dividend</li>
+      <li>Sanctions &amp; Reconstruction</li>
+    </ul>
+    <p class="hFlex"><strong>💡 <a href="tools.html">Civilian Involvement Tools</a></strong></p>
+    <ul>
+      <li>Join the Movement</li>
+      <li>Protest Toolkit</li>
+      <li>Posters, Flyers, Templates</li>
+    </ul>
+  </div>
+
+  <div class="hr"></div>
+
+  <h3 class="flicker">📬 Contact + Media</h3>
+  <p>📧 Email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
+  <p>🎥 TikTok Embed: (Paste your video or link here)</p>
+  <p>📰 Press Kit (optional): (Link or upload your PDF)</p>
+
+  <div class="hr"></div>
+
+  <h3 class="flicker">✊ Join the Movement</h3>
+  <p>Want to help build this new era?</p>
+  <ul>
+    <li>Translate or share the documents</li>
+    <li>Test the CEWIC model</li>
+    <li>Join our Founding Civilian circle</li>
+  </ul>
+  <p><a href="#">[Sign-Up Form Link Here]</a></p>
+</main>
+
+<footer>© 2025 Human Unity Era</footer>
+
 <script>
-const c=document.getElementById('n'),x=c.getContext('2d');
-const fit=()=>{const r=c.parentElement.getBoundingClientRect();c.width=r.width;c.height=r.height};
-addEventListener('resize',fit,{passive:true});fit();
-(function loop(){
-  const w=c.width,h=c.height,im=x.createImageData(w,h),d=im.data;
-  for(let i=0;i<d.length;i+=4){const v=(Math.random()*255)|0;d[i]=d[i+1]=d[i+2]=v;d[i+3]=215}
-  x.putImageData(im,0,0);
-  if(Math.random()<.3){const y=(Math.random()*h)|0;x.fillStyle='rgba(255,255,255,.12)';x.fillRect(0,y,w,2)}
-  requestAnimationFrame(loop);
+/* Retro static generator */
+(function(){
+  const c=document.getElementById('noise'); const ctx=c.getContext('2d');
+  function fit(){const r=c.parentElement.getBoundingClientRect(); c.width=Math.max(320,r.width|0); c.height=Math.max(180,r.height|0);}
+  addEventListener('resize',fit,{passive:true}); fit();
+  function frame(){
+    const w=c.width,h=c.height; if(!w||!h){requestAnimationFrame(frame);return;}
+    const id=ctx.createImageData(w,h), d=id.data;
+    for(let i=0;i<d.length;i+=4){const v=(Math.random()*255)|0; d[i]=d[i+1]=d[i+2]=v; d[i+3]=215;}
+    ctx.putImageData(id,0,0);
+    if(Math.random()<.30){const y=(Math.random()*h)|0; ctx.fillStyle='rgba(255,255,255,.12)'; ctx.fillRect(0,y,w,2);}
+    requestAnimationFrame(frame);
+  }
+  frame();
 })();
+console.log('HUE broadcast + flicker headings');
 </script>
+</body>
+</html>
