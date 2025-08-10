@@ -15,8 +15,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 
-/* ===== PAGE BACKGROUND GLITCH (chromatic lines + flicker) ===== */
-.pageBG{position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:.18}
+/* ===== PAGE BACKGROUND GLITCH (chromatic lines + random flicker) ===== */
+.pageBG{position:fixed; inset:0; z-index:-3; pointer-events:none; opacity:.18}
 .pageBG::before,
 .pageBG::after{
   content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
@@ -34,6 +34,41 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
   87%{opacity:.8}
   96%{opacity:.55}
   100%{opacity:.65}
+}
+
+/* Random localized flicker pulses */
+.bgPulse{position:fixed; inset:0; z-index:-2; pointer-events:none;}
+.bgPulse::before,.bgPulse::after{
+  content:""; position:absolute; width:34vw; height:18vh; left:12vw; top:22vh;
+  background:radial-gradient(ellipse at center, rgba(255,255,255,.18), rgba(0,0,0,0) 60%);
+  mix-blend-mode:screen; filter:hue-rotate(355deg);
+  opacity:0; animation:pulseA 9s infinite;
+}
+.bgPulse::after{
+  left:auto; right:10vw; top:auto; bottom:18vh; width:28vw; height:16vh;
+  filter:hue-rotate(205deg);
+  animation:pulseB 11s infinite 2s;
+}
+@keyframes pulseA{0%,78%{opacity:0;transform:translate(0,0)}80%{opacity:.22}86%{opacity:.04;transform:translate(-2px,1px)}100%{opacity:0}}
+@keyframes pulseB{0%,70%{opacity:0;transform:translate(0,0)}73%{opacity:.20}79%{opacity:.05;transform:translate(2px,-1px)}100%{opacity:0}}
+
+/* ===== DARK-WEB BINARY CLUSTERS (random small patches) ===== */
+.bgFX{position:fixed; inset:0; z-index:-1; pointer-events:none}
+.codeCluster{
+  position:fixed; z-index:-1; color:#00ff88; opacity:0;
+  font:700 10px/1.05 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  white-space:pre; text-shadow:
+    1px 0 rgba(41,215,255,.35),
+   -1px 0 rgba(255,59,46,.35);
+  filter:contrast(120%) saturate(110%);
+  pointer-events:none;
+  animation: codeFade 2.8s ease-out forwards;
+}
+@keyframes codeFade{
+  0%{opacity:0; transform:translateY(0) scale(1)}
+  10%{opacity:.22}
+  60%{opacity:.18; transform:translateY(-4px) scale(1.01)}
+  100%{opacity:0; transform:translateY(-8px) scale(1.02)}
 }
 
 /* ===== HACK-IN PRELOADER (plays once per 12h) ===== */
@@ -65,6 +100,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
 
 @media (prefers-reduced-motion: reduce){
   #preVid{ display:none } .preFallback{ animation:none }
+  .pageBG,.bgPulse,.bgFX,.codeCluster{ display:none !important }
 }
 
 /* ===== HERO STAGE (fills first screen; page scrolls underneath) ===== */
@@ -125,7 +161,13 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 }
 .emblemFX{animation: emblemPulse var(--loop) linear infinite, emblemGlitch 2.6s steps(2,end) infinite}
 
-/* ===== TIMELINE WINDOWS ===== */
+/* ===== TIMELINE WINDOWS (extended final text slide) =====
+   0–4    TIME’S UP
+   4–9    Slide 1
+   9–19.6 Slide 2 (≈10s)
+   19.6–24 Emblem breakthrough (≈4.4s)
+   24–31  Dead static + ghost (≈7s)
+*/
 .winTS{animation:winTS var(--loop) linear infinite}
 .winS1{animation:winS1 var(--loop) linear infinite}
 .winS2{animation:winS2 var(--loop) linear infinite}
@@ -133,9 +175,20 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 .winDead{animation:winDead var(--loop) linear infinite}
 @keyframes winTS{0%,10%{opacity:1}10.1%,100%{opacity:0}}
 @keyframes winS1{10%,22.5%{opacity:1}0%,9.9%,22.6%,100%{opacity:0}}
-@keyframes winS2{22.5%,40%{opacity:1}0%,22.4%,40.1%,100%{opacity:0}}
-@keyframes winEm{40%,55%{opacity:1}0%,39.9%,55.1%,100%{opacity:0}}
-@keyframes winDead{55%,72.5%{opacity:1}0%,54.9%,72.6%,100%{opacity:0}}
+@keyframes winS2{22.5%,47%{opacity:1}0%,22.4%,47.1%,100%{opacity:0}}
+@keyframes winEm{47%,58%{opacity:1}0%,46.9%,58.1%,100%{opacity:0}}
+@keyframes winDead{58%,75.5%{opacity:1}0%,57.9%,75.6%,100%{opacity:0}}
+
+.ts .text h1{animation: showTS var(--loop) linear infinite, jitter 3s steps(2,end) infinite}
+@keyframes showTS{0%,1%{opacity:0;filter:blur(6px)}2%,10%{opacity:1;filter:blur(0)}10.1%,100%{opacity:0}}
+.s1 .text p{animation: showS1 var(--loop) linear infinite, jitter 3.4s steps(2,end) infinite}
+@keyframes showS1{10%,12%{opacity:0;filter:blur(6px)}12.6%,22.5%{opacity:1;filter:blur(0)}22.6%,100%{opacity:0}}
+.s2 .text p{animation: showS2 var(--loop) linear infinite, jitter 3.6s steps(2,end) infinite}
+@keyframes showS2{
+  22.5%,24%{opacity:0;filter:blur(6px)}
+  24.6%,47%{opacity:1;filter:blur(0)}
+  47.1%,100%{opacity:0}
+}
 
 /* ===== AGGRESSIVE TORN RGB GLITCH ===== */
 .glitch{
@@ -234,8 +287,10 @@ body.skipped .hero{display:none}
 </head>
 <body>
 
-<!-- Global background glitch -->
+<!-- Global background glitch layers -->
 <div class="pageBG" aria-hidden="true"></div>
+<div class="bgPulse" aria-hidden="true"></div>
+<div class="bgFX" id="bgFX" aria-hidden="true"></div>
 
 <!-- ===== HACK-IN PRELOADER ===== -->
 <div id="preload" aria-hidden="true">
@@ -274,7 +329,7 @@ body.skipped .hero{display:none}
     </div>
   </div>
 
-  <!-- 9–16s : Slide 2 (7s hold) -->
+  <!-- 9–19.6s : Slide 2 (longer) -->
   <div class="layer winS2 s2">
     <div class="text">
       <p class="glitchline activeText"
@@ -285,12 +340,12 @@ body.skipped .hero{display:none}
     </div>
   </div>
 
-  <!-- 16–22s : Emblem breakthrough -->
+  <!-- 19.6–24s : Emblem breakthrough -->
   <div class="layer winEm emblemMain">
     <img class="emblemFX" src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem">
   </div>
 
-  <!-- 22–29s : Dead static + ghost emblem -->
+  <!-- 24–31s : Dead static + ghost emblem -->
   <div class="deadMask" aria-hidden="true"></div>
   <div class="layer winDead ghostEmblem">
     <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost flicker)">
@@ -457,6 +512,48 @@ let stopNoise=false;
   ['click','keydown'].forEach(ev=>window.addEventListener(ev, skip, {once:true}));
   window.addEventListener('wheel', skip, {once:true, passive:true});
   if(skipBtn) skipBtn.addEventListener('click', e=>{ e.stopPropagation(); skip(); });
+})();
+
+/* ===== Random binary “dark-web” clusters ===== */
+(function(){
+  const host=document.getElementById('bgFX');
+  if(!host) return;
+  const W = () => window.innerWidth;
+  const H = () => window.innerHeight;
+
+  function makeCluster(){
+    const rows = 4 + (Math.random()*8|0);
+    const cols = 10 + (Math.random()*14|0);
+    let s = "";
+    for(let r=0;r<rows;r++){
+      let line = "";
+      for(let c=0;c<cols;c++){
+        line += Math.random() < 0.5 ? "0" : "1";
+      }
+      s += line + (r<rows-1? "\n":"");
+    }
+    const el = document.createElement('div');
+    el.className = 'codeCluster';
+    el.textContent = s;
+
+    const left = Math.max(0, Math.min(W()-cols*8-10, Math.random()*W()));
+    const top  = Math.max(0, Math.min(H()-rows*12-10, Math.random()*H()));
+    el.style.left = left + 'px';
+    el.style.top  = top + 'px';
+
+    host.appendChild(el);
+    setTimeout(()=>{ el.remove(); }, 3000);
+  }
+
+  function loop(){
+    // 0–2 clusters each tick, feels random and sparse
+    const n = Math.random() < 0.55 ? 1 : 0;
+    for(let i=0;i<n;i++) makeCluster();
+    setTimeout(loop, 550 + Math.random()*900);
+  }
+  loop();
+
+  window.addEventListener('resize', ()=>{}, {passive:true});
 })();
 </script>
 </body>
