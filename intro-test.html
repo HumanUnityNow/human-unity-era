@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Intro Video Test</title>
+<style>
+html,body{margin:0;height:100%;background:#000;color:#fff;font:16px/1.4 system-ui}
+#wrap{position:fixed;inset:0;display:grid;place-items:center;background:#000}
+#vid{max-width:100vw;max-height:100vh;object-fit:cover}
+#fallback{position:absolute;inset:auto auto 24px 24px;display:flex;gap:10px;align-items:center}
+button{cursor:pointer;background:#111;color:#eee;border:1px solid #333;padding:10px 14px;border-radius:10px}
+.info{opacity:.7}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <video id="vid" autoplay muted playsinline preload="auto">
+    <!-- USE EXACT PATH/CASE -->
+    <source src="media/hack-intro.mp4" type="video/mp4">
+  </video>
+  <div id="fallback" hidden>
+    <button id="play">Tap to Start ▷</button>
+    <span class="info">If this works, your file path & browser are fine.</span>
+  </div>
+</div>
+<script>
+const v=document.getElementById('vid');
+const fb=document.getElementById('fallback');
+function tryPlay(){
+  v.play().then(()=>{fb.hidden=true;}).catch(()=>{fb.hidden=false;});
+}
+if(document.readyState==='complete'){tryPlay();}else{addEventListener('load',tryPlay,{once:true});}
+document.getElementById('play').onclick=()=>{v.muted=true; v.play().then(()=>fb.hidden=true);}
+</script>
+</body>
+</html>
