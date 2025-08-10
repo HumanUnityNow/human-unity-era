@@ -36,6 +36,37 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
   100%{opacity:.65}
 }
 
+/* ===== HACK-IN PRELOADER (plays once per 12h) ===== */
+#preload{
+  position:fixed; inset:0; z-index:9999; background:#000; display:flex;
+  align-items:center; justify-content:center; transition:opacity .4s ease;
+}
+#preVid{
+  max-width:100vw; max-height:100vh; object-fit:cover;
+  filter:contrast(110%) saturate(110%);
+}
+#preSkip{
+  position:fixed; right:14px; top:14px; z-index:10000; cursor:pointer;
+  font:700 13px/1 system-ui,Arial; color:#eee; background:#111a; border:1px solid #2a2a2a;
+  padding:10px 12px; border-radius:999px; backdrop-filter:blur(3px)
+}
+#preSkip:hover{ background:#151515 }
+/* fallback if video can’t autoplay */
+.preFallback{
+  position:absolute; inset:0; pointer-events:none; background:
+   repeating-linear-gradient(0deg,rgba(255,255,255,.09) 0 1px, transparent 1px 4px),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px, transparent 2px 4px);
+  animation: preScan 7s linear infinite;
+  opacity:.28;
+}
+@keyframes preScan{0%{transform:translateY(0)}100%{transform:translateY(-4px)}}
+/* hide when done */
+#preload.done{ opacity:0; pointer-events:none }
+
+@media (prefers-reduced-motion: reduce){
+  #preVid{ display:none } .preFallback{ animation:none }
+}
+
 /* ===== HERO STAGE (fills first screen; page scrolls underneath) ===== */
 .hero{position:relative;height:100vh;background:#000;overflow:hidden;border-bottom:1px solid #121212}
 .layer{position:absolute;inset:0;display:grid;place-items:center;opacity:0;will-change:opacity,transform}
@@ -94,13 +125,7 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 }
 .emblemFX{animation: emblemPulse var(--loop) linear infinite, emblemGlitch 2.6s steps(2,end) infinite}
 
-/* ===== TIMELINE WINDOWS =====
-   0–4  TIME’S UP
-   4–9  Slide 1
-   9–16 Slide 2 (7s)
-   16–22 Emblem breakthrough
-   22–29 Dead static + ghost (7s)
-*/
+/* ===== TIMELINE WINDOWS ===== */
 .winTS{animation:winTS var(--loop) linear infinite}
 .winS1{animation:winS1 var(--loop) linear infinite}
 .winS2{animation:winS2 var(--loop) linear infinite}
@@ -211,6 +236,15 @@ body.skipped .hero{display:none}
 
 <!-- Global background glitch -->
 <div class="pageBG" aria-hidden="true"></div>
+
+<!-- ===== HACK-IN PRELOADER ===== -->
+<div id="preload" aria-hidden="true">
+  <video id="preVid" muted playsinline preload="auto">
+    <source src="media/hack-intro.mp4" type="video/mp4" />
+  </video>
+  <button id="preSkip" aria-label="Skip intro">Skip ▷</button>
+  <div class="preFallback"></div>
+</div>
 
 <!-- ===== HERO BROADCAST ===== -->
 <section class="hero" aria-label="Emergency broadcast">
@@ -328,6 +362,41 @@ body.skipped .hero{display:none}
 <footer>© 2025 Human Unity Era</footer>
 
 <script>
+/* ===== HACK-IN PRELOADER CONTROL ===== */
+(function(){
+  const overlay = document.getElementById('preload');
+  const vid = document.getElementById('preVid');
+  const skip = document.getElementById('preSkip');
+
+  // show once per 12 hours
+  try{
+    const last = localStorage.getItem('hue_pre_seen');
+    if(last && (Date.now() - Number(last)) < 12*60*60*1000){
+      overlay.classList.add('done'); // skip immediately
+      return;
+    }
+  }catch(e){}
+
+  // autohide guard even if video stalls (max 3.2s)
+  const hardTimeout = setTimeout(finish, 3200);
+
+  const start = () => { vid.play().catch(()=>{}); };
+  if(document.readyState === 'complete') start(); else window.addEventListener('load', start, {once:true});
+
+  vid.addEventListener('canplaythrough', ()=>{ vid.muted = true; vid.play().catch(()=>{}); });
+  vid.addEventListener('ended', finish);
+
+  function finish(){
+    clearTimeout(hardTimeout);
+    overlay.classList.add('done');
+    try{ localStorage.setItem('hue_pre_seen', String(Date.now())); }catch(e){}
+  }
+  skip.addEventListener('click', e=>{ e.stopPropagation(); finish(); });
+  window.addEventListener('keydown', finish, {once:true});
+  window.addEventListener('click', finish, {once:true});
+  window.addEventListener('wheel', finish, {once:true, passive:true});
+})();
+
 /* ===== Upgraded VHS/Poltergeist static (single canvas) ===== */
 let stopNoise=false;
 (function(){
