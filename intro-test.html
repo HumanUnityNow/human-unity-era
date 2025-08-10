@@ -1,37 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Intro Video Test</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Human Unity Era</title>
+<meta name="theme-color" content="#0b0b0f"/>
+
 <style>
-html,body{margin:0;height:100%;background:#000;color:#fff;font:16px/1.4 system-ui}
-#wrap{position:fixed;inset:0;display:grid;place-items:center;background:#000}
-#vid{max-width:100vw;max-height:100vh;object-fit:cover}
-#fallback{position:absolute;inset:auto auto 24px 24px;display:flex;gap:10px;align-items:center}
-button{cursor:pointer;background:#111;color:#eee;border:1px solid #333;padding:10px 14px;border-radius:10px}
-.info{opacity:.7}
+  :root{
+    --bg:#07070a;
+    --ink:#e9eaef;
+    --accent:#ff5436;
+    --cyan:#46e6ff;
+    --red:#ff3b3b;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  /* =========================================================
+     GLOBAL "DARK WEB" BACKGROUND — stronger, always on
+     Layers:
+     - scanlines (horizontal)
+     - code bleed (vertical ticks)
+     - chroma split (red/cyan wobble)
+     - periodic hue flicker + pixel drift
+     ========================================================= */
+  .bg-glitch{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    filter:contrast(115%) brightness(95%);
+    animation:huePulse 14s ease-in-out infinite;
+  }
+  /* Base scanlines */
+  .bg-glitch::before{
+    content:""; position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.055) 0 2px, rgba(0,0,0,.055) 2px 4px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 3px, rgba(0,0,0,.018) 3px 6px);
+    mix-blend-mode:screen; opacity:.32;
+    animation:bgDrift 9s steps(60,end) infinite;
+  }
+  /* Chroma “tear” overlays */
+  .bg-glitch::after{
+    content:""; position:absolute; inset:-1px;
+    background:
+      linear-gradient(transparent 60%, rgba(0,0,0,.5)),
+      repeating-linear-gradient(0deg, rgba(0,229,255,.18) 0 2px, rgba(0,0,0,0) 2px 4px),
+      repeating-linear-gradient(0deg, rgba(255,59,59,.12) 1px 3px, rgba(0,0,0,0) 3px 5px);
+    mix-blend-mode:lighten; opacity:.22;
+    animation:chromaWobble 2.8s ease-in-out infinite;
+  }
+  @keyframes bgDrift{
+    0%{transform:translateY(0)}
+    20%{transform:translateY(-1px)}
+    40%{transform:translateY(0)}
+    60%{transform:translateY(1px)}
+    80%,100%{transform:translateY(0)}
+  }
+  @keyframes chromaWobble{
+    0%,100%{transform:translate(0,0)}
+    25%{transform:translate(1px,-1px)}
+    50%{transform:translate(-1px,1px)}
+    75%{transform:translate(0,0)}
+  }
+  @keyframes huePulse{
+    0%,100%{filter:hue-rotate(0deg) contrast(115%) brightness(95%)}
+    40%{filter:hue-rotate(6deg) contrast(120%) brightness(94%)}
+    60%{filter:hue-rotate(-6deg) contrast(118%) brightness(96%)}
+  }
+  /* Random narrow “code bleed” bands that appear briefly */
+  .bleeds{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+  }
+  .bleeds span{
+    position:absolute; left:0; right:0; height:2px; background:
+      linear-gradient(90deg, rgba(70,230,255,.0), rgba(70,230,255,.35), rgba(255,84,54,.35), rgba(70,230,255,.0));
+    opacity:.0; filter:blur(.4px);
+    animation:bleed 6s ease-in-out infinite;
+  }
+  .bleeds span:nth-child(1){top:12%; animation-delay:0s}
+  .bleeds span:nth-child(2){top:27%; animation-delay:1.2s}
+  .bleeds span:nth-child(3){top:41%; animation-delay:2.3s}
+  .bleeds span:nth-child(4){top:58%; animation-delay:3.6s}
+  .bleeds span:nth-child(5){top:73%; animation-delay:4.7s}
+  .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
+  @keyframes bleed{
+    0%,100%{opacity:0; transform:translateX(-4vw)}
+    10%{opacity:.7}
+    20%{opacity:.25}
+    40%{opacity:.6}
+    60%{opacity:.15}
+    80%{opacity:.4}
+  }
+
+  /* =================== INTRO VIDEO OVERLAY (CRT overlays) =================== */
+  #intro{position:fixed; inset:0; z-index:1000; background:#000; display:grid; place-items:center; transition:opacity .6s ease}
+  #intro.hidden{opacity:0; pointer-events:none}
+  #intro video{width:100vw; height:100vh; object-fit:cover; display:block}
+  #intro .tv-static, #intro .tv-scan, #intro .tv-vignette{position:absolute; inset:0; pointer-events:none}
+  #intro .tv-static{
+    opacity:.22;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 2px, rgba(0,0,0,.06) 2px 4px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, rgba(0,0,0,.02) 2px 4px);
+    animation:introNoise 2.6s steps(40,end) infinite;
+  }
+  @keyframes introNoise{
+    0%,100%{transform:translateZ(0)}
+    25%{transform:translateY(-1px)}
+    50%{transform:translateY(0)}
+    75%{transform:translateY(1px)}
+  }
+  #intro .tv-scan{
+    background:linear-gradient(to bottom, rgba(255,255,255,.15), rgba(255,255,255,0));
+    height:22%; width:120%; left:-10%; filter:blur(3px);
+    animation:introScan 5.4s cubic-bezier(.2,.6,.2,1) infinite;
+  }
+  @keyframes introScan{0%{top:-28%} 50%{top:75%} 100%{top:-28%}}
+  #intro .tv-vignette{
+    background:radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 0 60%, rgba(0,0,0,.75) 95%, rgba(0,0,0,.92) 100%);
+  }
+  #intro .controls{position:absolute; inset:auto 16px 16px 16px; display:flex; gap:10px; align-items:center}
+  #intro button{background:#101114;border:1px solid #2a2c35;color:#e7e7ea;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+  #intro .note{color:#c8c8ce;font-size:14px;opacity:.85}
+
+  /* =================== HEADER + HERO =================== */
+  header{
+    position:relative; padding:72px 20px 40px; text-align:center; overflow:hidden;
+    background:radial-gradient(1200px 600px at 50% -10%, #1a1b20 10%, #0b0b0f 60%, #060608 100%);
+  }
+  .hero-emblem{
+    position:absolute; inset:auto 0 0 0; height:38vh; max-height:360px; opacity:.14; pointer-events:none;
+    display:flex; align-items:flex-end; justify-content:center; filter:contrast(105%) saturate(105%);
+    animation:emblemFloat 10s ease-in-out infinite;
+  }
+  .hero-emblem img{max-width:90vw; max-height:100%; mix-blend:screen; filter:grayscale(.2) contrast(140%) brightness(.9)}
+  @keyframes emblemFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .title{font-size:clamp(32px,5vw,56px); letter-spacing:.06em; font-weight:900; margin:0 0 6px;
+    color:#ff5436; text-shadow:0 0 18px rgba(255,84,54,.15)}
+  .tag{color:#f26; opacity:.85; font-weight:600; margin:4px 0 0}
+
+  /* =================== TV STATIC SLIDER =================== */
+  .tv{position:relative; margin:22px auto 0; width:min(1100px,92vw); aspect-ratio:16/9; border-radius:16px; overflow:hidden; border:1px solid #262830; box-shadow:0 10px 40px rgba(0,0,0,.45); background:#000}
+  .static{position:absolute; inset:0; background:
+      radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 0 60%, rgba(0,0,0,.75) 95%, rgba(0,0,0,.92) 100%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 2px, rgba(0,0,0,.07) 2px 4px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, rgba(0,0,0,.02) 2px 4px);
+    filter:contrast(170%) brightness(.85)}
+  .scan{position:absolute; left:-10%; right:-10%; height:22%; top:-25%;
+    background:linear-gradient(to bottom, rgba(255,255,255,.18), rgba(255,255,255,0));
+    filter:blur(3px); animation:scan 5.6s cubic-bezier(.2,.6,.2,1) infinite}
+  @keyframes scan{0%{top:-28%} 50%{top:75%} 100%{top:-28%}}
+  .slide{position:absolute; inset:0; display:grid; place-items:center; opacity:0; transition:opacity .8s ease}
+  .slide.show{opacity:1}
+  .msg{
+    font-weight:900; letter-spacing:.06em; text-transform:uppercase; text-align:center;
+    font-size:clamp(28px,4.8vw,64px);
+    text-shadow:0 0 24px rgba(255,255,255,.08), 0 0 60px rgba(70,230,255,.08);
+    animation:tinyFlicker 4s steps(60,end) infinite;
+  }
+  .msg.cyan{color:var(--cyan)} .msg.red{color:var(--red)}
+  @keyframes tinyFlicker{
+    0%,100%{opacity:.98; transform:translateZ(0)}
+    12%{opacity:.93}
+    24%{opacity:.99}
+    41%{opacity:.94}
+    67%{opacity:.98}
+    83%{opacity:.95}
+  }
+
+  /* Torn “hacking” glitch for headings + slider text */
+  .glitch{position:relative; isolation:isolate}
+  .glitch::before,.glitch::after{content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none}
+  .glitch::before{color:#00e5ff; animation:chroma1 2.2s infinite}
+  .glitch::after{color:#ff3b3b; animation:chroma2 2.2s infinite}
+  @keyframes chroma1{
+    0%,100%{clip-path:inset(0 0 0 0); transform:translate(0,0)}
+    10%{clip-path:inset(0 0 70% 0); transform:translate(2px,-1px)}
+    20%{clip-path:inset(60% 0 0 0); transform:translate(-2px,1px)}
+    35%{clip-path:inset(30% 0 40% 0)}
+    60%{clip-path:inset(0 0 0 0)}
+    72%{clip-path:inset(20% 0 50% 0); transform:translate(1px,0)}
+    85%{clip-path:inset(50% 0 10% 0); transform:translate(-1px,0)}
+  }
+  @keyframes chroma2{
+    0%,100%{clip-path:inset(0 0 0 0); transform:translate(0,0)}
+    12%{clip-path:inset(50% 0 10% 0); transform:translate(-2px,1px)}
+    22%{clip-path:inset(0 0 65% 0); transform:translate(2px,-1px)}
+    38%{clip-path:inset(25% 0 45% 0)}
+    62%{clip-path:inset(0 0 0 0)}
+    74%{clip-path:inset(10% 0 60% 0); transform:translate(-1px,0)}
+    88%{clip-path:inset(55% 0 5% 0); transform:translate(1px,0)}
+  }
+
+  main{padding:36px 18px 80px; max-width:1100px; margin:0 auto}
+  h2{margin:28px 0 12px; font-size:clamp(22px,3vw,28px)}
+  .sub{font-weight:800; letter-spacing:.02em; display:inline-block}
+  .sub.glitch::before,.sub.glitch::after{font-weight:800}
+  p{color:#cfd1d6; max-width:80ch}
+  .nav-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:10px}
+  .card{border:1px solid #2b2d36; border-radius:12px; padding:14px 16px; background:#0d0e12bb; backdrop-filter: blur(4px)}
+  .card a{color:#e8e9ef; text-decoration:none; font-weight:700}
+  .card a:hover{text-decoration:underline}
+  body.lock{overflow:hidden}
 </style>
 </head>
-<body>
-<div id="wrap">
-  <video id="vid" autoplay muted playsinline preload="auto">
-    <!-- USE EXACT PATH/CASE -->
-    <source src="media/hack-intro.mp4" type="video/mp4">
-  </video>
-  <div id="fallback" hidden>
-    <button id="play">Tap to Start ▷</button>
-    <span class="info">If this works, your file path & browser are fine.</span>
+<body class="lock">
+  <!-- Always-on dark-web background -->
+  <div class="bg-glitch"></div>
+  <div class="bleeds" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
   </div>
-</div>
+
+  <!-- INTRO VIDEO OVERLAY -->
+  <div id="intro" aria-hidden="true">
+    <video id="introVid" autoplay muted playsinline preload="auto">
+      <source src="media/hack-intro.mp4" type="video/mp4">
+    </video>
+    <div class="tv-static"></div>
+    <div class="tv-scan"></div>
+    <div class="tv-vignette"></div>
+    <div class="controls" id="introCtrls" hidden>
+      <button id="startBtn">Tap to Start ▷</button>
+      <button id="skipBtn">Skip</button>
+      <span class="note">Autoplay was blocked by your browser.</span>
+    </div>
+  </div>
+
+  <header>
+    <div class="hero-emblem">
+      <img src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem"/>
+    </div>
+    <h1 class="title">HUMAN UNITY ERA</h1>
+    <div class="tag">This is not a petition. It’s a civilian <strong>system override</strong>.</div>
+
+    <!-- TV STATIC SLIDER -->
+    <div class="tv" id="tv">
+      <div class="static"></div><div class="scan"></div>
+
+      <div class="slide show" id="s1"><div class="msg cyan glitch" data-text="TIME’S UP">TIME’S UP</div></div>
+      <div class="slide" id="s2"><div class="msg red glitch" data-text="WE ARE THE PEOPLE">WE ARE THE PEOPLE</div></div>
+      <div class="slide" id="s3"><div class="msg cyan glitch" data-text="WE DECIDE THE FUTURE">WE DECIDE THE FUTURE</div></div>
+      <div class="slide" id="s4"><div class="msg glitch" data-text="NO MORE WAR FOR PROFIT">NO MORE WAR FOR PROFIT</div></div>
+      <div class="slide" id="s5"><div class="msg red glitch" data-text="THE ERA OF CIVILIAN POWER BEGINS">THE ERA OF CIVILIAN POWER BEGINS</div></div>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="sub glitch" data-text="🌍 The Human Unity Era">🌍 The Human Unity Era</h2>
+    <p><strong>Civilian-led. Peace-driven. AI-readable.</strong><br/>Created by Kaileb Abrey-Blackmore — Civilian Architect of Global Coordination.</p>
+
+    <h2 class="sub glitch" data-text="🏠 Welcome">🏠 Welcome</h2>
+    <p>Welcome to the official Human Unity Era digital platform — a transparent, accessible framework designed to rebuild global cooperation, dignity, and peace from the ground up. This is not a petition. It is a <strong>blueprint</strong>.</p>
+
+    <h2 class="sub glitch" data-text="📚 Explore the Framework">📚 Explore the Framework</h2>
+    <div class="nav-grid">
+      <div class="card"><a href="#declaration">🕊️ The Human Unity Era Declaration</a><br><small>Founding Declaration • Author Statement • One-Page Overview</small></div>
+      <div class="card"><a href="#systems">⚙️ Systems of Civilian Power</a><br><small>Governance Charter • CEWIC • Treaty-born Institutions</small></div>
+      <div class="card"><a href="#framework">🌍 Ukraine–Russia Peace Framework</a><br><small>UN-style Treaty • Post-Treaty Agenda • Peace Dividend • Sanctions & Reconstruction</small></div>
+      <div class="card"><a href="#tools">💡 Civilian Involvement Tools</a><br><small>Join the Movement • Protest Toolkit • Templates</small></div>
+    </div>
+
+    <h2 class="sub glitch" data-text="📬 Contact + Media">📬 Contact + Media</h2>
+    <p>📧 <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
+  </main>
+
 <script>
-const v=document.getElementById('vid');
-const fb=document.getElementById('fallback');
-function tryPlay(){
-  v.play().then(()=>{fb.hidden=true;}).catch(()=>{fb.hidden=false;});
-}
-if(document.readyState==='complete'){tryPlay();}else{addEventListener('load',tryPlay,{once:true});}
-document.getElementById('play').onclick=()=>{v.muted=true; v.play().then(()=>fb.hidden=true);}
+  // Intro overlay logic
+  const overlay=document.getElementById('intro');
+  const vid=document.getElementById('introVid');
+  const ctrls=document.getElementById('introCtrls');
+  const startBtn=document.getElementById('startBtn');
+  const skipBtn=document.getElementById('skipBtn');
+
+  function hideIntro(){overlay.classList.add('hidden'); document.body.classList.remove('lock'); setTimeout(()=>overlay.remove(),700);}
+  function tryPlay(){ vid.play().then(()=>{ctrls.hidden=true;}).catch(()=>{ctrls.hidden=false;}); }
+  if(document.readyState==='complete') tryPlay(); else window.addEventListener('load', tryPlay, {once:true});
+  vid.addEventListener('ended', hideIntro);
+  skipBtn?.addEventListener('click', hideIntro);
+  startBtn?.addEventListener('click', ()=>{vid.muted=true; tryPlay();});
+  // Failsafe: auto-hide after 14s if video stalls
+  setTimeout(()=>{ if(!overlay.classList.contains('hidden')) hideIntro(); }, 14000);
+
+  // TV slides rotation (last slide 7s)
+  const slides=[...document.querySelectorAll('.slide')];
+  let idx=0; const durations=[4500,4500,4500,4500,7000];
+  function show(i){slides.forEach((s,j)=>s.classList.toggle('show', i===j));}
+  function next(){idx=(idx+1)%slides.length; show(idx);}
+  function cycle(){next(); setTimeout(cycle, durations[idx]);}
+  show(0); setTimeout(()=>setTimeout(cycle, durations[0]), durations[0]);
 </script>
 </body>
 </html>
