@@ -3,368 +3,283 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Human Unity Era — Broadcast</title>
-<meta name="color-scheme" content="dark">
+<title>Human Unity Era</title>
+<meta name="theme-color" content="#0b0b0f"/>
+
 <style>
-:root{ --bg:#0a0a0a; --fg:#eaeaea; --loop:40s; }
+  :root{
+    --bg:#0a0a0c;
+    --ink:#e7e7ea;
+    --accent:#ff3b3b;
+    --soft:#9aa0a6;
+    --cyan:#46e6ff;
+    --red:#ff3b3b;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
 
-/* Base */
-*{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  /* ===== INTRO VIDEO OVERLAY ===== */
+  #intro{
+    position:fixed; inset:0; z-index:1000; background:#000; display:grid; place-items:center;
+    transition:opacity .6s ease;
+  }
+  #intro.hidden{opacity:0; pointer-events:none}
+  #intro video{
+    width:100vw;height:100vh;object-fit:cover;display:block;
+  }
+  #intro .controls{
+    position:absolute; inset:auto 16px 16px 16px; display:flex; gap:10px; align-items:center;
+  }
+  #intro button{
+    background:#101114;border:1px solid #2a2c35;color:#e7e7ea;
+    padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;
+  }
+  #intro .note{color:#c8c8ce;font-size:14px;opacity:.8}
 
-/* Background scanlines + flicker */
-.pageBG{position:fixed; inset:0; z-index:-3; pointer-events:none; opacity:.18}
-.pageBG::before,.pageBG::after{
-  content:""; position:absolute; inset:0; mix-blend-mode:screen;
-  background:repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 5px);
-  opacity:.65; animation:bgFlick 6.5s steps(2,end) infinite, bgDrift 14s linear infinite;
-}
-.pageBG::before{ filter:hue-rotate(205deg) } .pageBG::after{ filter:hue-rotate(355deg) }
-@keyframes bgDrift{0%{transform:translateY(0)}100%{transform:translateY(-6px)}}
-@keyframes bgFlick{0%,86%{opacity:.65}86.5%{opacity:.35}87%{opacity:.8}96%{opacity:.55}100%{opacity:.65}}
+  /* ===== GLITCHY HEADER ===== */
+  header{
+    position:relative; padding:72px 20px 40px; text-align:center; overflow:hidden;
+    background: radial-gradient(1200px 600px at 50% -10%, #1a1b20 10%, #0b0b0f 60%, #060608 100%);
+  }
+  .hero-emblem{
+    position:absolute; inset:auto 0 0 0; height:38vh; max-height:360px; opacity:.14; pointer-events:none;
+    display:flex; align-items:flex-end; justify-content:center; filter:contrast(105%) saturate(105%);
+    animation: emblemFloat 10s ease-in-out infinite;
+  }
+  .hero-emblem img{max-width:90vw; max-height:100%; mix-blend:screen; filter:grayscale(.2) contrast(140%) brightness(.9)}
+  @keyframes emblemFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-/* Site-wide bleed glitch */
-.bleed{position:fixed; inset:0; z-index:-2; pointer-events:none}
-.bleed::before,.bleed::after{
-  content:""; position:absolute; inset:0; mix-blend-mode:screen; opacity:.28;
-  background:linear-gradient(0deg,transparent 0%,rgba(255,255,255,.12) 50%,transparent 100%);
-  clip-path: inset(0 0 0 0);
-}
-.bleed::before{ filter:hue-rotate(355deg); animation: bleedShiftR 9.5s infinite, bleedSliceA 9.5s steps(6,end) infinite }
-.bleed::after { filter:hue-rotate(205deg); animation: bleedShiftC 11s infinite 1.2s, bleedSliceB 11s steps(6,end) infinite 1.2s }
+  .title{font-size:clamp(32px,5vw,56px); letter-spacing:.06em; font-weight:900; margin:0 0 6px;
+    color:#ff5436; text-shadow:0 0 18px rgba(255,84,54,.15);}
+  .tag{color:#f26; opacity:.85; font-weight:600; margin:4px 0 0}
 
-@keyframes bleedShiftR{
-  0%,12%{transform:translateX(0) skewY(0deg)}
-  13%{transform:translateX(-2.4px) skewY(-.5deg)}
-  18%{transform:translateX(2.8px) skewY(.6deg)}
-  24%{transform:translateX(-1.6px)}
-  100%{transform:translateX(0)}
-}
-@keyframes bleedShiftC{
-  0%,10%{transform:translateX(0) skewY(0deg)}
-  11%{transform:translateX(2.2px) skewY(.5deg)}
-  16%{transform:translateX(-2.6px) skewY(-.6deg)}
-  22%{transform:translateX(1.4px)}
-  100%{transform:translateX(0)}
-}
-@keyframes bleedSliceA{
-  0%{clip-path: inset(0 0 0 0)}
-  8%{clip-path: inset(12% 0 64% 0)}
-  16%{clip-path: inset(70% 0 8% 0)}
-  24%{clip-path: inset(36% 0 40% 0)}
-  32%{clip-path: inset(55% 0 18% 0)}
-  40%{clip-path: inset(4% 0 84% 0)}
-  100%{clip-path: inset(0 0 0 0)}
-}
-@keyframes bleedSliceB{
-  0%{clip-path: inset(0 0 0 0)}
-  9%{clip-path: inset(78% 0 10% 0)}
-  18%{clip-path: inset(18% 0 70% 0)}
-  27%{clip-path: inset(60% 0 20% 0)}
-  36%{clip-path: inset(30% 0 48% 0)}
-  45%{clip-path: inset(6% 0 84% 0)}
-  100%{clip-path: inset(0 0 0 0)}
-}
-.siteWrap{animation: siteSkew 12s infinite}
-@keyframes siteSkew{0%,100%{transform:skewX(0)}40%{transform:skewX(.3deg)}42%{transform:skewX(-.25deg)}44%{transform:skewX(.15deg)}46%{transform:skewX(0)}}
+  /* ===== TV STATIC SLIDER ===== */
+  .tv{
+    position:relative; margin:22px auto 0; width:min(1100px,92vw); aspect-ratio:16/9; border-radius:16px;
+    overflow:hidden; border:1px solid #262830; box-shadow:0 10px 40px rgba(0,0,0,.45);
+    background:#000;
+  }
+  .static{
+    position:absolute; inset:0; background:
+      radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,.0) 0%, rgba(0,0,0,.55) 70%, rgba(0,0,0,.85) 100%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 2px, rgba(0,0,0,.06) 2px 4px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, rgba(0,0,0,.02) 2px 4px);
+    filter:contrast(170%) brightness(.85);
+  }
+  .scan{position:absolute; left:-10%; right:-10%; height:22%; top:-25%;
+    background:linear-gradient(to bottom, rgba(255,255,255,.18), rgba(255,255,255,0));
+    filter:blur(3px); animation:scan 5.6s cubic-bezier(.2,.6,.2,1) infinite;}
+  @keyframes scan{0%{top:-28%} 50%{top:75%} 100%{top:-28%}}
 
-/* Preloader (force every visit while we stabilize) */
-#preload{position:fixed; inset:0; z-index:9999; background:#000; display:flex; align-items:center; justify-content:center; transition:opacity .4s ease}
-#preVid{max-width:100vw; max-height:100vh; object-fit:cover; filter:contrast(110%) saturate(110%)}
-#preSkip{position:fixed; right:14px; top:14px; z-index:10000; cursor:pointer; font:700 13px/1 system-ui,Arial; color:#eee; background:#111a; border:1px solid #2a2a2a; padding:10px 12px; border-radius:999px; backdrop-filter:blur(3px)}
-#preSkip:hover{background:#151515}
-.preFallback{position:absolute; inset:0; pointer-events:none; background:
-  repeating-linear-gradient(0deg,rgba(255,255,255,.09) 0 1px, transparent 1px 4px),
-  repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px, transparent 2px 4px);
-  animation: preScan 7s linear infinite; opacity:.28;}
-@keyframes preScan{0%{transform:translateY(0)}100%{transform:translateY(-4px)}}
-#preload.done{opacity:0; pointer-events:none}
+  .slide{position:absolute; inset:0; display:grid; place-items:center; opacity:0; transition:opacity .8s ease}
+  .slide.show{opacity:1}
+  .msg{
+    font-weight:900; letter-spacing:.06em; text-transform:uppercase; text-align:center;
+    font-size:clamp(28px,4.8vw,64px);
+    text-shadow:
+      0 0 24px rgba(255,255,255,.08),
+      0 0 60px rgba(70,230,255,.08);
+    animation:tinyFlicker 4s steps(60,end) infinite;
+  }
+  .msg.cyan{color:var(--cyan)}
+  .msg.red{color:var(--red)}
+  @keyframes tinyFlicker{
+    0%,100%{opacity:.98; transform:translateZ(0)}
+    12%{opacity:.93}
+    24%{opacity:.99}
+    41%{opacity:.94}
+    67%{opacity:.98}
+    83%{opacity:.95}
+  }
 
-/* Hero */
-.hero{position:relative;height:100vh;background:#000;overflow:hidden;border-bottom:1px solid #121212}
-.layer{position:absolute;inset:0;display:grid;place-items:center;opacity:0;will-change:opacity,transform}
-.skipBtn{position:absolute; top:12px; right:12px; z-index:10; font:700 13px/1 system-ui,Arial; padding:10px 12px; border-radius:999px; color:#eee; background:#111a; border:1px solid #2a2a2a; cursor:pointer; backdrop-filter: blur(3px)}
-.skipBtn:hover{background:#151515}
-canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
-.scanlines{position:absolute;inset:0;pointer-events:none;opacity:.23;background:
-  repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px, transparent 1px 3px),
-  repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 2px, transparent 2px 4px);
-  animation:scanDrift 7s linear infinite}
-@keyframes scanDrift{0%{transform:translateY(0)}100%{transform:translateY(-3px)}}
-.deadMask{position:absolute;inset:0;background:#000;opacity:0}
+  /* harsher torn-glitch moments */
+  .msg.glitchy{
+    position:relative; isolation:isolate;
+  }
+  .msg.glitchy::before,
+  .msg.glitchy::after{
+    content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none;
+  }
+  .msg.glitchy::before{ color:#00e5ff; transform:translate(0,0); animation:chroma1 2.2s infinite;}
+  .msg.glitchy::after{  color:#ff3b3b; transform:translate(0,0); animation:chroma2 2.2s infinite;}
+  @keyframes chroma1{
+    0%,100%{clip-path:inset(0 0 0 0); transform:translate(0,0)}
+    10%{clip-path:inset(0 0 70% 0); transform:translate(2px,-1px)}
+    20%{clip-path:inset(60% 0 0 0); transform:translate(-2px,1px)}
+    35%{clip-path:inset(30% 0 40% 0);}
+    60%{clip-path:inset(0 0 0 0);}
+    72%{clip-path:inset(20% 0 50% 0); transform:translate(1px,0)}
+    85%{clip-path:inset(50% 0 10% 0); transform:translate(-1px,0)}
+  }
+  @keyframes chroma2{
+    0%,100%{clip-path:inset(0 0 0 0); transform:translate(0,0)}
+    12%{clip-path:inset(50% 0 10% 0); transform:translate(-2px,1px)}
+    22%{clip-path:inset(0 0 65% 0); transform:translate(2px,-1px)}
+    38%{clip-path:inset(25% 0 45% 0);}
+    62%{clip-path:inset(0 0 0 0);}
+    74%{clip-path:inset(10% 0 60% 0); transform:translate(-1px,0)}
+    88%{clip-path:inset(55% 0 5% 0); transform:translate(1px,0)}
+  }
 
-/* Make slide text match heading glitch style */
-.text .glitch.torn{color:#eaf7ff}
-.text h1{margin:0;text-align:center}
-.text p{margin:0;text-align:center;font-size:clamp(18px,3.8vw,30px);padding:0 6vw}
+  /* page content */
+  main{padding:36px 18px 80px; max-width:1100px; margin:0 auto;}
+  h2{margin:28px 0 12px; font-size:clamp(22px,3vw,28px)}
+  .subhead{
+    display:inline-block; position:relative; font-weight:800; letter-spacing:.02em;
+    animation:softFlick 6s ease-in-out infinite;
+  }
+  @keyframes softFlick{
+    0%,100%{filter:none}
+    40%{filter:drop-shadow(0 0 10px rgba(255,84,54,.25))}
+    60%{filter:none}
+  }
+  p{color:#cfd1d6; max-width:80ch}
 
-/* Glitch core (used by headings AND slides) */
-.glitch{
-  position:relative; display:inline-block; font-weight:900; letter-spacing:.02em; text-shadow:0 0 0 #000;
-  animation: baseJitter 2.8s steps(2,end) infinite;
-}
-.glitch.big{ font-size:clamp(44px,10vw,140px); text-transform:uppercase; letter-spacing:.06em }
-.glitch.torn{ filter:contrast(110%) }
-.glitch::before,.glitch::after{
-  content:attr(data-text); position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
-}
-.glitch::before{ color:#29d7ff; animation: rgbShiftC 2.2s steps(2,end) infinite, tornMaskA 2.2s steps(6,end) infinite }
-.glitch::after { color:#ff3b2e; animation: rgbShiftR 2.2s steps(2,end) infinite, tornMaskB 2.2s steps(6,end) infinite }
-@keyframes baseJitter{0%,100%{transform:translate(0,0)}25%{transform:translate(.8px,-.6px)}50%{transform:translate(-.9px,.6px)}75%{transform:translate(.6px,.8px)}}
-@keyframes tornMaskA{
-  0%{ clip-path: inset(0 0 0 0) }
-  6%{ clip-path: inset(12% 0 64% 0) }
-  12%{ clip-path: inset(70% 0 8% 0) }
-  18%{ clip-path: inset(36% 0 40% 0) }
-  24%{ clip-path: inset(55% 0 18% 0) }
-  30%{ clip-path: inset(4% 0 84% 0) }
-  36%{ clip-path: inset(80% 0 6% 0) }
-  42%{ clip-path: inset(26% 0 50% 0) }
-  48%{ clip-path: inset(44% 0 32% 0) }
-  54%{ clip-path: inset(9% 0 79% 0) }
-  60%,100%{ clip-path: inset(0 0 0 0) }
-}
-@keyframes tornMaskB{
-  0%{ clip-path: inset(0 0 0 0) }
-  7%{ clip-path: inset(78% 0 10% 0) }
-  14%{ clip-path: inset(18% 0 70% 0) }
-  21%{ clip-path: inset(60% 0 20% 0) }
-  28%{ clip-path: inset(30% 0 48% 0) }
-  35%{ clip-path: inset(6% 0 84% 0) }
-  42%{ clip-path: inset(72% 0 12% 0) }
-  49%{ clip-path: inset(42% 0 34% 0) }
-  56%{ clip-path: inset(24% 0 56% 0) }
-  63%,100%{ clip-path: inset(0 0 0 0) }
-}
-@keyframes rgbShiftC{
-  0%{ transform:translate(0,0) }
-  12%{ transform:translate(2.2px,-.8px) skewY(.6deg) }
-  22%{ transform:translate(-1.8px,.8px) skewY(-.5deg) }
-  38%{ transform:translate(3px,-1.2px) }
-  54%{ transform:translate(-2.6px,.6px) }
-  70%{ transform:translate(1.4px,-.6px) }
-  100%{ transform:translate(0,0) }
-}
-@keyframes rgbShiftR{
-  0%{ transform:translate(0,0) }
-  12%{ transform:translate(-2px,.8px) skewY(-.6deg) }
-  22%{ transform:translate(1.6px,-.8px) skewY(.5deg) }
-  38%{ transform:translate(-2.8px,1.2px) }
-  54%{ transform:translate(2.4px,-.6px) }
-  70%{ transform:translate(-1.2px,.6px) }
-  100%{ transform:translate(0,0) }
-}
+  .nav-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:10px}
+  .card{
+    border:1px solid #2b2d36; border-radius:12px; padding:14px 16px; background:#0d0e12bb;
+    backdrop-filter: blur(4px);
+  }
+  .card a{color:#e8e9ef; text-decoration:none; font-weight:700}
+  .card a:hover{text-decoration:underline}
 
-/* Emblem */
-.ghostBehind img{width:min(68vw,820px);height:auto;opacity:.07;filter:grayscale(100%) contrast(120%) brightness(.7);animation:ghostBreath var(--loop) linear infinite}
-@keyframes ghostBreath{0%,10%{opacity:.04}12%,20%{opacity:.08}22%,36%{opacity:.06}38%,48%{opacity:.09}50%,60%{opacity:.05}62%,70%{opacity:.07}72%,80%{opacity:.05}82%,100%{opacity:.04}}
-.emblemMain img,.ghostEmblem img{width:min(70vw,860px);height:auto;object-fit:contain;filter:contrast(115%) saturate(115%) brightness(.9)}
-@keyframes emblemPulse{0%,35%{filter:grayscale(60%) saturate(.7) brightness(.85);opacity:.55;transform:scale(1)}37%,52%{filter:saturate(1.22) brightness(1.06);opacity:.98;transform:scale(1.01) rotate(.15deg)}54%,69%{filter:grayscale(45%) saturate(.85) brightness(.9);opacity:.72;transform:scale(.998)}71%,86%{filter:saturate(1.28) brightness(1.1);opacity:1;transform:scale(1.014) rotate(-.12deg)}88%,100%{filter:saturate(1.05) brightness(.98);opacity:.86;transform:scale(1)}}
-@keyframes emblemGlitch{0%,100%{transform:translate(0,0)}45%{transform:translate(-.6px,.5px)}55%{transform:translate(.8px,-.6px)}}
-.emblemFX{animation: emblemPulse var(--loop) linear infinite, emblemGlitch 2.6s steps(2,end) infinite}
-
-/* Timeline windows (final text longer) */
-.winTS{animation:winTS var(--loop) linear infinite}
-.winS1{animation:winS1 var(--loop) linear infinite}
-.winS2{animation:winS2 var(--loop) linear infinite}
-.winEm{animation:winEm var(--loop) linear infinite}
-.winDead{animation:winDead var(--loop) linear infinite}
-@keyframes winTS{0%,10%{opacity:1}10.1%,100%{opacity:0}}
-@keyframes winS1{10%,22.5%{opacity:1}0%,9.9%,22.6%,100%{opacity:0}}
-@keyframes winS2{22.5%,47%{opacity:1}0%,22.4%,47.1%,100%{opacity:0}}
-@keyframes winEm{47%,58%{opacity:1}0%,46.9%,58.1%,100%{opacity:0}}
-@keyframes winDead{58%,75.5%{opacity:1}0%,57.9%,75.6%,100%{opacity:0}}
-
-/* Content area */
-main{max-width:1000px;margin:0 auto;padding:28px 18px 60px}
-.lead{opacity:.9}
-.hFlex{display:flex;gap:10px;align-items:center}
-.badge{font-weight:800;color:#fff;background:#1b1b1b;border:1px solid #2b2b2b;padding:2px 8px;border-radius:999px;font-size:.82rem}
-h2,h3{margin:24px 0 10px}
-.section a{color:#ddd;text-decoration:none;border-bottom:1px solid #333}
-.section a:hover{color:#fff;border-color:#666}
-.hr{height:1px;background:#171717;margin:26px 0}
-footer{padding:16px 18px;border-top:1px solid #121212;color:#9a9a9a}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){
-  *{animation:none !important;transition:none !important}
-}
-body.skipped .hero{display:none}
+  /* cache-bust helper (hide until intro clears) */
+  body.lock{overflow:hidden}
 </style>
 </head>
-<body>
+<body class="lock">
 
-<div class="pageBG" aria-hidden="true"></div>
-<div class="bleed" aria-hidden="true"></div>
-
-<div class="siteWrap">
-  <!-- Preloader (tries two filenames) -->
-  <div id="preload" aria-hidden="true">
-    <video id="preVid" muted playsinline preload="auto">
-      <source src="media/hack-intro.mp4" type="video/mp4" />
-      <source src="media/v0f025gc0000cf218nrc77u5ht46f9e0.MP4" type="video/mp4" />
-    </video>
-    <button id="preSkip" aria-label="Skip intro">Skip ▷</button>
-    <div class="preFallback"></div>
+<!-- ===== INTRO VIDEO OVERLAY ===== -->
+<div id="intro" aria-hidden="true">
+  <video id="introVid" autoplay muted playsinline preload="auto">
+    <source src="media/hack-intro.mp4" type="video/mp4">
+  </video>
+  <div class="controls" id="introCtrls" hidden>
+    <button id="startBtn">Tap to Start ▷</button>
+    <button id="skipBtn">Skip</button>
+    <span class="note">Autoplay blocked by the browser.</span>
   </div>
-
-  <!-- HERO -->
-  <section class="hero" aria-label="Emergency broadcast">
-    <button class="skipBtn" id="skip">Skip intro ▷</button>
-    <canvas id="noise"></canvas>
-    <div class="scanlines"></div>
-
-    <div class="layer ghostBehind" style="opacity:1">
-      <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost)">
-    </div>
-
-    <!-- 0–4s : TIME'S UP (styled like headings) -->
-    <div class="layer winTS ts">
-      <div class="text">
-        <h1>
-          <span class="glitch torn big" data-text="TIME’S UP">TIME’S UP</span>
-        </h1>
-      </div>
-    </div>
-
-    <!-- 4–9s : Slide 1 (styled like headings) -->
-    <div class="layer winS1 s1">
-      <div class="text">
-        <p>
-          <span class="glitch torn" data-text="We are the people. We are the majority. We are the ones that matter.">
-            We are the people. We are the majority. We are the ones that matter.
-          </span>
-        </p>
-      </div>
-    </div>
-
-    <!-- 9–19.6s : Slide 2 (styled like headings, longer) -->
-    <div class="layer winS2 s2">
-      <div class="text">
-        <p>
-          <span class="glitch torn" data-text="The time of allowing ego-driven “world leaders” to lead us into war for profit is over. We, the people of the world, will have the final say.">
-            The time of allowing ego-driven “world leaders” to lead us into war for profit is over.
-            We, the people of the world, will have the final say.
-          </span>
-        </p>
-      </div>
-    </div>
-
-    <!-- 19.6–24s : Emblem breakthrough -->
-    <div class="layer winEm emblemMain">
-      <img class="emblemFX" src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem">
-    </div>
-
-    <!-- 24–31s : Dead static + ghost emblem -->
-    <div class="deadMask" aria-hidden="true"></div>
-    <div class="layer winDead ghostEmblem">
-      <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost flicker)">
-    </div>
-  </section>
-
-  <!-- MAIN -->
-  <main id="main">
-    <p class="lead"><span class="badge">Live</span> Civilian-led. Peace-driven. AI-readable.</p>
-
-    <h2 class="glitch torn" data-text="🌍 The Human Unity Era">🌍 The Human Unity Era</h2>
-    <p>Created by Kaileb Abrey-Blackmore<br/>Civilian Architect of Global Coordination</p>
-
-    <div class="hr"></div>
-
-    <h3 class="glitch torn" data-text="🏠 Welcome">🏠 Welcome</h3>
-    <p>Welcome to the official Human Unity Era digital platform — a transparent, accessible framework designed to rebuild global cooperation, dignity, and peace from the ground up. This is not a petition. It is a blueprint.</p>
-
-    <div class="hr"></div>
-
-    <h3 class="glitch torn" data-text="📚 Explore the Framework">📚 Explore the Framework</h3>
-    <div class="section">
-      <p class="hFlex"><strong>🕊️ <a href="declaration.html">The Human Unity Era Declaration</a></strong></p>
-      <ul><li>Founding Declaration</li><li>Author Statement</li><li>One-Page Overview</li></ul>
-
-      <p class="hFlex"><strong>⚙️ <a href="systems.html">Systems of Civilian Power</a></strong></p>
-      <ul><li>Governance Charter</li><li>CEWIC Proposal</li><li>Treaty-born Institutions (e.g., MPOB)</li></ul>
-
-      <p class="hFlex"><strong>🌍 <a href="framework.html">Ukraine–Russia Peace Framework</a></strong></p>
-      <ul><li>UN-style Treaty</li><li>Post-Treaty Agenda</li><li>Peace Dividend</li><li>Sanctions &amp; Reconstruction</li></ul>
-
-      <p class="hFlex"><strong>💡 <a href="tools.html">Civilian Involvement Tools</a></strong></p>
-      <ul><li>Join the Movement</li><li>Protest Toolkit</li><li>Posters, Flyers, Templates</li></ul>
-    </div>
-
-    <div class="hr"></div>
-
-    <h3 class="glitch torn" data-text="📬 Contact + Media">📬 Contact + Media</h3>
-    <p>📧 Email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
-    <p>🎥 TikTok Embed: (Paste your video or link here)</p>
-    <p>📰 Press Kit (optional): (Link or upload your PDF)</p>
-
-    <div class="hr"></div>
-
-    <h3 class="glitch torn" data-text="✊ Join the Movement">✊ Join the Movement</h3>
-    <p>Want to help build this new era?</p>
-    <ul><li>Translate or share the documents</li><li>Test the CEWIC model</li><li>Join our Founding Civilian circle</li></ul>
-    <p><a href="#">[Sign-Up Form Link Here]</a></p>
-  </main>
-
-  <footer>© 2025 Human Unity Era</footer>
 </div>
 
+<header>
+  <div class="hero-emblem">
+    <img src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem" />
+  </div>
+  <h1 class="title">HUMAN UNITY ERA</h1>
+  <div class="tag">This is not a petition. It’s a civilian <strong>system override</strong>.</div>
+
+  <!-- TV STATIC SLIDER -->
+  <div class="tv" id="tv">
+    <div class="static"></div><div class="scan"></div>
+
+    <div class="slide show" id="s1">
+      <div class="msg cyan glitchy" data-text="TIME’S UP">TIME’S UP</div>
+    </div>
+
+    <div class="slide" id="s2">
+      <div class="msg red glitchy" data-text="WE ARE THE PEOPLE">
+        WE ARE THE PEOPLE
+      </div>
+    </div>
+
+    <div class="slide" id="s3">
+      <div class="msg cyan glitchy" data-text="WE DECIDE THE FUTURE">
+        WE DECIDE THE FUTURE
+      </div>
+    </div>
+
+    <div class="slide" id="s4">
+      <div class="msg glitchy" data-text="NO MORE WAR FOR PROFIT">
+        NO MORE WAR FOR PROFIT
+      </div>
+    </div>
+
+    <div class="slide" id="s5">
+      <div class="msg red glitchy" data-text="THE ERA OF CIVILIAN POWER BEGINS">
+        THE ERA OF CIVILIAN POWER BEGINS
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h2 class="subhead">🌍 The Human Unity Era</h2>
+  <p><strong>Civilian-led. Peace-driven. AI-readable.</strong><br/>Created by Kaileb Abrey-Blackmore — Civilian Architect of Global Coordination.</p>
+
+  <h2 class="subhead">🏠 Welcome</h2>
+  <p>Welcome to the official Human Unity Era digital platform — a transparent, accessible framework designed to rebuild global cooperation, dignity, and peace from the ground up. This is not a petition. It is a <strong>blueprint</strong>.</p>
+
+  <h2 class="subhead">📚 Explore the Framework</h2>
+  <div class="nav-grid">
+    <div class="card"><a href="#declaration">🕊️ The Human Unity Era Declaration</a><br><small>Founding Declaration • Author Statement • One-Page Overview</small></div>
+    <div class="card"><a href="#systems">⚙️ Systems of Civilian Power</a><br><small>Governance Charter • CEWIC • Treaty-born Institutions</small></div>
+    <div class="card"><a href="#framework">🌍 Ukraine–Russia Peace Framework</a><br><small>UN-style Treaty • Post-Treaty Agenda • Peace Dividend • Sanctions & Reconstruction</small></div>
+    <div class="card"><a href="#tools">💡 Civilian Involvement Tools</a><br><small>Join the Movement • Protest Toolkit • Templates</small></div>
+  </div>
+
+  <h2 class="subhead">📬 Contact + Media</h2>
+  <p>📧 <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
+</main>
+
 <script>
-/* Preloader: force-run, 6s safety timeout */
-(function(){
-  const overlay = document.getElementById('preload');
-  const vid = document.getElementById('preVid');
-  const skip = document.getElementById('preSkip');
-  const safety = setTimeout(done, 6000);
+  // ===== Intro overlay logic =====
+  const overlay = document.getElementById('intro');
+  const vid = document.getElementById('introVid');
+  const ctrls = document.getElementById('introCtrls');
+  const startBtn = document.getElementById('startBtn');
+  const skipBtn  = document.getElementById('skipBtn');
 
-  function start(){ vid.muted = true; vid.play().catch(()=>{}); }
-  if(document.readyState === 'complete') start(); else window.addEventListener('load', start, {once:true});
-
-  vid.addEventListener('canplay', ()=>{ vid.muted = true; vid.play().catch(()=>{}); });
-  vid.addEventListener('ended', done);
-
-  function done(){ clearTimeout(safety); overlay.classList.add('done'); }
-  skip.addEventListener('click', e=>{ e.stopPropagation(); done(); });
-  window.addEventListener('keydown', done, {once:true});
-  window.addEventListener('click', done, {once:true});
-  window.addEventListener('wheel', done, {once:true, passive:true});
-})();
-
-/* Static noise canvas */
-let stopNoise=false;
-(function(){
-  const c=document.getElementById('noise'); const g=c.getContext('2d');
-  function fit(){const r=c.parentElement.getBoundingClientRect(); c.width=Math.max(320,r.width|0); c.height=Math.max(180,r.height|0);}
-  addEventListener('resize',fit,{passive:true}); fit();
-  const rC=document.createElement('canvas'), gC=document.createElement('canvas'), bC=document.createElement('canvas');
-  const rX=rC.getContext('2d'), gX=gC.getContext('2d'), bX=bC.getContext('2d');
-  function noise(ctx,w,h){const id=ctx.createImageData(w,h), d=id.data; for(let i=0;i<d.length;i+=4){const v=(Math.random()*255)|0; d[i]=d[i+1]=d[i+2]=v; d[i+3]=220;} ctx.putImageData(id,0,0);}
-  function frame(t){
-    if(stopNoise) return;
-    const w=c.width,h=c.height; if(!w||!h){requestAnimationFrame(frame);return;}
-    if(rC.width!==w||rC.height!==h){[rC,gC,bC].forEach(x=>{x.width=w;x.height=h});}
-    noise(rX,w,h); noise(gX,w,h); noise(bX,w,h);
-    g.clearRect(0,0,w,h);
-    const roll=Math.sin((t||0)/900)*4; const tearY=(Math.random()<.07)?(Math.random()*h|0):-1;
-    g.globalCompositeOperation='screen';
-    g.globalAlpha=.35; g.filter='hue-rotate(355deg)'; g.drawImage(rC,1,roll);
-    g.globalAlpha=.35; g.filter='hue-rotate(115deg)'; g.drawImage(gC,-1,-roll);
-    g.globalAlpha=.35; g.filter='hue-rotate(205deg)'; g.drawImage(bC,0,0);
-    if(tearY>0){ g.globalAlpha=.18; g.filter='none'; g.fillStyle='rgba(255,255,255,.18)'; g.fillRect(0,tearY,w,2); g.globalAlpha=.08; g.fillRect(0,tearY+3,w,1); }
-    g.globalAlpha=1; g.filter='none'; requestAnimationFrame(frame);
+  function hideIntro(){
+    overlay.classList.add('hidden');
+    document.body.classList.remove('lock');
+    setTimeout(()=>overlay.remove(),700);
   }
-  requestAnimationFrame(frame);
-})();
 
-/* Skip to main */
-(function(){
-  const body=document.body, main=document.getElementById('main'), btn=document.getElementById('skip');
-  function skip(){ if(body.classList.contains('skipped')) return; body.classList.add('skipped'); stopNoise=true; if(main) main.scrollIntoView({behavior:'smooth'}); }
-  ['click','keydown'].forEach(ev=>window.addEventListener(ev, skip, {once:true}));
-  window.addEventListener('wheel', skip, {once:true, passive:true});
-  if(btn) btn.addEventListener('click', e=>{ e.stopPropagation(); skip(); });
-})();
+  function tryPlay(){
+    vid.play().then(()=>{ctrls.hidden=true;}).catch(()=>{ctrls.hidden=false;});
+  }
+
+  // Autoplay attempt after load
+  if(document.readyState==='complete') tryPlay();
+  else window.addEventListener('load', tryPlay, {once:true});
+
+  // End or Skip => hide
+  vid.addEventListener('ended', hideIntro);
+  skipBtn.addEventListener('click', hideIntro);
+  startBtn.addEventListener('click', ()=>{
+    vid.muted=true; tryPlay();
+  });
+
+  // Safety timeout (in case ended event never fires)
+  setTimeout(()=>{ if(!overlay.classList.contains('hidden')) hideIntro(); }, 14000);
+
+  // ===== TV slides rotation =====
+  const slides = [...document.querySelectorAll('.slide')];
+  let idx=0;
+  function show(i){
+    slides.forEach((s,j)=>s.classList.toggle('show', i===j));
+  }
+  function next(){
+    idx = (idx+1) % slides.length;
+    show(idx);
+  }
+
+  // longer dwell on final message (7s), others ~4.5s
+  const durations = [4500, 4500, 4500, 4500, 7000];
+  function cycle(){
+    next();
+    setTimeout(cycle, durations[idx]);
+  }
+  setTimeout(()=>setTimeout(cycle, durations[0]), durations[0]); // start after first delay too
+
+  // start with first slide visible
+  show(0);
 </script>
 </body>
 </html>
