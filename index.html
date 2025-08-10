@@ -17,7 +17,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
 .pageBG::before,.pageBG::after{
   content:""; position:absolute; inset:0; mix-blend-mode:screen;
   background:repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 5px);
-  opacity:.65; animation: bgFlick 6.5s steps(2,end) infinite, bgDrift 14s linear infinite;
+  opacity:.65; animation:bgFlick 6.5s steps(2,end) infinite, bgDrift 14s linear infinite;
 }
 .pageBG::before{ filter:hue-rotate(205deg) } .pageBG::after{ filter:hue-rotate(355deg) }
 @keyframes bgDrift{0%{transform:translateY(0)}100%{transform:translateY(-6px)}}
@@ -32,14 +32,43 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
 }
 .bleed::before{ filter:hue-rotate(355deg); animation: bleedShiftR 9.5s infinite, bleedSliceA 9.5s steps(6,end) infinite }
 .bleed::after { filter:hue-rotate(205deg); animation: bleedShiftC 11s infinite 1.2s, bleedSliceB 11s steps(6,end) infinite 1.2s }
-@keyframes bleedShiftR{0%,12%{transform:translateX(0) skewY(0)}13%{translate:-2.4px skewY(-.5deg)}18%{translate:2.8px skewY(.6deg)}24%{translate:-1.6px}100%{translate:0}}
-@keyframes bleedShiftC{0%,10%{transform:translateX(0) skewY(0)}11%{translate:2.2px skewY(.5deg)}16%{translate:-2.6px skewY(-.6deg)}22%{translate:1.4px}100%{translate:0}}
-@keyframes bleedSliceA{0%{clip-path:inset(0)}8%{clip-path:inset(12% 0 64% 0)}16%{inset:70% 0 8% 0}24%{inset:36% 0 40% 0}32%{inset:55% 0 18% 0}40%{inset:4% 0 84% 0}100%{clip-path:inset(0)}}
-@keyframes bleedSliceB{0%{clip-path:inset(0)}9%{inset:78% 0 10% 0}18%{inset:18% 0 70% 0}27%{inset:60% 0 20% 0}36%{inset:30% 0 48% 0}45%{inset:6% 0 84% 0}100%{clip-path:inset(0)}}
-.siteWrap{animation: siteSkew 12s infinite}
-@keyframes siteSkew{0%,100%{transform:skewX(0)}40%{skewX(.3deg)}42%{skewX(-.25deg)}44%{skewX(.15deg)}46%{skewX(0)}}
 
-/* Preloader (forced every visit while we debug) */
+@keyframes bleedShiftR{
+  0%,12%{transform:translateX(0) skewY(0deg)}
+  13%{transform:translateX(-2.4px) skewY(-.5deg)}
+  18%{transform:translateX(2.8px) skewY(.6deg)}
+  24%{transform:translateX(-1.6px)}
+  100%{transform:translateX(0)}
+}
+@keyframes bleedShiftC{
+  0%,10%{transform:translateX(0) skewY(0deg)}
+  11%{transform:translateX(2.2px) skewY(.5deg)}
+  16%{transform:translateX(-2.6px) skewY(-.6deg)}
+  22%{transform:translateX(1.4px)}
+  100%{transform:translateX(0)}
+}
+@keyframes bleedSliceA{
+  0%{clip-path: inset(0 0 0 0)}
+  8%{clip-path: inset(12% 0 64% 0)}
+  16%{clip-path: inset(70% 0 8% 0)}
+  24%{clip-path: inset(36% 0 40% 0)}
+  32%{clip-path: inset(55% 0 18% 0)}
+  40%{clip-path: inset(4% 0 84% 0)}
+  100%{clip-path: inset(0 0 0 0)}
+}
+@keyframes bleedSliceB{
+  0%{clip-path: inset(0 0 0 0)}
+  9%{clip-path: inset(78% 0 10% 0)}
+  18%{clip-path: inset(18% 0 70% 0)}
+  27%{clip-path: inset(60% 0 20% 0)}
+  36%{clip-path: inset(30% 0 48% 0)}
+  45%{clip-path: inset(6% 0 84% 0)}
+  100%{clip-path: inset(0 0 0 0)}
+}
+.siteWrap{animation: siteSkew 12s infinite}
+@keyframes siteSkew{0%,100%{transform:skewX(0)}40%{transform:skewX(.3deg)}42%{transform:skewX(-.25deg)}44%{transform:skewX(.15deg)}46%{transform:skewX(0)}}
+
+/* Preloader (force every visit while we stabilize) */
 #preload{position:fixed; inset:0; z-index:9999; background:#000; display:flex; align-items:center; justify-content:center; transition:opacity .4s ease}
 #preVid{max-width:100vw; max-height:100vh; object-fit:cover; filter:contrast(110%) saturate(110%)}
 #preSkip{position:fixed; right:14px; top:14px; z-index:10000; cursor:pointer; font:700 13px/1 system-ui,Arial; color:#eee; background:#111a; border:1px solid #2a2a2a; padding:10px 12px; border-radius:999px; backdrop-filter:blur(3px)}
@@ -64,12 +93,67 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 @keyframes scanDrift{0%{transform:translateY(0)}100%{transform:translateY(-3px)}}
 .deadMask{position:absolute;inset:0;background:#000;opacity:0}
 
-/* TEXT — now light for readability */
-.text h1,.text p{margin:0;text-align:center;color:#eaeaea}
-.text h1{font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:clamp(44px,10vw,140px)}
-.text p{font-weight:800;letter-spacing:.01em;padding:0 6vw;font-size:clamp(18px,3.8vw,30px)}
-@keyframes jitter{0%,100%{transform:translate(0,0)}25%{transform:translate(.35px,-.4px)}50%{transform:translate(-.45px,.25px)}75%{transform:translate(.25px,.35px)}}
-.activeText{animation: jitter 3s steps(2,end) infinite}
+/* Make slide text match heading glitch style */
+.text .glitch.torn{color:#eaf7ff}
+.text h1{margin:0;text-align:center}
+.text p{margin:0;text-align:center;font-size:clamp(18px,3.8vw,30px);padding:0 6vw}
+
+/* Glitch core (used by headings AND slides) */
+.glitch{
+  position:relative; display:inline-block; font-weight:900; letter-spacing:.02em; text-shadow:0 0 0 #000;
+  animation: baseJitter 2.8s steps(2,end) infinite;
+}
+.glitch.big{ font-size:clamp(44px,10vw,140px); text-transform:uppercase; letter-spacing:.06em }
+.glitch.torn{ filter:contrast(110%) }
+.glitch::before,.glitch::after{
+  content:attr(data-text); position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
+}
+.glitch::before{ color:#29d7ff; animation: rgbShiftC 2.2s steps(2,end) infinite, tornMaskA 2.2s steps(6,end) infinite }
+.glitch::after { color:#ff3b2e; animation: rgbShiftR 2.2s steps(2,end) infinite, tornMaskB 2.2s steps(6,end) infinite }
+@keyframes baseJitter{0%,100%{transform:translate(0,0)}25%{transform:translate(.8px,-.6px)}50%{transform:translate(-.9px,.6px)}75%{transform:translate(.6px,.8px)}}
+@keyframes tornMaskA{
+  0%{ clip-path: inset(0 0 0 0) }
+  6%{ clip-path: inset(12% 0 64% 0) }
+  12%{ clip-path: inset(70% 0 8% 0) }
+  18%{ clip-path: inset(36% 0 40% 0) }
+  24%{ clip-path: inset(55% 0 18% 0) }
+  30%{ clip-path: inset(4% 0 84% 0) }
+  36%{ clip-path: inset(80% 0 6% 0) }
+  42%{ clip-path: inset(26% 0 50% 0) }
+  48%{ clip-path: inset(44% 0 32% 0) }
+  54%{ clip-path: inset(9% 0 79% 0) }
+  60%,100%{ clip-path: inset(0 0 0 0) }
+}
+@keyframes tornMaskB{
+  0%{ clip-path: inset(0 0 0 0) }
+  7%{ clip-path: inset(78% 0 10% 0) }
+  14%{ clip-path: inset(18% 0 70% 0) }
+  21%{ clip-path: inset(60% 0 20% 0) }
+  28%{ clip-path: inset(30% 0 48% 0) }
+  35%{ clip-path: inset(6% 0 84% 0) }
+  42%{ clip-path: inset(72% 0 12% 0) }
+  49%{ clip-path: inset(42% 0 34% 0) }
+  56%{ clip-path: inset(24% 0 56% 0) }
+  63%,100%{ clip-path: inset(0 0 0 0) }
+}
+@keyframes rgbShiftC{
+  0%{ transform:translate(0,0) }
+  12%{ transform:translate(2.2px,-.8px) skewY(.6deg) }
+  22%{ transform:translate(-1.8px,.8px) skewY(-.5deg) }
+  38%{ transform:translate(3px,-1.2px) }
+  54%{ transform:translate(-2.6px,.6px) }
+  70%{ transform:translate(1.4px,-.6px) }
+  100%{ transform:translate(0,0) }
+}
+@keyframes rgbShiftR{
+  0%{ transform:translate(0,0) }
+  12%{ transform:translate(-2px,.8px) skewY(-.6deg) }
+  22%{ transform:translate(1.6px,-.8px) skewY(.5deg) }
+  38%{ transform:translate(-2.8px,1.2px) }
+  54%{ transform:translate(2.4px,-.6px) }
+  70%{ transform:translate(-1.2px,.6px) }
+  100%{ transform:translate(0,0) }
+}
 
 /* Emblem */
 .ghostBehind img{width:min(68vw,820px);height:auto;opacity:.07;filter:grayscale(100%) contrast(120%) brightness(.7);animation:ghostBreath var(--loop) linear infinite}
@@ -91,27 +175,7 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 @keyframes winEm{47%,58%{opacity:1}0%,46.9%,58.1%,100%{opacity:0}}
 @keyframes winDead{58%,75.5%{opacity:1}0%,57.9%,75.6%,100%{opacity:0}}
 
-.ts .text h1{animation: showTS var(--loop) linear infinite, jitter 3s steps(2,end) infinite}
-@keyframes showTS{0%,1%{opacity:0;filter:blur(6px)}2%,10%{opacity:1;filter:blur(0)}10.1%,100%{opacity:0}}
-.s1 .text p{animation: showS1 var(--loop) linear infinite, jitter 3.4s steps(2,end) infinite}
-@keyframes showS1{10%,12%{opacity:0;filter:blur(6px)}12.6%,22.5%{opacity:1;filter:blur(0)}22.6%,100%{opacity:0}}
-.s2 .text p{animation: showS2 var(--loop) linear infinite, jitter 3.6s steps(2,end) infinite}
-@keyframes showS2{22.5%,24%{opacity:0;filter:blur(6px)}24.6%,47%{opacity:1;filter:blur(0)}47.1%,100%{opacity:0}}
-
-/* Headings glitch */
-.glitch{position:relative; display:inline-block; color:#eaf7ff; font-weight:900; letter-spacing:.02em; text-shadow:0 0 0 #000; animation: baseJitter 2.8s steps(2,end) infinite}
-.glitch.big{font-size:clamp(44px,10vw,140px)}
-.glitch.torn{filter:contrast(110%)}
-.glitch::before,.glitch::after{content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen}
-.glitch::before{color:#29d7ff; animation: rgbShiftC 2.2s steps(2,end) infinite, tornMaskA 2.2s steps(6,end) infinite}
-.glitch::after {color:#ff3b2e; animation: rgbShiftR 2.2s steps(2,end) infinite, tornMaskB 2.2s steps(6,end) infinite}
-@keyframes baseJitter{0%,100%{transform:translate(0,0)}25%{transform:translate(.8px,-.6px)}50%{transform:translate(-.9px,.6px)}75%{transform:translate(.6px,.8px)}}
-@keyframes tornMaskA{0%{clip-path:inset(0)}6%{inset:12% 0 64% 0}12%{inset:70% 0 8% 0}18%{inset:36% 0 40% 0}24%{inset:55% 0 18% 0}30%{inset:4% 0 84% 0}36%{inset:80% 0 6% 0}42%{inset:26% 0 50% 0}48%{inset:44% 0 32% 0}54%{inset:9% 0 79% 0}60%,100%{clip-path:inset(0)}}
-@keyframes tornMaskB{0%{clip-path:inset(0)}7%{inset:78% 0 10% 0}14%{inset:18% 0 70% 0}21%{inset:60% 0 20% 0}28%{inset:30% 0 48% 0}35%{inset:6% 0 84% 0}42%{inset:72% 0 12% 0}49%{inset:42% 0 34% 0}56%{inset:24% 0 56% 0}63%,100%{clip-path:inset(0)}}
-@keyframes rgbShiftC{0%{transform:translate(0,0)}12%{transform:translate(2.2px,-.8px) skewY(.6deg)}22%{translate:-1.8px .8px skewY(-.5deg)}38%{translate:3px -1.2px}54%{translate:-2.6px .6px}70%{translate:1.4px -.6px}100%{translate:0}}
-@keyframes rgbShiftR{0%{transform:translate(0,0)}12%{transform:translate(-2px,.8px) skewY(-.6deg)}22%{translate:1.6px -.8px skewY(.5deg)}38%{translate:-2.8px 1.2px}54%{translate:2.4px -.6px}70%{translate:-1.2px .6px}100%{translate:0}}
-
-/* Main content */
+/* Content area */
 main{max-width:1000px;margin:0 auto;padding:28px 18px 60px}
 .lead{opacity:.9}
 .hFlex{display:flex;gap:10px;align-items:center}
@@ -135,10 +199,11 @@ body.skipped .hero{display:none}
 <div class="bleed" aria-hidden="true"></div>
 
 <div class="siteWrap">
-  <!-- Preloader -->
+  <!-- Preloader (tries two filenames) -->
   <div id="preload" aria-hidden="true">
     <video id="preVid" muted playsinline preload="auto">
       <source src="media/hack-intro.mp4" type="video/mp4" />
+      <source src="media/v0f025gc0000cf218nrc77u5ht46f9e0.MP4" type="video/mp4" />
     </video>
     <button id="preSkip" aria-label="Skip intro">Skip ▷</button>
     <div class="preFallback"></div>
@@ -154,28 +219,44 @@ body.skipped .hero{display:none}
       <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost)">
     </div>
 
+    <!-- 0–4s : TIME'S UP (styled like headings) -->
     <div class="layer winTS ts">
       <div class="text">
-        <h1 class="glitch torn big" data-text="TIME’S UP">TIME’S UP</h1>
+        <h1>
+          <span class="glitch torn big" data-text="TIME’S UP">TIME’S UP</span>
+        </h1>
       </div>
     </div>
 
+    <!-- 4–9s : Slide 1 (styled like headings) -->
     <div class="layer winS1 s1">
       <div class="text">
-        <p class="activeText">We are the people. We are the majority. We are the ones that matter.</p>
+        <p>
+          <span class="glitch torn" data-text="We are the people. We are the majority. We are the ones that matter.">
+            We are the people. We are the majority. We are the ones that matter.
+          </span>
+        </p>
       </div>
     </div>
 
+    <!-- 9–19.6s : Slide 2 (styled like headings, longer) -->
     <div class="layer winS2 s2">
       <div class="text">
-        <p class="activeText">The time of allowing ego-driven “world leaders” to lead us into war for profit is over. We, the people of the world, will have the final say.</p>
+        <p>
+          <span class="glitch torn" data-text="The time of allowing ego-driven “world leaders” to lead us into war for profit is over. We, the people of the world, will have the final say.">
+            The time of allowing ego-driven “world leaders” to lead us into war for profit is over.
+            We, the people of the world, will have the final say.
+          </span>
+        </p>
       </div>
     </div>
 
+    <!-- 19.6–24s : Emblem breakthrough -->
     <div class="layer winEm emblemMain">
       <img class="emblemFX" src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem">
     </div>
 
+    <!-- 24–31s : Dead static + ghost emblem -->
     <div class="deadMask" aria-hidden="true"></div>
     <div class="layer winDead ghostEmblem">
       <img src="images/emblem-burnt.jpeg" alt="HUE emblem (ghost flicker)">
@@ -200,10 +281,13 @@ body.skipped .hero{display:none}
     <div class="section">
       <p class="hFlex"><strong>🕊️ <a href="declaration.html">The Human Unity Era Declaration</a></strong></p>
       <ul><li>Founding Declaration</li><li>Author Statement</li><li>One-Page Overview</li></ul>
+
       <p class="hFlex"><strong>⚙️ <a href="systems.html">Systems of Civilian Power</a></strong></p>
       <ul><li>Governance Charter</li><li>CEWIC Proposal</li><li>Treaty-born Institutions (e.g., MPOB)</li></ul>
+
       <p class="hFlex"><strong>🌍 <a href="framework.html">Ukraine–Russia Peace Framework</a></strong></p>
       <ul><li>UN-style Treaty</li><li>Post-Treaty Agenda</li><li>Peace Dividend</li><li>Sanctions &amp; Reconstruction</li></ul>
+
       <p class="hFlex"><strong>💡 <a href="tools.html">Civilian Involvement Tools</a></strong></p>
       <ul><li>Join the Movement</li><li>Protest Toolkit</li><li>Posters, Flyers, Templates</li></ul>
     </div>
@@ -224,19 +308,22 @@ body.skipped .hero{display:none}
   </main>
 
   <footer>© 2025 Human Unity Era</footer>
-</div><!-- /siteWrap -->
+</div>
 
 <script>
-/* Preloader: force-run, 5s safety timeout */
+/* Preloader: force-run, 6s safety timeout */
 (function(){
   const overlay = document.getElementById('preload');
   const vid = document.getElementById('preVid');
   const skip = document.getElementById('preSkip');
-  const safety = setTimeout(done, 5000);
+  const safety = setTimeout(done, 6000);
+
   function start(){ vid.muted = true; vid.play().catch(()=>{}); }
   if(document.readyState === 'complete') start(); else window.addEventListener('load', start, {once:true});
+
   vid.addEventListener('canplay', ()=>{ vid.muted = true; vid.play().catch(()=>{}); });
   vid.addEventListener('ended', done);
+
   function done(){ clearTimeout(safety); overlay.classList.add('done'); }
   skip.addEventListener('click', e=>{ e.stopPropagation(); done(); });
   window.addEventListener('keydown', done, {once:true});
