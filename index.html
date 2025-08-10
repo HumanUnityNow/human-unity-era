@@ -15,7 +15,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 
-/* ===== PAGE BACKGROUND GLITCH (chromatic lines + random flicker) ===== */
+/* ===== PAGE BACKGROUND GLITCH LINES (chromatic + flicker) ===== */
 .pageBG{position:fixed; inset:0; z-index:-3; pointer-events:none; opacity:.18}
 .pageBG::before,
 .pageBG::after{
@@ -25,8 +25,8 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
   opacity:.65;
   animation: bgFlick 6.5s infinite steps(2,end), bgDrift 14s linear infinite;
 }
-.pageBG::before{ filter:hue-rotate(205deg); transform:translateY(0) }
-.pageBG::after { filter:hue-rotate(355deg); transform:translateY(0) }
+.pageBG::before{ filter:hue-rotate(205deg) }
+.pageBG::after { filter:hue-rotate(355deg) }
 @keyframes bgDrift { 0%{transform:translateY(0)} 100%{transform:translateY(-6px)} }
 @keyframes bgFlick {
   0%,86%{opacity:.65}
@@ -36,40 +36,59 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
   100%{opacity:.65}
 }
 
-/* Random localized flicker pulses */
-.bgPulse{position:fixed; inset:0; z-index:-2; pointer-events:none;}
-.bgPulse::before,.bgPulse::after{
-  content:""; position:absolute; width:34vw; height:18vh; left:12vw; top:22vh;
-  background:radial-gradient(ellipse at center, rgba(255,255,255,.18), rgba(0,0,0,0) 60%);
-  mix-blend-mode:screen; filter:hue-rotate(355deg);
-  opacity:0; animation:pulseA 9s infinite;
+/* ===== SITE-WIDE “BLEED” GLITCH (RGB slice sweeps across whole page) ===== */
+.bleed{position:fixed; inset:0; z-index:-2; pointer-events:none}
+.bleed::before, .bleed::after{
+  content:""; position:absolute; inset:0; mix-blend-mode:screen; opacity:.28; pointer-events:none;
+  background:linear-gradient(0deg,transparent 0%,rgba(255,255,255,.12) 50%,transparent 100%);
+  clip-path: inset(0 0 0 0);
 }
-.bgPulse::after{
-  left:auto; right:10vw; top:auto; bottom:18vh; width:28vw; height:16vh;
-  filter:hue-rotate(205deg);
-  animation:pulseB 11s infinite 2s;
-}
-@keyframes pulseA{0%,78%{opacity:0;transform:translate(0,0)}80%{opacity:.22}86%{opacity:.04;transform:translate(-2px,1px)}100%{opacity:0}}
-@keyframes pulseB{0%,70%{opacity:0;transform:translate(0,0)}73%{opacity:.20}79%{opacity:.05;transform:translate(2px,-1px)}100%{opacity:0}}
+.bleed::before{ filter:hue-rotate(355deg); animation: bleedShiftR 9.5s infinite, bleedSliceA 9.5s steps(6,end) infinite }
+.bleed::after { filter:hue-rotate(205deg); animation: bleedShiftC 11s infinite 1.2s, bleedSliceB 11s steps(6,end) infinite 1.2s }
 
-/* ===== DARK-WEB BINARY CLUSTERS (random small patches) ===== */
-.bgFX{position:fixed; inset:0; z-index:-1; pointer-events:none}
-.codeCluster{
-  position:fixed; z-index:-1; color:#00ff88; opacity:0;
-  font:700 10px/1.05 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  white-space:pre; text-shadow:
-    1px 0 rgba(41,215,255,.35),
-   -1px 0 rgba(255,59,46,.35);
-  filter:contrast(120%) saturate(110%);
-  pointer-events:none;
-  animation: codeFade 2.8s ease-out forwards;
+@keyframes bleedShiftR{
+  0%,12%{transform:translateX(0) skewY(0deg)}
+  13%{transform:translateX(-2.4px) skewY(-.5deg)}
+  18%{transform:translateX(2.8px) skewY(.6deg)}
+  24%{transform:translateX(-1.6px)}
+  100%{transform:translateX(0)}
 }
-@keyframes codeFade{
-  0%{opacity:0; transform:translateY(0) scale(1)}
-  10%{opacity:.22}
-  60%{opacity:.18; transform:translateY(-4px) scale(1.01)}
-  100%{opacity:0; transform:translateY(-8px) scale(1.02)}
+@keyframes bleedShiftC{
+  0%,10%{transform:translateX(0) skewY(0deg)}
+  11%{transform:translateX(2.2px) skewY(.5deg)}
+  16%{transform:translateX(-2.6px) skewY(-.6deg)}
+  22%{transform:translateX(1.4px)}
+  100%{transform:translateX(0)}
 }
+/* moving horizontal “tears” */
+@keyframes bleedSliceA{
+  0%{clip-path: inset(0 0 0 0)}
+  8%{clip-path: inset(12% 0 64% 0)}
+  16%{clip-path: inset(70% 0 8% 0)}
+  24%{clip-path: inset(36% 0 40% 0)}
+  32%{clip-path: inset(55% 0 18% 0)}
+  40%{clip-path: inset(4% 0 84% 0)}
+  100%{clip-path: inset(0 0 0 0)}
+}
+@keyframes bleedSliceB{
+  0%{clip-path: inset(0 0 0 0)}
+  9%{clip-path: inset(78% 0 10% 0)}
+  18%{clip-path: inset(18% 0 70% 0)}
+  27%{clip-path: inset(60% 0 20% 0)}
+  36%{clip-path: inset(30% 0 48% 0)}
+  45%{clip-path: inset(6% 0 84% 0)}
+  100%{clip-path: inset(0 0 0 0)}
+}
+/* subtle container wobble so content feels affected */
+.siteWrap{transition:transform .25s}
+@keyframes siteSkew{
+  0%,100%{transform:skewX(0) translateZ(0)}
+  40%{transform:skewX(.3deg)}
+  42%{transform:skewX(-.25deg)}
+  44%{transform:skewX(.15deg)}
+  46%{transform:skewX(0)}
+}
+.siteWrap{animation: siteSkew 12s infinite}
 
 /* ===== HACK-IN PRELOADER (plays once per 12h) ===== */
 #preload{
@@ -100,7 +119,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
 
 @media (prefers-reduced-motion: reduce){
   #preVid{ display:none } .preFallback{ animation:none }
-  .pageBG,.bgPulse,.bgFX,.codeCluster{ display:none !important }
+  .pageBG,.bleed,.siteWrap{ animation:none !important; transform:none !important }
 }
 
 /* ===== HERO STAGE (fills first screen; page scrolls underneath) ===== */
@@ -161,7 +180,7 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 }
 .emblemFX{animation: emblemPulse var(--loop) linear infinite, emblemGlitch 2.6s steps(2,end) infinite}
 
-/* ===== TIMELINE WINDOWS (extended final text slide) =====
+/* ===== TIMELINE WINDOWS (final text slide is longer) =====
    0–4    TIME’S UP
    4–9    Slide 1
    9–19.6 Slide 2 (≈10s)
@@ -190,7 +209,7 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
   47.1%,100%{opacity:0}
 }
 
-/* ===== AGGRESSIVE TORN RGB GLITCH ===== */
+/* ===== AGGRESSIVE TORN RGB GLITCH (for headings/hero text) ===== */
 .glitch{
   position:relative; display:inline-block; color:#eaf7ff; font-weight:900;
   letter-spacing:.02em; text-shadow:0 0 0 #000;
@@ -289,8 +308,9 @@ body.skipped .hero{display:none}
 
 <!-- Global background glitch layers -->
 <div class="pageBG" aria-hidden="true"></div>
-<div class="bgPulse" aria-hidden="true"></div>
-<div class="bgFX" id="bgFX" aria-hidden="true"></div>
+<div class="bleed" aria-hidden="true"></div>
+
+<div class="siteWrap"><!-- everything visual sits inside -->
 
 <!-- ===== HACK-IN PRELOADER ===== -->
 <div id="preload" aria-hidden="true">
@@ -333,8 +353,8 @@ body.skipped .hero{display:none}
   <div class="layer winS2 s2">
     <div class="text">
       <p class="glitchline activeText"
-         data-text="The time of allowing ego-driven “world leaders” to lead us into war for profit is over. We, the people of the world, will have the final say.">
-        The time of allowing ego-driven “world leaders” to lead us into war for profit is over.
+         data-text="The time of allowing ego-driven “world leaders” lead us into war for profit is over. We, the people of the world, will have the final say.">
+        The time of allowing ego-driven “world leaders” lead us into war for profit is over.
         We, the people of the world, will have the final say.
       </p>
     </div>
@@ -415,6 +435,7 @@ body.skipped .hero{display:none}
 </main>
 
 <footer>© 2025 Human Unity Era</footer>
+</div><!-- /siteWrap -->
 
 <script>
 /* ===== HACK-IN PRELOADER CONTROL ===== */
@@ -512,48 +533,6 @@ let stopNoise=false;
   ['click','keydown'].forEach(ev=>window.addEventListener(ev, skip, {once:true}));
   window.addEventListener('wheel', skip, {once:true, passive:true});
   if(skipBtn) skipBtn.addEventListener('click', e=>{ e.stopPropagation(); skip(); });
-})();
-
-/* ===== Random binary “dark-web” clusters ===== */
-(function(){
-  const host=document.getElementById('bgFX');
-  if(!host) return;
-  const W = () => window.innerWidth;
-  const H = () => window.innerHeight;
-
-  function makeCluster(){
-    const rows = 4 + (Math.random()*8|0);
-    const cols = 10 + (Math.random()*14|0);
-    let s = "";
-    for(let r=0;r<rows;r++){
-      let line = "";
-      for(let c=0;c<cols;c++){
-        line += Math.random() < 0.5 ? "0" : "1";
-      }
-      s += line + (r<rows-1? "\n":"");
-    }
-    const el = document.createElement('div');
-    el.className = 'codeCluster';
-    el.textContent = s;
-
-    const left = Math.max(0, Math.min(W()-cols*8-10, Math.random()*W()));
-    const top  = Math.max(0, Math.min(H()-rows*12-10, Math.random()*H()));
-    el.style.left = left + 'px';
-    el.style.top  = top + 'px';
-
-    host.appendChild(el);
-    setTimeout(()=>{ el.remove(); }, 3000);
-  }
-
-  function loop(){
-    // 0–2 clusters each tick, feels random and sparse
-    const n = Math.random() < 0.55 ? 1 : 0;
-    for(let i=0;i<n;i++) makeCluster();
-    setTimeout(loop, 550 + Math.random()*900);
-  }
-  loop();
-
-  window.addEventListener('resize', ()=>{}, {passive:true});
 })();
 </script>
 </body>
