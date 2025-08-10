@@ -90,7 +90,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
 }
 .siteWrap{animation: siteSkew 12s infinite}
 
-/* ===== HACK-IN PRELOADER (plays once per 12h) ===== */
+/* ===== HACK-IN PRELOADER (forced) ===== */
 #preload{
   position:fixed; inset:0; z-index:9999; background:#000; display:flex;
   align-items:center; justify-content:center; transition:opacity .4s ease;
@@ -122,7 +122,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:400 16p
   .pageBG,.bleed,.siteWrap{ animation:none !important; transform:none !important }
 }
 
-/* ===== HERO STAGE (fills first screen; page scrolls underneath) ===== */
+/* ===== HERO STAGE ===== */
 .hero{position:relative;height:100vh;background:#000;overflow:hidden;border-bottom:1px solid #121212}
 .layer{position:absolute;inset:0;display:grid;place-items:center;opacity:0;will-change:opacity,transform}
 .skipBtn{
@@ -180,13 +180,7 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 }
 .emblemFX{animation: emblemPulse var(--loop) linear infinite, emblemGlitch 2.6s steps(2,end) infinite}
 
-/* ===== TIMELINE WINDOWS (final text slide is longer) =====
-   0–4    TIME’S UP
-   4–9    Slide 1
-   9–19.6 Slide 2 (≈10s)
-   19.6–24 Emblem breakthrough (≈4.4s)
-   24–31  Dead static + ghost (≈7s)
-*/
+/* ===== TIMELINE WINDOWS (final text slide is longer) ===== */
 .winTS{animation:winTS var(--loop) linear infinite}
 .winS1{animation:winS1 var(--loop) linear infinite}
 .winS2{animation:winS2 var(--loop) linear infinite}
@@ -274,16 +268,6 @@ canvas#noise{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen}
 .glitch.torn::before{ animation: rgbShiftC 2.2s steps(2,end) infinite, tornMaskA 2.2s steps(6,end) infinite }
 .glitch.torn::after { animation: rgbShiftR 2.2s steps(2,end) infinite, tornMaskB 2.2s steps(6,end) infinite }
 
-/* Readable torn glitch for paragraphs */
-.glitchline{
-  position:relative; display:inline-block; line-height:1.35; filter:contrast(108%);
-}
-.glitchline::before,.glitchline::after{
-  content:attr(data-text); position:absolute; inset:0; pointer-events:none; opacity:.6; mix-blend-mode:screen;
-}
-.glitchline::before{ color:#29d7ff; animation: rgbShiftC 3s steps(2,end) infinite, tornMaskA 3s steps(7,end) infinite }
-.glitchline::after { color:#ff3b2e; animation: rgbShiftR 3s steps(2,end) infinite, tornMaskB 3s steps(7,end) infinite }
-
 /* ===== MAIN CONTENT ===== */
 main{max-width:1000px;margin:0 auto;padding:28px 18px 60px}
 .lead{opacity:.9}
@@ -312,10 +296,11 @@ body.skipped .hero{display:none}
 
 <div class="siteWrap"><!-- everything visual sits inside -->
 
-<!-- ===== HACK-IN PRELOADER ===== -->
+<!-- ===== HACK-IN PRELOADER (FORCED) ===== -->
 <div id="preload" aria-hidden="true">
   <video id="preVid" muted playsinline preload="auto">
-    <source src="media/hack-intro.mp4" type="video/mp4" />
+    <!-- Use your exact filename (case-sensitive) -->
+    <source src="media/v0f025gc0000cf218nrc77u5ht46f9e0.MP4" type="video/mp4" />
   </video>
   <button id="preSkip" aria-label="Skip intro">Skip ▷</button>
   <div class="preFallback"></div>
@@ -353,8 +338,8 @@ body.skipped .hero{display:none}
   <div class="layer winS2 s2">
     <div class="text">
       <p class="glitchline activeText"
-         data-text="The time of allowing ego-driven “world leaders” lead us into war for profit is over. We, the people of the world, will have the final say.">
-        The time of allowing ego-driven “world leaders” lead us into war for profit is over.
+         data-text="The time of allowing ego-driven “world leaders” to lead us into war for profit is over. We, the people of the world, will have the final say.">
+        The time of allowing ego-driven “world leaders” to lead us into war for profit is over.
         We, the people of the world, will have the final say.
       </p>
     </div>
@@ -438,34 +423,24 @@ body.skipped .hero{display:none}
 </div><!-- /siteWrap -->
 
 <script>
-/* ===== HACK-IN PRELOADER CONTROL ===== */
+/* ===== HACK-IN PRELOADER CONTROL (forced every visit) ===== */
 (function(){
   const overlay = document.getElementById('preload');
   const vid = document.getElementById('preVid');
   const skip = document.getElementById('preSkip');
 
-  // show once per 12 hours
-  try{
-    const last = localStorage.getItem('hue_pre_seen');
-    if(last && (Date.now() - Number(last)) < 12*60*60*1000){
-      overlay.classList.add('done'); // skip immediately
-      return;
-    }
-  }catch(e){}
+  // Force-play every visit (no localStorage gate while we debug)
+  const hardTimeout = setTimeout(finish, 5000); // safety: auto-hide after 5s max
 
-  // autohide guard even if video stalls (max 3.2s)
-  const hardTimeout = setTimeout(finish, 3200);
-
-  const start = () => { vid.play().catch(()=>{}); };
+  function start(){ vid.muted = true; vid.play().catch(()=>{}); }
   if(document.readyState === 'complete') start(); else window.addEventListener('load', start, {once:true});
 
-  vid.addEventListener('canplaythrough', ()=>{ vid.muted = true; vid.play().catch(()=>{}); });
+  vid.addEventListener('canplay', ()=>{ vid.muted = true; vid.play().catch(()=>{}); });
   vid.addEventListener('ended', finish);
 
   function finish(){
     clearTimeout(hardTimeout);
     overlay.classList.add('done');
-    try{ localStorage.setItem('hue_pre_seen', String(Date.now())); }catch(e){}
   }
   skip.addEventListener('click', e=>{ e.stopPropagation(); finish(); });
   window.addEventListener('keydown', finish, {once:true});
