@@ -1,353 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Human Unity Era</title>
-<meta name="theme-color" content="#0b0b0f" />
+<link rel="stylesheet" href="styles.css">
 
 <style>
-  :root{
-    --bg:#07070a;
-    --ink:#e9eaef;
-    --accent:#ff5436;
-    --cyan:#46e6ff;
-    --red:#ff3b3b;
-    --ok:#36e58f;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;background:var(--bg);color:var(--ink);
-    font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-    overflow-x:hidden; transition:transform .12s ease;
-  }
-  body.lock{overflow:hidden}
-<section style="margin: 20px 0; text-align:center;">
-  <button
-    onclick="window.location.href='declaration.html'"
-    style="cursor:pointer; padding:14px 22px; border:1px solid #888; border-radius:10px; background:transparent; color:inherit; font-weight:700;">
-    🕊️ Open “The Human Unity Era — Declaration”
-  </button>
-</section>
-  /* ===== GLOBAL HACKER BACKGROUND ===== */
-  .bg-glitch,.bg-glitch::before,.bg-glitch::after{
-    position:fixed; inset:-2px; pointer-events:none; z-index:-1;
-  }
-  .bg-glitch{filter:contrast(115%) brightness(95%); will-change:transform,filter;}
-  .bg-glitch::before{
-    content:"";
-    background:
-      repeating-linear-gradient(0deg, rgba(255,255,255,.055) 0 2px, rgba(0,0,0,.055) 2px 4px),
-      repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 3px, rgba(0,0,0,.018) 3px 6px);
-    mix-blend-mode:screen; opacity:.32; animation:bgScan 9s steps(60,end) infinite;
-  }
-  .bg-glitch::after{
-    content:"";
-    background:
-      linear-gradient(transparent 60%, rgba(0,0,0,.5)),
-      repeating-linear-gradient(0deg, rgba(0,229,255,.16) 0 2px, rgba(0,0,0,0) 2px 4px),
-      repeating-linear-gradient(0deg, rgba(255,59,59,.12) 1px 3px, rgba(0,0,0,0) 3px 5px);
-    mix-blend-mode:lighten; opacity:.22; animation:chroma 2.8s ease-in-out infinite;
-  }
-  @keyframes bgScan{0%,100%{transform:translateY(0)}25%{transform:translateY(-1px)}50%{transform:translateY(0)}75%{transform:translateY(1px)}}
-  @keyframes chroma{0%,100%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(0,0)}}
-  .bleeds{position:fixed; inset:0; z-index:-1; pointer-events:none}
-  .bleeds span{
-    position:absolute; left:0; right:0; height:2px;
-    background:linear-gradient(90deg, rgba(70,230,255,0), rgba(70,230,255,.35), rgba(255,84,54,.35), rgba(70,230,255,0));
-    opacity:0; filter:blur(.4px); animation:bleed 6s ease-in-out infinite;
-  }
-  .bleeds span:nth-child(1){top:12%; animation-delay:0s}
-  .bleeds span:nth-child(2){top:27%; animation-delay:1.2s}
-  .bleeds span:nth-child(3){top:41%; animation-delay:2.3s}
-  .bleeds span:nth-child(4){top:58%; animation-delay:3.6s}
-  .bleeds span:nth-child(5){top:73%; animation-delay:4.7s}
-  .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
-  @keyframes bleed{0%,100%{opacity:0; transform:translateX(-4vw)}12%{opacity:.8}25%{opacity:.25}55%{opacity:.6}80%{opacity:.18}}
+/* Let clicks pass through decorative overlays */
+#intro,
+#intro video,
+.static-noise,
+.scanlines,
+.glitch-overlay,
+.glitch-bg {
+  pointer-events: none !important;
+}
 
-  /* ===== INTRO VIDEO OVERLAY ===== */
-  #intro{position:fixed; inset:0; z-index:1000; background:#000; display:grid; place-items:center; transition:opacity .6s ease}
-  #intro.hidden{opacity:0; pointer-events:none}
-  #intro video{width:100vw; height:100vh; object-fit:cover}
-  #intro .tv-static,#intro .tv-scan,#intro .tv-vignette{position:absolute; inset:0; pointer-events:none}
-  #intro .tv-static{
-    opacity:.22;
-    background:
-      repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 2px, rgba(0,0,0,.06) 2px 4px),
-      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, rgba(0,0,0,.02) 2px 4px);
-    animation:introNoise 2.6s steps(40,end) infinite;
-  }
-  @keyframes introNoise{0%,100%{transform:translateZ(0)}25%{transform:translateY(-1px)}50%{transform:translateY(0)}75%{transform:translateY(1px)}}
-  #intro .tv-scan{background:linear-gradient(to bottom, rgba(255,255,255,.15), rgba(255,255,255,0)); height:22%; width:120%; left:-10%; filter:blur(3px); animation:introScan 5.4s cubic-bezier(.2,.6,.2,1) infinite}
-  @keyframes introScan{0%{top:-28%}50%{top:75%}100%{top:-28%}}
-  #intro .tv-vignette{background:radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 0 60%, rgba(0,0,0,.75) 95%, rgba(0,0,0,.92) 100%)}
-  #intro .controls{position:absolute; inset:auto 16px 16px 16px; display:flex; gap:10px; align-items:center}
-  #intro button{background:#101114;border:1px solid #2a2c35;color:#e7e7ea;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
-  #intro .note{color:#c8c8ce;font-size:14px;opacity:.85}
+/* Real links clickable */
+.clickable,
+.debug-link {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 999999;
+}
 
-  /* ===== HEADER / HERO ===== */
-  header{position:relative; padding:72px 20px 40px; text-align:center; overflow:hidden;
-    background:radial-gradient(1200px 600px at 50% -10%, #1a1b20 10%, #0b0b0f 60%, #060608 100%)}
-  .hero-emblem{position:absolute; inset:auto 0 0 0; height:38vh; max-height:360px; opacity:.14; pointer-events:none;
-    display:flex; align-items:flex-end; justify-content:center; filter:contrast(105%) saturate(105%); animation:emblemFloat 10s ease-in-out infinite}
-  .hero-emblem img{max-width:90vw; max-height:100%; mix-blend:screen; filter:grayscale(.2) contrast(140%) brightness(.9)}
-  @keyframes emblemFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  .title{font-size:clamp(32px,5vw,56px); letter-spacing:.06em; font-weight:900; margin:0 0 6px; color:#ff5436; text-shadow:0 0 18px rgba(255,84,54,.15)}
-  .tag{color:#f26; opacity:.85; font-weight:600; margin:4px 0 0}
-
-  /* ===== TV SLIDER ===== */
-  .tv{position:relative; margin:22px auto 0; width:min(1100px,92vw); aspect-ratio:16/9; border-radius:16px; overflow:hidden; border:1px solid #262830; box-shadow:0 10px 40px rgba(0,0,0,.45); background:#000}
-  .static{position:absolute; inset:0; background:
-      radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 0 60%, rgba(0,0,0,.75) 95%, rgba(0,0,0,.92) 100%),
-      repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 2px, rgba(0,0,0,.07) 2px 4px),
-      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, rgba(0,0,0,.02) 2px 4px);
-    filter:contrast(170%) brightness(.85)}
-  .scan{position:absolute; left:-10%; right:-10%; height:22%; top:-25%;
-    background:linear-gradient(to bottom, rgba(255,255,255,.18), rgba(255,255,255,0)); filter:blur(3px); animation:scan 5.6s cubic-bezier(.2,.6,.2,1) infinite}
-  @keyframes scan{0%{top:-28%}50%{top:75%}100%{top:-28%}}
-  .slide{position:absolute; inset:0; display:grid; place-items:center; opacity:0; transition:opacity .8s ease}
-  .slide.show{opacity:1}
-  .msg{
-    font-weight:900; letter-spacing:.06em; text-transform:uppercase; text-align:center;
-    font-size:clamp(28px,4.8vw,64px);
-    text-shadow:0 0 24px rgba(255,255,255,.08), 0 0 60px rgba(70,230,255,.08);
-    animation:tinyFlicker 4s steps(60,end) infinite;
-  }
-  .msg.cyan{color:var(--cyan)} .msg.red{color:var(--red)}
-  @keyframes tinyFlicker{0%,100%{opacity:.98; transform:translateZ(0)}12%{opacity:.93}24%{opacity:.99}41%{opacity:.94}67%{opacity:.98}83%{opacity:.95}}
-
-  /* Torn glitch for headings + slider text */
-  .glitch{position:relative; isolation:isolate}
-  .glitch::before,.glitch::after{content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none}
-  .glitch::before{color:#00e5ff; animation:chroma1 2.2s infinite}
-  .glitch::after{color:#ff3b3b; animation:chroma2 2.2s infinite}
-  @keyframes chroma1{0%,100%{clip-path:inset(0); transform:translate(0,0)}10%{clip-path:inset(0 0 70% 0); transform:translate(2px,-1px)}20%{clip-path:inset(60% 0 0 0); transform:translate(-2px,1px)}35%{clip-path:inset(30% 0 40% 0)}60%{clip-path:inset(0)}72%{clip-path:inset(20% 0 50% 0); transform:translate(1px,0)}85%{clip-path:inset(50% 0 10% 0); transform:translate(-1px,0)}}
-  @keyframes chroma2{0%,100%{clip-path:inset(0); transform:translate(0,0)}12%{clip-path:inset(50% 0 10% 0); transform:translate(-2px,1px)}22%{clip-path:inset(0 0 65% 0); transform:translate(2px,-1px)}38%{clip-path:inset(25% 0 45% 0)}62%{clip-path:inset(0)}74%{clip-path:inset(10% 0 60% 0); transform:translate(-1px,0)}88%{clip-path:inset(55% 0 5% 0); transform:translate(1px,0)}}
-
-  /* Content */
-  main{padding:36px 18px 90px; max-width:1100px; margin:0 auto}
-  h2{margin:28px 0 12px; font-size:clamp(22px,3vw,28px)}
-  .sub{font-weight:800; letter-spacing:.02em; display:inline-block}
-  .sub.glitch::before,.sub.glitch::after{font-weight:800}
-  p{color:#cfd1d6; max-width:80ch}
-  .nav-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:10px}
-  .card{border:1px solid #2b2d36; border-radius:12px; padding:14px 16px; background:#0d0e12bb; backdrop-filter: blur(4px)}
-  .card a{color:#e8e9ef; text-decoration:none; font-weight:700}
-  .card a:hover{text-decoration:underline}
-
-  .ctaWrap{margin:18px auto 0; display:flex; justify-content:center}
-  .ctaBtn{
-    appearance:none; border:1px solid #2b2d36; background:#0e0f14; color:#e9eaef;
-    padding:12px 18px; border-radius:12px; font-weight:900; letter-spacing:.06em; text-transform:uppercase;
-    cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.35); transition:transform .15s ease, border-color .2s ease;
-  }
-  .ctaBtn:hover{transform:translateY(-1px); border-color:#3a3d48}
-
-  /* Signup + Contact sections */
-  section.panel{margin-top:34px; border:1px solid #2b2d36; border-radius:14px; background:#0c0d12bb; backdrop-filter:blur(4px); padding:18px}
-  form label{display:block; font-weight:700; margin:10px 0 6px}
-  input[type="email"], input[type="text"]{
-    width:100%; padding:12px 12px; border-radius:10px; border:1px solid #2b2d36; background:#0a0b10; color:#e9eaef;
-  }
-  .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-  .row > div{min-width:0}
-  .submitBar{display:flex; gap:10px; align-items:center; margin-top:12px}
-  .btn{
-    appearance:none; border:1px solid #2b2d36; background:#101114; color:#e9eaef;
-    padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:800; letter-spacing:.04em;
-  }
-  .btn.primary{background:#12131a; border-color:#343744}
-  .tiny{font-size:13px; color:#aeb2ba}
-  .ok{color:var(--ok)}
-  .err{color:#ff6b6b}
-
-  pre.pgp{white-space:pre-wrap; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-    font-size:12.5px; color:#bfc3cc; background:#0a0b10; border:1px solid #222531; border-radius:10px; padding:10px; max-height:220px; overflow:auto}
-
-  /* page shake */
-  @keyframes pageShake{0%{transform:translate(0,0)}20%{transform:translate(-1px, 0)}40%{transform:translate(1px, 1px)}60%{transform:translate(0, -1px)}80%{transform:translate(1px, 0)}100%{transform:translate(0,0)}}
-  .shake{animation:pageShake 220ms linear 1}
+/* Basic styling */
+body {
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+h1, h2, h3 {
+  font-family: 'Courier New', monospace;
+}
+a {
+  color: #0ff;
+}
 </style>
 </head>
-<body class="lock">
-  <!-- global background -->
-  <div class="bg-glitch" id="bg"></div>
-  <div class="bleeds" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
-  <!-- INTRO VIDEO OVERLAY -->
-  <div id="intro" aria-hidden="true">
-    <video id="introVid" autoplay muted playsinline preload="auto">
-      <source src="media/hack-intro.mp4" type="video/mp4">
-    </video>
-    <div class="tv-static"></div><div class="tv-scan"></div><div class="tv-vignette"></div>
-    <div class="controls" id="introCtrls" hidden>
-      <button id="startBtn">Tap to Start ▷</button>
-      <button id="skipBtn">Skip</button>
-      <span class="note">Autoplay was blocked by your browser.</span>
-    </div>
-  </div>
+<body>
 
-  <header>
-    <div class="hero-emblem">
-      <img src="images/emblem-burnt.jpeg" alt="Human Unity Era emblem"/>
-    </div>
-    <h1 class="title">HUMAN UNITY ERA</h1>
-    <div class="tag">This is not a petition. It’s a civilian <strong>system override</strong>.</div>
+<!-- HEADER -->
+<header>
+  <h1>HUMAN UNITY ERA</h1>
+</header>
 
-    <!-- TV STATIC SLIDER -->
-    <div class="tv" id="tv">
-      <div class="static"></div><div class="scan"></div>
-      <div class="slide show" id="s1"><div class="msg cyan glitch" data-text="TIME’S UP">TIME’S UP</div></div>
-      <div class="slide" id="s2"><div class="msg red glitch" data-text="WE ARE THE PEOPLE">WE ARE THE PEOPLE</div></div>
-      <div class="slide" id="s3"><div class="msg cyan glitch" data-text="WE DECIDE THE FUTURE">WE DECIDE THE FUTURE</div></div>
-      <div class="slide" id="s4"><div class="msg glitch" data-text="NO MORE WAR FOR PROFIT">NO MORE WAR FOR PROFIT</div></div>
-      <div class="slide" id="s5"><div class="msg red glitch" data-text="THE ERA OF CIVILIAN POWER BEGINS">THE ERA OF CIVILIAN POWER BEGINS</div></div>
-    </div>
+<!-- EXPLORE THE FRAMEWORK -->
+<section id="framework" style="margin: 40px;">
+  <h2>Explore the Framework</h2>
+  <ul>
+    <li><a class="clickable" href="declaration.html">📜 The Human Unity Era — Declaration</a></li>
+    <li><a class="clickable" href="#">⚙ Systems of Civilian Power</a></li>
+    <li><a class="clickable" href="#">📑 Governance Charter</a></li>
+  </ul>
+</section>
 
-    <div class="ctaWrap">
-      <button class="ctaBtn" id="jumpSignup">Join the Signal</button>
-    </div>
-  </header>
+<!-- TEMP DEBUG LINK -->
+<div class="debug-link" style="position:fixed;bottom:14px;right:14px;">
+  <a href="declaration.html"
+     style="display:inline-block;padding:10px 14px;background:#0b0b0b;border:1px solid #787878;border-radius:8px;text-decoration:none;font-weight:700;">
+    → Go to Declaration
+  </a>
+</div>
 
-  <main>
-    <h2 class="sub glitch" data-text="🌍 The Human Unity Era">🌍 The Human Unity Era</h2>
-    <p><strong>Civilian-led. Peace-driven. AI-readable.</strong><br/>Created by Kaileb Abrey-Blackmore — Civilian Architect of Global Coordination.</p>
+<!-- INTRO VIDEO / GLITCH EFFECTS -->
+<div id="intro">
+  <video autoplay muted playsinline>
+    <source src="media/intro.mp4" type="video/mp4">
+  </video>
+</div>
 
-    <h2 class="sub glitch" data-text="🏠 Welcome">🏠 Welcome</h2>
-    <p>Welcome to the official Human Unity Era digital platform — a transparent, accessible framework designed to rebuild global cooperation, dignity, and peace from the ground up. This is not a petition. It is a <strong>blueprint</strong>.</p>
-
-    <h2 class="sub glitch" data-text="📚 Explore the Framework">📚 Explore the Framework</h2>
-    <div class="nav-grid">
-      <div class="card"><a href="#declaration">🕊️ The Human Unity Era Declaration</a><br><small>Founding Declaration • Author Statement • One-Page Overview</small></div>
-      <div class="card"><a href="#systems">⚙️ Systems of Civilian Power</a><br><small>Governance Charter • CEWIC • Treaty-born Institutions</small></div>
-      <div class="card"><a href="#framework">🌍 Ukraine–Russia Peace Framework</a><br><small>UN-style Treaty • Post-Treaty Agenda • Peace Dividend • Sanctions & Reconstruction</small></div>
-      <div class="card"><a href="#tools">💡 Civilian Involvement Tools</a><br><small>Join the Movement • Protest Toolkit • Templates</small></div>
-    </div>
-
-    <!-- ===== SIGN-UP ===== -->
-    <section class="panel" id="signup">
-      <h2 class="sub glitch" data-text="✊ Join the Movement">✊ Join the Movement</h2>
-      <p>Enter an email (and an alias if you want). You’ll get quiet updates, drops, and calls to coordinate. No spam. No selling. Ever.</p>
-
-      <form id="netForm" novalidate>
-        <div class="row">
-          <div>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="you@proton.me" required>
-          </div>
-          <div>
-            <label for="alias">Alias (optional)</label>
-            <input id="alias" name="alias" type="text" placeholder="ghost-citizen">
-          </div>
-        </div>
-        <div class="submitBar">
-          <button class="btn primary" type="submit">Register Node</button>
-          <span class="tiny" id="status"></span>
-        </div>
-      </form>
-    </section>
-
-    <!-- ===== CONTACT ===== -->
-    <section class="panel" id="contact">
-      <h2 class="sub glitch" data-text="📬 Contact + Media">📬 Contact + Media</h2>
-      <p>📧 Email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
-      <p class="tiny">Optional: publish a PGP key if you want encrypted comms. Paste it below later.</p>
-      <pre class="pgp">-----BEGIN PGP PUBLIC KEY BLOCK-----
-[ your PGP public key here – optional ]
------END PGP PUBLIC KEY BLOCK-----</pre>
-    </section>
-  </main>
-
-<script>
-  /* ===== Config: paste your Formspree endpoint here to receive emails =====
-     Get one free at https://formspree.io (create form, copy POST endpoint)
-     Example: const FORMSPREE_ENDPOINT = "https://formspree.io/f/abcdwxyz";
-  */
-  const FORMSPREE_ENDPOINT = ""; // ← put your endpoint between the quotes
-
-  /* ----- Intro overlay ----- */
-  const overlay=document.getElementById('intro');
-  const vid=document.getElementById('introVid');
-  const ctrls=document.getElementById('introCtrls');
-  const startBtn=document.getElementById('startBtn');
-  const skipBtn=document.getElementById('skipBtn');
-  function hideIntro(){overlay.classList.add('hidden'); document.body.classList.remove('lock'); setTimeout(()=>overlay.remove(),700);}
-  function tryPlay(){ vid.play().then(()=>{ctrls.hidden=true;}).catch(()=>{ctrls.hidden=false;}); }
-  if(document.readyState==='complete') tryPlay(); else window.addEventListener('load', tryPlay, {once:true});
-  vid.addEventListener('ended', hideIntro);
-  skipBtn?.addEventListener('click', hideIntro);
-  startBtn?.addEventListener('click', ()=>{vid.muted=true; tryPlay();});
-  setTimeout(()=>{ if(!overlay.classList.contains('hidden')) hideIntro(); }, 14000);
-
-  /* ----- TV slides rotation (final slide 7s) ----- */
-  const slides=[...document.querySelectorAll('.slide')];
-  let idx=0; const durations=[4500,4500,4500,4500,7000];
-  function show(i){slides.forEach((s,j)=>s.classList.toggle('show', i===j));}
-  function next(){idx=(idx+1)%slides.length; show(idx);}
-  function cycle(){next(); setTimeout(cycle, durations[idx]);}
-  show(0); setTimeout(()=>setTimeout(cycle, durations[0]), durations[0]);
-
-  /* ----- Background parallax + random shake ----- */
-  const bg=document.getElementById('bg');
-  function onScroll(){
-    const y=window.scrollY||document.documentElement.scrollTop;
-    const driftY = (y*0.06);
-    const driftX = Math.sin(y*0.004)*4;
-    bg.style.transform = `translate(${driftX}px, ${-driftY}px)`;
-    if(Math.random()<0.06) triggerShake();
-  }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  function triggerShake(){
-    if(document.body.classList.contains('shake')) return;
-    document.body.classList.add('shake');
-    setTimeout(()=>document.body.classList.remove('shake'), 240);
-  }
-  setInterval(()=>{ if(Math.random()<0.3) triggerShake(); }, 6000);
-  onScroll();
-
-  /* ----- CTA jump ----- */
-  document.getElementById('jumpSignup')?.addEventListener('click', ()=>{
-    document.getElementById('signup')?.scrollIntoView({behavior:'smooth', block:'start'});
-  });
-
-  /* ----- Sign-up handler ----- */
-  const form = document.getElementById('netForm');
-  const status = document.getElementById('status');
-  form?.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    status.textContent = "Transmitting…";
-    const email = document.getElementById('email').value.trim();
-    const alias = document.getElementById('alias').value.trim();
-    if(!email){ status.textContent="Email required."; status.className="tiny err"; return; }
-
-    if(FORMSPREE_ENDPOINT){
-      try{
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method:'POST',
-          headers:{'Accept':'application/json','Content-Type':'application/json'},
-          body: JSON.stringify({ email, alias })
-        });
-        if(res.ok){
-          status.textContent = "Node registered. Watch your inbox.";
-          status.className = "tiny ok";
-          form.reset();
-        }else{
-          status.textContent = "Network blocked. Try again later.";
-          status.className = "tiny err";
-        }
-      }catch(err){
-        status.textContent = "Network error. Try again.";
-        status.className = "tiny err";
-      }
-    }else{
-      // fallback to mailto if no endpoint configured
-      window.location.href = `mailto:humanunityera@gmail.com?subject=Join%20the%20Movement&body=Email:%20${encodeURIComponent(email)}%0AAlias:%20${encodeURIComponent(alias)}`;
-      status.textContent = "Opening mail client…";
-      status.className = "tiny";
-    }
-  });
-</script>
 </body>
 </html>
