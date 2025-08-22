@@ -18,7 +18,7 @@
     a{color:var(--accent);text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* Header + Nav */
+    /* Header + Nav (glitch title) */
     header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center;position:relative;overflow:hidden}
     .glitch{position:relative;font-size:clamp(1.6rem,3.2vw,2.2rem);text-transform:uppercase;letter-spacing:.03em;font-weight:700;color:var(--accent);display:inline-block;line-height:1.25}
     .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none}
@@ -35,6 +35,7 @@
 
     main{max-width:860px;margin:2rem auto;padding:0 1.2rem}
 
+    /* Intro underline sweep */
     .intro{color:var(--muted);margin:.25rem 0 1.25rem 0;font-size:1.02rem}
     .kicker{display:inline-block;position:relative;padding-bottom:.1rem}
     .kicker:after{
@@ -54,41 +55,61 @@
     .card:hover{transform:translateY(-2px);border-color:#303036;box-shadow:0 8px 24px rgba(0,0,0,.35)}
     .card p{margin:.55rem 0 1rem;color:var(--muted)}
 
-    /* === EXACT HOMEPAGE-STYLE SUBHEADS ===
-       White heavy text + red/cyan chromatic layers + thin teal line under.
+    /* === HOMEPAGE-MATCHED ANIMATED SUBHEADS ===
+       White title with animated red/cyan copies + thin teal base line.
     */
     .submega{
       position:relative;display:flex;align-items:center;gap:.55rem;
       margin:.1rem 0 1.35rem 0;
       font-family:var(--ui); font-weight:900; letter-spacing:.005em;
       font-size: clamp(1.0rem, 1.8vw, 1.25rem); line-height:1.1;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
     .submega .emo{font-size:1.1rem}
     .submega .txt{
-      position:relative;color:#fff; text-shadow:none;
-      /* ensure crisp weight like homepage */
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      position:relative; color:#fff;
     }
+    /* animated chroma layers */
     .submega .txt::before,
     .submega .txt::after{
       content:attr(data-text); position:absolute; inset:0; pointer-events:none;
-    }
-    /* red layer to the left */
-    .submega .txt::before{
-      color:#ff3b30; transform: translateX(-1.5px);
       filter: blur(.15px);
     }
-    /* cyan layer to the right */
-    .submega .txt::after{
-      color:#00e5ff; transform: translateX(1.5px);
-      filter: blur(.15px);
+    .submega .txt::before{ color:#ff3b30; animation:chromaR 1.9s steps(2,end) infinite }
+    .submega .txt::after { color:#00e5ff; animation:chromaC 2.1s steps(2,end) infinite reverse }
+    @keyframes chromaR{
+      0%{ transform:translate(-1.2px,0) }
+      48%{ transform:translate(-2px,0) }
+      52%{ transform:translate(-.6px,0) }
+      100%{ transform:translate(-1.2px,0) }
     }
-    /* subtle teal baseline under the heading */
+    @keyframes chromaC{
+      0%{ transform:translate(1.2px,0) }
+      35%{ transform:translate(.6px,0) }
+      70%{ transform:translate(2px,0) }
+      100%{ transform:translate(1.2px,0) }
+    }
+    /* thin teal baseline + shimmering sweep */
     .submega .line{
       position:absolute; left:2%; right:2%; bottom:-8px; height:1px;
-      background: linear-gradient(90deg,transparent,rgba(0,230,255,.15) 15%, rgba(0,230,255,.28) 50%, rgba(0,230,255,.15) 85%, transparent);
+      background: linear-gradient(90deg,transparent,rgba(0,230,255,.18) 15%, rgba(0,230,255,.30) 50%, rgba(0,230,255,.18) 85%, transparent);
       transform: scaleY(.6);
       pointer-events:none;
+    }
+    .submega::after{
+      content:""; position:absolute; bottom:-8px; height:2px; left:2%; width:10%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);
+      box-shadow:0 0 10px rgba(255,255,255,.35); opacity:.45; pointer-events:none;
+      animation:sweep 3.4s ease-in-out infinite;
+    }
+    @keyframes sweep{
+      0%{ left:2%; width:6% }
+      35%{ left:38%; width:14% }
+      70%{ left:72%; width:8% }
+      100%{ left:98%; width:4% }
+    }
+    @media (prefers-reduced-motion:reduce){
+      .submega .txt::before,.submega .txt::after,.submega::after{animation:none}
     }
 
     .btns{display:flex;gap:.6rem;flex-wrap:wrap}
@@ -128,7 +149,6 @@
 
     <section class="grid">
 
-      <!-- 1. Founding Declaration -->
       <article class="card">
         <h3 class="submega">
           <span class="emo">📜</span>
@@ -137,16 +157,11 @@
         </h3>
         <p>A clear, structured vision for a new historical era — exposing system failure and offering a civilian-led alternative grounded in dignity, peace, and truth.</p>
         <div class="btns">
-          <a class="btn" href="downloads/founding-declaration.pdf" target="_blank" rel="noopener">
-            <span class="ic">📥</span> Download PDF
-          </a>
-          <a class="btn" href="founding-declaration.html" target="_blank" rel="noopener">
-            <span class="ic">📝</span> View Online
-          </a>
+          <a class="btn" href="downloads/founding-declaration.pdf" target="_blank" rel="noopener"><span class="ic">📥</span> Download PDF</a>
+          <a class="btn" href="founding-declaration.html" target="_blank" rel="noopener"><span class="ic">📝</span> View Online</a>
         </div>
       </article>
 
-      <!-- 2. Author Statement -->
       <article class="card">
         <h3 class="submega">
           <span class="emo">🧾</span>
@@ -155,16 +170,11 @@
         </h3>
         <p>A one-page personal reflection from Kaileb Abrey-Blackmore on why this work was created, who it speaks for, and how civilians reclaim power through structure — not chaos.</p>
         <div class="btns">
-          <a class="btn" href="downloads/author-statement.pdf" target="_blank" rel="noopener">
-            <span class="ic">📥</span> Download PDF
-          </a>
-          <a class="btn" href="author-statement.html" target="_blank" rel="noopener">
-            <span class="ic">📝</span> View Online
-          </a>
+          <a class="btn" href="downloads/author-statement.pdf" target="_blank" rel="noopener"><span class="ic">📥</span> Download PDF</a>
+          <a class="btn" href="author-statement.html" target="_blank" rel="noopener"><span class="ic">📝</span> View Online</a>
         </div>
       </article>
 
-      <!-- 3. One-Page Overview -->
       <article class="card">
         <h3 class="submega">
           <span class="emo">🗺️</span>
@@ -173,17 +183,12 @@
         </h3>
         <p>A simplified summary of the Human Unity Era — goals, systems, and guiding ideas — designed for quick understanding and wide sharing.</p>
         <div class="btns">
-          <a class="btn" href="downloads/one-page-overview.pdf" target="_blank" rel="noopener">
-            <span class="ic">📥</span> Download PDF
-          </a>
-          <a class="btn" href="one-page-overview.html" target="_blank" rel="noopener">
-            <span class="ic">📝</span> View Online
-          </a>
+          <a class="btn" href="downloads/one-page-overview.pdf" target="_blank" rel="noopener"><span class="ic">📥</span> Download PDF</a>
+          <a class="btn" href="one-page-overview.html" target="_blank" rel="noopener"><span class="ic">📝</span> View Online</a>
         </div>
       </article>
 
     </section>
   </main>
-
 </body>
 </html>
