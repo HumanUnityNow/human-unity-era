@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Human Unity Era — Treaty-Born Institutions</title>
+<meta name="theme-color" content="#0b0b0f" />
+<style>
+  :root{
+    --bg:#07070a; --ink:#e9eaef; --accent:#ff5436; --cyan:#46e6ff; --red:#ff3b3b; --ok:#36e58f;
+    --panel:#0d0e12bb; --ring:#2b2d36;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  p{color:#cfd1d6}
+  .muted{color:#aeb2ba}
+
+  /* animated “bleeds” (homepage style) */
+  .bleeds{position:fixed; inset:0; z-index:-1; pointer-events:none}
+  .bleeds span{
+    position:absolute; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, rgba(70,230,255,0), rgba(70,230,255,.35), rgba(255,84,54,.35), rgba(70,230,255,0));
+    opacity:0; filter:blur(.4px); animation:bleed 6s ease-in-out infinite;
+  }
+  .bleeds span:nth-child(1){top:12%; animation-delay:0s}
+  .bleeds span:nth-child(2){top:27%; animation-delay:1.2s}
+  .bleeds span:nth-child(3){top:41%; animation-delay:2.3s}
+  .bleeds span:nth-child(4){top:58%; animation-delay:3.6s}
+  .bleeds span:nth-child(5){top:73%; animation-delay:4.7s}
+  .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
+  @keyframes bleed{0%,100%{opacity:0; transform:translateX(-4vw)}12%{opacity:.8}25%{opacity:.25}55%{opacity:.6}80%{opacity:.18}}
+
+  /* header / nav */
+  header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center}
+  .title{font-size:clamp(32px,5vw,40px); letter-spacing:.06em; font-weight:900; margin:0; color:var(--accent);
+    text-shadow:0 0 18px rgba(255,84,54,.15)}
+  nav{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+  nav a{background:#222;color:var(--ink);padding:.5rem 1rem;border-radius:.5rem;border:1px solid #222;
+    font-size:.93rem;line-height:1;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
+  nav a:hover{border-color:var(--accent);color:var(--accent)}
+
+  main{max-width:1100px;margin:2rem auto;padding:0 1.2rem}
+  .lead{font-size:18px}
+
+  /* homepage glitch headings */
+  h2,h3{margin:28px 0 12px}
+  h2{font-size:clamp(22px,3vw,28px)}
+  h3{font-size:clamp(18px,2.2vw,22px)}
+  .sub{font-weight:800; letter-spacing:.02em; display:inline-block}
+  .glitch{position:relative; isolation:isolate}
+  .glitch::before,.glitch::after{
+    content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none
+  }
+  .glitch::before{color:var(--cyan); animation:chroma1 2.2s infinite}
+  .glitch::after{color:var(--red);  animation:chroma2 2.2s infinite}
+  @keyframes chroma1{
+    0%,100%{clip-path:inset(0); transform:translate(0,0)}
+    10%{clip-path:inset(0 0 70% 0); transform:translate(2px,-1px)}
+    20%{clip-path:inset(60% 0 0 0); transform:translate(-2px,1px)}
+    35%{clip-path:inset(30% 0 40% 0)}
+    60%{clip-path:inset(0)}
+    72%{clip-path:inset(20% 0 50% 0); transform:translate(1px,0)}
+    85%{clip-path:inset(50% 0 10% 0); transform:translate(-1px,0)}
+  }
+  @keyframes chroma2{
+    0%,100%{clip-path:inset(0); transform:translate(0,0)}
+    12%{clip-path:inset(50% 0 10% 0); transform:translate(-2px,1px)}
+    22%{clip-path:inset(0 0 65% 0); transform:translate(2px,-1px)}
+    38%{clip-path:inset(25% 0 45% 0)}
+    62%{clip-path:inset(0)}
+    74%{clip-path:inset(10% 0 60% 0); transform:translate(-1px,0)}
+    88%{clip-path:inset(55% 0 5% 0); transform:translate(1px,0)}
+  }
+  .sub.glitch::before,.sub.glitch::after{font-weight:800}
+
+  /* cards + buttons */
+  .card{border:1px solid var(--ring); border-radius:12px; padding:14px 16px; background:var(--panel); backdrop-filter: blur(4px)}
+  .btns{display:flex;gap:.6rem;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:.45rem;background:#101114;color:var(--ink);
+    border:1px solid #2a2c35;padding:.5rem .8rem;border-radius:.6rem;font-weight:700;
+    transition:background .2s,color .2s,border-color .2s,transform .08s
+  }
+  .btn:hover{background:#16171d;border-color:#3a3d48;color:var(--accent)}
+
+  /* contents box */
+  .toc{margin:16px 0 18px}
+  .toc h4{margin:0 0 8px; font-size:14px; letter-spacing:.08em; opacity:.9}
+  .toc ul{list-style:none; padding-left:0; margin:0}
+  .toc li{margin:6px 0}
+  .toc a{color:#e9eaef}
+  .toc a:hover{color:var(--accent); text-decoration:none}
+
+  /* table */
+  .table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border:1px solid var(--ring); border-radius:10px}
+  .table th,.table td{padding:10px 12px; border-bottom:1px solid #23252f; vertical-align:top}
+  .table th{background:#0f1015; text-align:left; font-weight:800; letter-spacing:.02em}
+  .table tr:last-child td{border-bottom:none}
+
+  /* anchors + lists */
+  section{scroll-margin-top:90px}
+  ul,ol{margin:8px 0 16px}
+  li{margin:4px 0}
+</style>
+</head>
+<body>
+
+  <!-- global animated lines -->
+  <div class="bleeds" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+  <header>
+    <h1 class="title">HUMAN UNITY ERA — TREATY-BORN INSTITUTIONS</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="declaration.html">Declaration</a>
+      <a href="systems.html">Systems of Civilian Power</a>
+      <a href="cewic.html">CEWIC</a>
+      <a href="author-statement.html">Author Statement</a>
+      <a href="one-page-overview.html">One Page Overview</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="btns" style="margin-bottom:10px">
+      <a class="btn" href="Formal%20Treaty%20Born%20Institutions%20Summary.pdf" target="_blank" rel="noopener" download>📥 Download PDF</a>
+      <a class="btn" href="systems.html">← Back to Systems</a>
+    </div>
+
+    <h2 class="sub glitch" data-text="🏛️ Treaty-Born Institutions Summary">🏛️ Treaty-Born Institutions Summary</h2>
+    <p class="lead">Prepared by: Kaileb Abrey-Blackmore</p>
+    <p class="muted">Purpose: Clarify the structure, function, cost, and global relevance of peace-focused institutions created by the treaty.</p>
+
+    <!-- contents -->
+    <div class="card toc">
+      <h4>CONTENTS</h4>
+      <ul>
+        <li><a href="#why">Why These Institutions Matter</a></li>
+        <li><a href="#tiers">Estimated Cost Outlook &amp; Investment Tiers</a></li>
+        <li><a href="#reusability">Global Reusability &amp; Diplomatic Value</a></li>
+        <li><a href="#profiles">Institution Profiles &amp; Funding Models</a></li>
+        <li><a href="#flex">Cost Flexibility &amp; Reassessment Policy</a></li>
+        <li><a href="#examples">Contextual Comparison Examples</a></li>
+      </ul>
+    </div>
+
+    <!-- Why These Institutions Matter -->
+    <section id="why">
+      <h2 class="sub glitch" data-text="Why These Institutions Matter">Why These Institutions Matter</h2>
+      <p>This treaty isn’t just about ending war — it’s about proving that peace can hold. To do that, it creates focused, temporary institutions that:</p>
+      <ul>
+        <li>Prevent re-escalation</li>
+        <li>Rebuild trust and protect civilians</li>
+        <li>Ensure real-world results through accountability</li>
+        <li>Avoid the need for permanent military presence or surveillance</li>
+      </ul>
+      <p>Each group is short-term, non-partisan, and built for practical outcomes — not power or politics.</p>
+    </section>
+
+    <!-- Investment Tiers -->
+    <section id="tiers">
+      <h2 class="sub glitch" data-text="Estimated Cost Outlook & Investment Tiers">Estimated Cost Outlook &amp; Investment Tiers</h2>
+      <div class="card">
+        <table class="table" role="table" aria-label="Investment tiers">
+          <thead>
+            <tr><th style="width:28%">Tier</th><th style="width:36%">Purpose</th><th>Framing</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Minimum Functional Budget</strong></td>
+              <td>Covers essential treaty obligations and monitoring</td>
+              <td><em>“Makes peace work”</em></td>
+            </tr>
+            <tr>
+              <td><strong>Enhanced Impact Budget</strong></td>
+              <td>Enables deeper recovery, faster outcomes, broader civilian protection</td>
+              <td><em>“Makes peace last”</em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">All figures are scalable, modest relative to military expenditures, and can be integrated into existing peacekeeping platforms or redirected aid.</p>
+    </section>
+
+    <!-- Global Reusability -->
+    <section id="reusability">
+      <h2 class="sub glitch" data-text="Global Reusability & Diplomatic Value">Global Reusability &amp; Diplomatic Value</h2>
+      <p>These institutions are designed to be reused and adapted. They can serve post-conflict regions elsewhere by:</p>
+      <ul>
+        <li>Offering non-military conflict verification</li>
+        <li>Assisting with civilian reintegration</li>
+        <li>Providing transparent peace enforcement mechanisms</li>
+        <li>Building trust without long-term occupation</li>
+      </ul>
+      <p>They represent a new model: peacekeeping that doesn’t provoke — it protects.</p>
+    </section>
+
+    <!-- Institution Profiles -->
+    <section id="profiles">
+      <h2 class="sub glitch" data-text="Institution Profiles & Funding Models">Institution Profiles &amp; Funding Models</h2>
+
+      <!-- 1. MPOB -->
+      <article class="card">
+        <h3 class="sub glitch" data-text="1) Monitoring Peace Operations Body (MPOB)">1) Monitoring Peace Operations Body (MPOB)</h3>
+        <p class="muted">Neutral peace monitors and cyber-freeze enforcement</p>
+
+        <h3>Core Functions</h3>
+        <ul>
+          <li>Monitor demilitarization and ceasefire lines</li>
+          <li>Secure and inspect the Russia–Crimea civilian transit corridor</li>
+          <li>Prevent border provocations and cyber-violations</li>
+          <li>Track treaty progress (Years 5 and 7 benchmarks)</li>
+          <li>Deploy to manage humanitarian crises or emergency escalations</li>
+        </ul>
+
+        <h3>Neutrality and Oversight</h3>
+        <ul>
+          <li>Staffed by neutral countries (e.g., Türkiye, Kazakhstan, Switzerland)</li>
+          <li>Dual-signatory approval required for emergency action</li>
+          <li>Public annual reports and third-party audit process</li>
+        </ul>
+
+        <h3>Funding</h3>
+        <p><strong>Minimum Functional Budget:</strong> $120 million/year</p>
+        <ul>
+          <li>Supports 3 corridor monitoring zones, mobile surveillance drones, core staffing, and border compliance logistics</li>
+          <li>Lean operational model focused on essential treaty functions; costs reducible via shared infrastructure, in-kind contributions, or alignment with existing peace/humanitarian platforms</li>
+        </ul>
+        <p><strong>Enhanced Impact Budget:</strong> $150 million/year</p>
+        <ul>
+          <li>Adds real-time satellite mapping, multilingual outreach teams, digital corridor verification, and rapid deployment hubs</li>
+        </ul>
+      </article>
+
+      <!-- 2. JIVTF -->
+      <article class="card">
+        <h3 class="sub glitch" data-text="2) Joint Identity & Verification Task Force (JIVTF)">2) Joint Identity &amp; Verification Task Force (JIVTF)</h3>
+        <p class="muted">Civilian documentation and legal recovery</p>
+
+        <h3>Core Functions</h3>
+        <ul>
+          <li>Re-establish legal identity for displaced civilians</li>
+          <li>Prevent identity fraud, erasure, or political blacklisting</li>
+          <li>Safely coordinate return, relocation, or protected exile</li>
+          <li>Secure digital data and prevent revenge targeting</li>
+        </ul>
+
+        <h3>Neutrality and Oversight</h3>
+        <ul>
+          <li>Jointly staffed by legal experts from Ukraine, Russia, and neutral nations</li>
+          <li>Overseen by NGOs and migration institutions (e.g., IOM, UNHCR partners)</li>
+          <li>No military or intelligence agency involvement</li>
+        </ul>
+
+        <h3>Funding</h3>
+        <p><strong>Minimum Functional Budget:</strong> $50 million (total) over 5 years</p>
+        <ul>
+          <li>Supports mobile identity teams, access to regional databases, and legal document re-issuance for 200,000+ individuals</li>
+          <li>Lean operational model; can leverage shared infrastructure and in-kind contributions</li>
+        </ul>
+        <p><strong>Enhanced Impact Budget:</strong> $70 million (total) over 5 years</p>
+        <ul>
+          <li>Adds biometric verification tools, trauma-informed care pathways, family reunification, mobile translation, and long-term data protection</li>
+        </ul>
+      </article>
+
+      <!-- 3. PDC -->
+      <article class="card">
+        <h3 class="sub glitch" data-text="3) Peace Dividend for Civilians (PDC)">3) Peace Dividend for Civilians (PDC)</h3>
+        <p class="muted">Civilian-led recovery and dignity-centered support</p>
+
+        <h3>Core Functions</h3>
+        <ul>
+          <li>Rebuild homes, clinics, and schools in war-affected areas</li>
+          <li>Fund community trauma centers and mental health access</li>
+          <li>Employ civilians to lead infrastructure restoration</li>
+          <li>Celebrate peace through national events, art, and remembrance</li>
+        </ul>
+
+        <h3>Neutrality and Oversight</h3>
+        <ul>
+          <li>Run by elected community councils and civilian coordination boards</li>
+          <li>Transparent donor and budget tracking</li>
+          <li>Welcomes support from NGOs, educational institutions, and faith-based groups</li>
+        </ul>
+
+        <h3>Funding</h3>
+        <p><strong>Minimum Functional Budget:</strong> $400 million/year</p>
+        <ul>
+          <li>Provides shelter repair, mental health services, and vocational retraining to 500,000+ civilians</li>
+          <li>Lean core model; compatible with shared infrastructure and redirected aid</li>
+        </ul>
+        <p><strong>Enhanced Impact Budget:</strong> $600 million/year</p>
+        <ul>
+          <li>Adds national youth initiatives, job creation hubs, trauma-informed education programs, mobile family clinics, and large-scale reconstruction in hard-hit zones</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Cost Flexibility -->
+    <section id="flex">
+      <h2 class="sub glitch" data-text="Cost Flexibility & Reassessment Policy">Cost Flexibility &amp; Reassessment Policy</h2>
+      <p>All figures presented reflect independent estimates based on historical data from peacekeeping, migration, and civilian recovery missions of comparable scale. If governments, donors, or institutional backers wish to propose reduced-cost operational models, the treaty’s design team is open to collaboration. Revised budget frameworks may be submitted for review without invalidating the treaty’s intent or principles.</p>
+      <p>This ensures the treaty is not only effective but adaptable, sustainable, and globally actionable.</p>
+    </section>
+
+    <!-- Contextual Examples -->
+    <section id="examples">
+      <h2 class="sub glitch" data-text="Contextual Comparison Examples">Contextual Comparison Examples</h2>
+      <ul>
+        <li><strong>UN Peacekeeping (2023–24):</strong> ≈ $6.5B across 12 missions. MPOB’s high estimate ($150M/yr) is &lt;2.5% of one mission’s annual average.</li>
+        <li><strong>IOM Syria (2017):</strong> Managed 800k+ ID verifications for &lt;$90M. JIVTF’s five-year plan requests $50–70M.</li>
+        <li><strong>World Bank — Ukraine Emergency Housing (2023):</strong> $470M in grants. PDC’s $400–600M annual target is comparable in scale, with broader employment and trauma-recovery aims.</li>
+      </ul>
+      <p>All figures here reflect achievable, scalable targets based on global precedent — designed not to expand bureaucracy, but to replace war with results.</p>
+    </section>
+
+    <div class="btns" style="margin-top:18px">
+      <a class="btn" href="Formal%20Treaty%20Born%20Institutions%20Summary.pdf" target="_blank" rel="noopener" download>📥 Download PDF</a>
+      <a class="btn" href="systems.html">← Back to Systems</a>
+    </div>
+
+    <p class="muted" style="margin-top:10px">Edits or additions? Email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
+  </main>
+</body>
+</html>
