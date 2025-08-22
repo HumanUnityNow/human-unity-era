@@ -1,67 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>HUE — The Human Unity Era Declaration</title>
-<meta name="theme-color" content="#0b0b0f" />
-<style>
-  /* (keeping all your styles exactly as before) */
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Human Unity Era — Declaration Documents</title>
+  <meta name="theme-color" content="#0b0b0f" />
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --fg: #f4f4f4;
+      --accent: #ff5522;
+      --font: 'Georgia', serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: #111;
+      padding: 1.5rem 1rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      color: var(--accent);
+      font-size: 1.8rem;
+      margin: 0;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    nav a {
+      background: #222;
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      text-decoration: none;
+      color: var(--fg);
+      font-size: 0.9rem;
+    }
+
+    .active {
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    main {
+      max-width: 750px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      color: var(--fg);
+      margin-top: 2rem;
+    }
+
+    .doc-block {
+      border: 1px solid #333;
+      padding: 1rem 1.2rem;
+      margin-bottom: 2rem;
+      background: #141414;
+      border-radius: 6px;
+    }
+
+    .doc-block h3 {
+      margin-top: 0;
+      color: var(--accent);
+      font-size: 1.15rem;
+    }
+
+    .doc-block p {
+      margin-bottom: 1rem;
+    }
+
+    .doc-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .doc-buttons a {
+      background-color: #222;
+      color: var(--fg);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
+    }
+
+    .doc-buttons a:hover {
+      background-color: var(--accent);
+      color: #0b0b0f;
+    }
+
+    a.back-link {
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <div class="bg-glitch" id="bg"></div>
-  <div class="bleeds" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
   <header>
-    <div class="tv">
-      <div class="static"></div><div class="scan"></div>
-      <div class="banner">
-        <h1 class="glitch" data-text="🕊️ THE HUMAN UNITY ERA — DECLARATION">🕊️ THE HUMAN UNITY ERA — DECLARATION</h1>
-      </div>
-    </div>
+    <h1>HUMAN UNITY ERA — DECLARATION</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="systems.html">Systems of Civilian Power</a>
+      <a href="cewic.html">CEWIC</a>
+      <a href="author-statement.html">Author Statement</a>
+      <a href="one-page-overview.html">One Page Overview</a>
+    </nav>
   </header>
 
   <main>
-    <div class="crumbs">← <a href="./">Back to Home</a></div>
+    <a class="back-link" href="index.html">← Back to Home</a>
 
-    <p class="small">This section contains the foundational documents that define the vision, purpose, and ethical grounding of the Human Unity Era. These are the origin texts — written by civilians, for civilians — to guide a peaceful, coordinated future beyond war, corruption, and disinformation.</p>
+    <p>This section contains the foundational documents that define the vision, purpose, and ethical grounding of the Human Unity Era. These are the origin texts — written by civilians, for civilians — to guide a peaceful, coordinated future beyond war, corruption, and disinformation.</p>
 
-    <!-- 1) Founding Declaration -->
-    <article class="doc">
-      <div>
-        <h3>📜 1. The Founding Declaration</h3>
-        <p>A clear, structured vision for a new historical era — written to expose system failure and offer a civilian-led alternative based on dignity, peace, and truth.</p>
-        <div class="actions">
-          <a class="btn primary" href="https://drive.google.com/uc?export=download&id=1axmEwWsgH2PHYjGv554M9ggL2slZe_bm">📄 Download PDF </a>
-          <a class="btn" href="founding-declaration.html">📝 View Online</a>
-        </div>
+    <div class="doc-block">
+      <h3>📜 1. The Founding Declaration</h3>
+      <p>A clear, structured vision for a new historical era — written to expose system failure and offer a civilian-led alternative based on dignity, peace, and truth.</p>
+      <div class="doc-buttons">
+        <a href="downloads/founding-declaration.pdf" target="_blank">📥 Download PDF</a>
+        <a href="declaration.html" target="_blank">📝 View Online</a>
       </div>
-    </article>
+    </div>
 
-    <!-- 2) Author Statement -->
-    <article class="doc">
-      <div>
-        <h3>🧾 2. Author Statement</h3>
-        <p>A one-page personal reflection from Kaileb Abrey-Blackmore on why this work was created, who it speaks for, and how civilians can reclaim power through structure, not chaos.</p>
-        <div class="actions">
-          <a class="btn primary" href="https://drive.google.com/uc?export=download&id=1vywrKQUbEExBQQVrMNft1p4NU0zlv3ph">📄 Download PDF </a>
-          <a class="btn" href="author-statement.html">📝 View Online</a>
-        </div>
+    <div class="doc-block">
+      <h3>🧾 2. Author Statement</h3>
+      <p>A one-page personal reflection from Kaileb Abrey-Blackmore on why this work was created, who it speaks for, and how civilians can reclaim power through structure, not chaos.</p>
+      <div class="doc-buttons">
+        <a href="downloads/author-statement.pdf" target="_blank">📥 Download PDF</a>
+        <a href="author-statement.html" target="_blank">📝 View Online</a>
       </div>
-    </article>
+    </div>
 
-    <!-- 3) One-Page Overview -->
-    <article class="doc">
-      <div>
-        <h3>🗺️ 3. One-Page Overview</h3>
-        <p>A simplified summary of the Human Unity Era goals, systems, and guiding ideas. Designed for quick understanding and wide sharing.</p>
-        <div class="actions">
-          <a class="btn primary" href="https://drive.google.com/uc?export=download&id=1_2gbPRg7mw1aOhL6vZuxfThLabFAP28l">📄 Download PDF </a>
-          <a class="btn" href="one-page-overview.html">📝 View Online</a>
-        </div>
+    <div class="doc-block">
+      <h3>🗺️ 3. One Page Overview</h3>
+      <p>A simplified summary of the Human Unity Era goals, systems, and guiding ideas. Designed for quick understanding and wide sharing.</p>
+      <div class="doc-buttons">
+        <a href="downloads/one-page-overview.pdf" target="_blank">📥 Download PDF</a>
+        <a href="one-page-overview.html" target="_blank">📝 View Online</a>
       </div>
-    </article>
+    </div>
+
   </main>
+
 </body>
 </html>
