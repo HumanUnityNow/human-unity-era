@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Human Unity Era — CEWIC (Civilian Early Warning Input Channel)</title>
+<meta name="theme-color" content="#0b0b0f" />
+<style>
+  :root{
+    --bg:#07070a; --ink:#e9eaef; --accent:#ff5436; --cyan:#46e6ff; --red:#ff3b3b; --ok:#36e58f;
+    --panel:#0d0e12bb; --ring:#2b2d36;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* animated “bleeds” lines (same as homepage) */
+  .bleeds{position:fixed; inset:0; z-index:-1; pointer-events:none}
+  .bleeds span{
+    position:absolute; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, rgba(70,230,255,0), rgba(70,230,255,.35), rgba(255,84,54,.35), rgba(70,230,255,0));
+    opacity:0; filter:blur(.4px); animation:bleed 6s ease-in-out infinite;
+  }
+  .bleeds span:nth-child(1){top:12%; animation-delay:0s}
+  .bleeds span:nth-child(2){top:27%; animation-delay:1.2s}
+  .bleeds span:nth-child(3){top:41%; animation-delay:2.3s}
+  .bleeds span:nth-child(4){top:58%; animation-delay:3.6s}
+  .bleeds span:nth-child(5){top:73%; animation-delay:4.7s}
+  .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
+  @keyframes bleed{0%,100%{opacity:0; transform:translateX(-4vw)}12%{opacity:.8}25%{opacity:.25}55%{opacity:.6}80%{opacity:.18}}
+
+  /* header / nav */
+  header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center}
+  .title{font-size:clamp(32px,5vw,40px); letter-spacing:.06em; font-weight:900; margin:0; color:var(--accent); text-shadow:0 0 18px rgba(255,84,54,.15)}
+  nav{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+  nav a{background:#222;color:var(--ink);padding:.5rem 1rem;border-radius:.5rem;border:1px solid #222;
+    font-size:.93rem;line-height:1;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
+  nav a:hover{border-color:var(--accent);color:var(--accent)}
+
+  main{max-width:1100px;margin:2rem auto;padding:0 1.2rem}
+  p{color:#cfd1d6}
+  .muted{color:#aeb2ba}
+
+  /* headings: homepage glitch effect */
+  h2,h3{margin:28px 0 12px}
+  h2{font-size:clamp(22px,3vw,28px)}
+  h3{font-size:clamp(18px,2.2vw,22px)}
+  .sub{font-weight:800; letter-spacing:.02em; display:inline-block}
+  .glitch{position:relative; isolation:isolate}
+  .glitch::before,.glitch::after{
+    content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none
+  }
+  .glitch::before{color:var(--cyan); animation:chroma1 2.2s infinite}
+  .glitch::after{color:var(--red);  animation:chroma2 2.2s infinite}
+  @keyframes chroma1{
+    0%,100%{clip-path:inset(0); transform:translate(0,0)}
+    10%{clip-path:inset(0 0 70% 0); transform:translate(2px,-1px)}
+    20%{clip-path:inset(60% 0 0 0); transform:translate(-2px,1px)}
+    35%{clip-path:inset(30% 0 40% 0)}
+    60%{clip-path:inset(0)}
+    72%{clip-path:inset(20% 0 50% 0); transform:translate(1px,0)}
+    85%{clip-path:inset(50% 0 10% 0); transform:translate(-1px,0)}
+  }
+  @keyframes chroma2{
+    0%,100%{clip-path:inset(0); transform:translate(0,0)}
+    12%{clip-path:inset(50% 0 10% 0); transform:translate(-2px,1px)}
+    22%{clip-path:inset(0 0 65% 0); transform:translate(2px,-1px)}
+    38%{clip-path:inset(25% 0 45% 0)}
+    62%{clip-path:inset(0)}
+    74%{clip-path:inset(10% 0 60% 0); transform:translate(-1px,0)}
+    88%{clip-path:inset(55% 0 5% 0); transform:translate(1px,0)}
+  }
+  .sub.glitch::before,.sub.glitch::after{font-weight:800}
+
+  /* cards + buttons */
+  .card{border:1px solid var(--ring); border-radius:12px; padding:14px 16px; background:var(--panel); backdrop-filter: blur(4px)}
+  .btns{display:flex;gap:.6rem;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:.45rem;background:#101114;color:var(--ink);
+    border:1px solid #2a2c35;padding:.5rem .8rem;border-radius:.6rem;font-weight:700;
+    transition:background .2s,color .2s,border-color .2s,transform .08s
+  }
+  .btn:hover{background:#16171d;border-color:#3a3d48;color:var(--accent)}
+  .lead{font-size:18px}
+
+  /* contents */
+  .toc{margin:16px 0 18px}
+  .toc h4{margin:0 0 8px; font-size:14px; letter-spacing:.08em; opacity:.9}
+  .toc ul{list-style:none; padding-left:0; margin:0}
+  .toc li{margin:6px 0}
+  .toc a{color:#e9eaef}
+  .toc a:hover{color:var(--accent); text-decoration:none}
+
+  /* lists & anchors */
+  section{scroll-margin-top:90px}
+  ul,ol{margin:8px 0 16px}
+  li{margin:4px 0}
+</style>
+</head>
+<body>
+
+  <!-- global animated lines -->
+  <div class="bleeds" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+  <header>
+    <h1 class="title">HUMAN UNITY ERA — CEWIC</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="declaration.html">Declaration</a>
+      <a href="systems.html">Systems of Civilian Power</a>
+      <a href="cewic.html" class="active">CEWIC</a>
+      <a href="author-statement.html">Author Statement</a>
+      <a href="one-page-overview.html">One Page Overview</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="btns" style="margin-bottom:10px">
+      <a class="btn" href="Civilian%20Early%20Warning%20Input%20Channel%20%28CEWIC%29.pdf" target="_blank" rel="noopener" download>📥 Download PDF</a>
+      <a class="btn" href="systems.html">← Back to Systems</a>
+    </div>
+
+    <h2 class="sub glitch" data-text="📡 CIVILIAN EARLY WARNING INPUT CHANNEL (CEWIC)">📡 CIVILIAN EARLY WARNING INPUT CHANNEL (CEWIC)</h2>
+    <p class="lead">A Global System of Civilian Insight, Prevention &amp; Protective Response</p>
+    <p class="muted">Human Unity Era — Final Implementation Draft</p>
+
+    <!-- contents -->
+    <div class="card toc">
+      <h4>CONTENTS</h4>
+      <ul>
+        <li><a href="#i">I. Purpose</a></li>
+        <li><a href="#ii">II. Core Functions</a></li>
+        <li><a href="#iii">III. Activation Triggers</a></li>
+        <li><a href="#iv">IV. Infrastructure &amp; Sovereignty Resilience</a></li>
+        <li><a href="#v">V. Safeguards &amp; Legal Integrity</a></li>
+        <li><a href="#vi">VI. Rapid Action Protocol</a></li>
+        <li><a href="#vii">VII. Civilian Training &amp; Access</a></li>
+        <li><a href="#viii">VIII. Public Tracking Dashboard</a></li>
+        <li><a href="#ix">IX. Escalation &amp; Enforcement Clause</a></li>
+        <li><a href="#x">X. Budget &amp; Funding</a></li>
+        <li><a href="#xi">XI. Final Safeguards &amp; Trust Measures</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </div>
+
+    <section id="i">
+      <h2 class="sub glitch" data-text="I. Purpose">I. Purpose</h2>
+      <p>The Civilian Early Warning Input Channel (CEWIC) is a civilian-led global system designed to detect, assess, and respond to emerging threats to human safety and dignity. Rooted in transparency, sovereignty, and cooperation, CEWIC provides an alternative to state silence, violent intervention, and passive inaction by giving citizens worldwide a direct, secure channel for raising alarm and triggering responsible, lawful escalation.</p>
+    </section>
+
+    <section id="ii">
+      <h2 class="sub glitch" data-text="II. Core Functions">II. Core Functions</h2>
+      <ol>
+        <li>Receive early warning signals and testimonies from civilians, whistleblowers, NGOs, and journalists.</li>
+        <li>Verify through AI-assisted multi-source validation, pattern analysis, and corroboration.</li>
+        <li>Prioritise based on urgency, scale, and threat to life or dignity.</li>
+        <li>Respond through exposure, diplomacy, advisory notices, and where necessary strategic civilian protection measures.</li>
+      </ol>
+    </section>
+
+    <section id="iii">
+      <h2 class="sub glitch" data-text="III. Activation Triggers">III. Activation Triggers</h2>
+      <ul>
+        <li>At least 3 or more reports from independent jurisdictions raise concern about the same event or pattern.</li>
+        <li>A sudden incident of mass harm occurs (e.g. targeted killings, disappearances, mass displacement).</li>
+        <li>There is credible evidence of an imminent human rights disaster and no known intervention is underway.</li>
+      </ul>
+    </section>
+
+    <section id="iv">
+      <h2 class="sub glitch" data-text="IV. Infrastructure and Sovereignty Resilience">IV. Infrastructure and Sovereignty Resilience</h2>
+      <ul>
+        <li>CEWIC is built on a mirror-node system with jurisdictional decentralization.</li>
+        <li>No single country can block, censor, or tamper with CEWIC data.</li>
+        <li>Sovereign Neutrality Pledge ensures CEWIC cannot be used to justify regime change or foreign occupation.</li>
+        <li>Mirror-nodes are embedded in global regions with automatic failover capacity.</li>
+      </ul>
+    </section>
+
+    <section id="v">
+      <h2 class="sub glitch" data-text="V. Safeguards and Legal Integrity">V. Safeguards and Legal Integrity</h2>
+      <ul>
+        <li><strong>Signal-to-Noise Safeguards:</strong> Reports are weighted based on corroboration, urgency, and reliability.</li>
+        <li><strong>Whistleblower Protection:</strong> Data is anonymized, encrypted, and stored across multiple legal jurisdictions.</li>
+        <li><strong>Anti-Manipulation Protocol:</strong> Extremist or malicious reports are filtered and publicly flagged.</li>
+        <li><strong>AI Transparency Addendum:</strong> All AI tools used in CEWIC undergo bias audits and human oversight.</li>
+      </ul>
+    </section>
+
+    <section id="vi">
+      <h2 class="sub glitch" data-text="VI. Rapid Action Protocol">VI. Rapid Action Protocol</h2>
+      <p>If verified CEWIC reports indicate imminent threat to human life and no intervention is in place, a Rapid Action Protocol is triggered:</p>
+      <ul>
+        <li>Emergency alerts are issued.</li>
+        <li>Diplomacy channels are opened with involved parties.</li>
+        <li>If ignored, a referral is made to the Human Unity Council for enforcement (see Section IX).</li>
+      </ul>
+    </section>
+
+    <section id="vii">
+      <h2 class="sub glitch" data-text="VII. Civilian Training and Access">VII. Civilian Training and Access</h2>
+      <ul>
+        <li>Free CEWIC training is available online and offline in multiple languages.</li>
+        <li>Local workshops are supported by global partner organizations.</li>
+        <li>Anyone — regardless of nationality — can submit a report without fear.</li>
+      </ul>
+    </section>
+
+    <section id="viii">
+      <h2 class="sub glitch" data-text="VIII. Public Tracking Dashboard">VIII. Public Tracking Dashboard</h2>
+      <ul>
+        <li>A live dashboard displays alerts, responses, and follow-up actions.</li>
+        <li>Citizens can see which threats were neutralized, delayed, or escalated.</li>
+        <li>Transparency is the backbone of CEWIC’s legitimacy.</li>
+      </ul>
+    </section>
+
+    <section id="ix">
+      <h2 class="sub glitch" data-text="IX. Escalation and Enforcement Clause">IX. Escalation and Enforcement Clause</h2>
+      <p>To preserve CEWIC’s legitimacy, measured enforcement must be possible in cases of ongoing atrocity. If a country:</p>
+      <ul>
+        <li>Is credibly found to be causing verifiable, life-threatening harm to civilians,</li>
+        <li>Refuses to stop after multiple warnings,</li>
+        <li>Receives no intervention from any other state actor…</li>
+      </ul>
+      <p>Then CEWIC refers the case to the Human Unity Council. The Council may impose targeted sanctions against that state. These are:</p>
+      <ul>
+        <li>Non-military</li>
+        <li>Time-limited</li>
+        <li>Reversible upon compliance</li>
+        <li>Reinvested into projects that protect the affected civilian population</li>
+      </ul>
+      <p>This is not about punishing ideology — it’s about stopping unjustified harm. The country will be granted a grace period to reverse actions or open diplomatic resolution channels before sanctions are activated. This clause exists not to control nations, but to prevent CEWIC from collapsing into irrelevance in the face of real atrocity. If the world stands by while civilians are knowingly harmed, then CEWIC has failed.</p>
+    </section>
+
+    <section id="x">
+      <h2 class="sub glitch" data-text="X. Budget and Funding (Integrated Real-World Comparisons)">X. Budget and Funding (Integrated Real-World Comparisons)</h2>
+
+      <h3>A. Baseline Global Operating Budget</h3>
+      <p><strong>Estimated:</strong> £620 million annually</p>
+      <p>This funds:</p>
+      <ul>
+        <li>Mirror-node infrastructure in all continents</li>
+        <li>AI model auditing and human oversight teams</li>
+        <li>24/7 global dashboard updates and moderation</li>
+        <li>Civilian reporting verification centers (200+ staff globally)</li>
+        <li>Whistleblower protection programs</li>
+      </ul>
+      <p class="muted">💡 By comparison: the UK’s MI6 intelligence agency received £3.5 billion in 2022–23. CEWIC’s global budget is roughly one-sixth that but serves the entire planet, and with full transparency.</p>
+
+      <h3>B. Ideal Global Scaling Budget</h3>
+      <p><strong>Estimated:</strong> £2.4 billion annually</p>
+      <p>This adds:</p>
+      <ul>
+        <li>Country-specific CEWIC branches with regionally trained staff</li>
+        <li>Mass translation infrastructure across 90+ languages</li>
+        <li>Expanded training, outreach, school programs, and CEWIC literacy campaigns</li>
+        <li>Global disaster early-warning integration (climate, health, war)</li>
+        <li>Real-time verification units and fast-response civilian crisis task forces</li>
+      </ul>
+      <p class="muted">💡 By comparison: the U.S. Department of Homeland Security receives over £41 billion per year. CEWIC’s full global rollout would cost just 5–6% of that.</p>
+
+      <p>These figures are modest for a planet-wide civilian protection and intelligence system — especially considering CEWIC avoids the costs of war, secrecy, and destruction.</p>
+    </section>
+
+    <section id="xi">
+      <h2 class="sub glitch" data-text="XI. Final Safeguards and Trust Measures">XI. Final Safeguards and Trust Measures</h2>
+      <ul>
+        <li><strong>Council Oversight:</strong> All CEWIC escalations are reviewed by a neutral Human Unity Council.</li>
+        <li><strong>Live Amendments Archive:</strong> Every policy or funding change is transparently logged and explained.</li>
+        <li><strong>Civilian Referendum Option:</strong> Any citizen may trigger a review if 5,000 verified signatories across 3+ regions raise concern. This does not cancel protective action, but initiates a formal audit.</li>
+        <li><strong>Crisis Continuity Team:</strong> If world systems are attacked or compromised (e.g. cyberattack or blackout), CEWIC will activate encrypted low-bandwidth emergency protocols with regional backup nodes.</li>
+      </ul>
+    </section>
+
+    <section id="conclusion">
+      <h2 class="sub glitch" data-text="Conclusion">Conclusion</h2>
+      <p>CEWIC is not a tool for domination. It’s a tool for listening, preventing, and acting when the world refuses to act. It’s humanity’s insurance policy — not against ideology, but against atrocity.</p>
+      <p>This document reflects our final implementation vision for the CEWIC system under the Human Unity Era. Let the world know: civilians are no longer passive observers.</p>
+    </section>
+
+    <div class="btns" style="margin-top:18px">
+      <a class="btn" href="Civilian%20Early%20Warning%20Input%20Channel%20%28CEWIC%29.pdf" target="_blank" rel="noopener" download>📥 Download PDF</a>
+      <a class="btn" href="systems.html">← Back to Systems</a>
+    </div>
+
+    <p class="muted" style="margin-top:10px">Spot an edit? Email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
+  </main>
+</body>
+</html>
