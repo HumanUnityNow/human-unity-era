@@ -3,129 +3,159 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Human Unity Era — Declaration Documents</title>
+  <title>Human Unity Era — Declaration</title>
   <meta name="theme-color" content="#0b0b0f" />
   <style>
-    :root {
-      --bg: #0b0b0f;
-      --fg: #f4f4f4;
-      --accent: #ff5522;
-      --font: 'Georgia', serif;
+    :root{
+      --bg:#0b0b0f;
+      --panel:#141416;
+      --fg:#f4f4f4;
+      --muted:#cfcfcf;
+      --accent:#ff5522;
+      --accent-2:#ff9a76;
+      --ring:#2a2a2a;
+      --font: ui-serif, Georgia, "Times New Roman", serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: var(--font);
-      line-height: 1.7;
+    /* Base */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.7}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Header + Nav (matches subpages) */
+    header{
+      background:#111;
+      padding:2.25rem 1rem 1.25rem;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    /* Glitch title */
+    .glitch{
+      position:relative;
+      font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+      text-transform:uppercase;
+      letter-spacing:.03em;
+      font-weight:700;
+      color:var(--accent);
+      display:inline-block;
+      line-height:1.25;
+    }
+    .glitch::before,
+    .glitch::after{
+      content: attr(data-text);
+      position:absolute; left:0; top:0;
+      width:100%; height:100%;
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .glitch::before{ color:#ff2a2a; clip-path: inset(0 0 0 0); animation:gl1 3.2s infinite linear alternate-reverse }
+    .glitch::after { color:#2affff; clip-path: inset(0 0 0 0); animation:gl2 2.8s infinite linear alternate-reverse }
+    @keyframes gl1{
+      0%{ transform:translate(0,0) }
+      20%{ transform:translate(-1px, 0.8px) }
+      40%{ transform:translate(1.4px, -0.6px) }
+      60%{ transform:translate(-0.8px, -1.2px) }
+      80%{ transform:translate(0.6px, 1px) }
+      100%{ transform:translate(0,0) }
+    }
+    @keyframes gl2{
+      0%{ transform:translate(0,0) }
+      25%{ transform:translate(1.2px, -0.8px) }
+      50%{ transform:translate(-1px, 1.2px) }
+      75%{ transform:translate(0.6px, 0.6px) }
+      100%{ transform:translate(0,0) }
+    }
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .glitch::before,.glitch::after{animation:none;display:none}
     }
 
-    header {
-      background-color: #111;
-      padding: 1.5rem 1rem 1rem;
-      text-align: center;
+    nav{
+      display:flex; justify-content:center; flex-wrap:wrap; gap:.6rem; margin-top:1rem
     }
+    nav a{
+      background:#222; color:var(--fg); padding:.5rem 1rem; border-radius:.5rem; border:1px solid #222;
+      font-size:.93rem; line-height:1; text-decoration:none; transition: border-color .2s, color .2s, background .2s;
+    }
+    nav a:hover{ border-color:var(--accent); color:var(--accent) }
+    nav a.active{ border-color:var(--accent); color:var(--accent) }
 
-    header h1 {
-      color: var(--accent);
-      font-size: 1.8rem;
-      margin: 0;
-      line-height: 1.3;
-      text-transform: uppercase;
-    }
+    main{ max-width: 860px; margin:2rem auto; padding:0 1.2rem }
 
-    nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
+    /* Intro subheading effect (underline sweep + soft flicker) */
+    .intro{
+      color:var(--muted);
+      margin: .25rem 0 1.25rem 0;
+      font-size:1.02rem;
     }
+    .kicker{
+      display:inline-block; position:relative; padding-bottom:.1rem;
+    }
+    .kicker:after{
+      content:""; position:absolute; left:0; bottom:-.2rem; height:2px; width:100%;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
+      filter: drop-shadow(0 0 10px rgba(255,85,34,.25));
+      transform-origin:left; transform: scaleX(.85);
+      transition: transform .25s ease;
+    }
+    .kicker:hover:after{ transform: scaleX(1) }
 
-    nav a {
-      background: #222;
-      padding: 0.4rem 1rem;
-      border-radius: 4px;
-      text-decoration: none;
-      color: var(--fg);
-      font-size: 0.9rem;
-    }
+    /* Cards */
+    .grid{ display:grid; gap:1.2rem; grid-template-columns: 1fr }
+    @media (min-width:720px){ .grid{ grid-template-columns: 1fr } }
 
-    .active {
-      border: 1px solid var(--accent);
-      color: var(--accent);
+    .card{
+      background: var(--panel);
+      border:1px solid var(--ring);
+      border-radius:12px;
+      padding:1.1rem 1.2rem 1rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease;
     }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: #303036;
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    }
+    .card h3{
+      margin:.1rem 0 .35rem 0;
+      font-size:1.12rem;
+      color:var(--fg);
+      font-weight:700;
+      letter-spacing:.02em;
+      position:relative;
+    }
+    /* subheading “effect” */
+    .card h3 .subfx{
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 0 18px rgba(255,85,34,.12);
+    }
+    .card p{ margin:.35rem 0 1rem; color:var(--muted) }
 
-    main {
-      max-width: 750px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
+    .btns{ display:flex; gap:.6rem; flex-wrap:wrap }
+    .btn{
+      display:inline-flex; align-items:center; gap:.45rem;
+      background:#1d1d1f; color:var(--fg); border:1px solid #2a2a2e;
+      padding:.5rem .8rem; border-radius:.6rem; font-size:.92rem; text-decoration:none;
+      transition: background .2s, color .2s, border-color .2s, transform .08s;
     }
+    .btn:hover{ background:#242428; border-color:var(--accent); color:var(--accent) }
+    .btn:active{ transform: translateY(1px) }
+    .btn .ic{ font-family: var(--mono); font-size:.95rem; opacity:.95 }
 
-    h2 {
-      font-size: 1.3rem;
-      color: var(--fg);
-      margin-top: 2rem;
-    }
-
-    .doc-block {
-      border: 1px solid #333;
-      padding: 1rem 1.2rem;
-      margin-bottom: 2rem;
-      background: #141414;
-      border-radius: 6px;
-    }
-
-    .doc-block h3 {
-      margin-top: 0;
-      color: var(--accent);
-      font-size: 1.15rem;
-    }
-
-    .doc-block p {
-      margin-bottom: 1rem;
-    }
-
-    .doc-buttons {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .doc-buttons a {
-      background-color: #222;
-      color: var(--fg);
-      padding: 0.4rem 0.8rem;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: background 0.2s ease;
-    }
-
-    .doc-buttons a:hover {
-      background-color: var(--accent);
-      color: #0b0b0f;
-    }
-
-    a.back-link {
-      color: var(--accent);
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    a.back-link:hover {
-      text-decoration: underline;
-    }
+    .back{ display:inline-block; margin-bottom:1.2rem }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>HUMAN UNITY ERA — DECLARATION</h1>
+    <div class="glitch" aria-label="HUMAN UNITY ERA — DECLARATION" data-text="HUMAN UNITY ERA — DECLARATION">
+      HUMAN UNITY ERA — DECLARATION
+    </div>
     <nav>
       <a href="index.html">Home</a>
       <a href="systems.html">Systems of Civilian Power</a>
@@ -136,37 +166,58 @@
   </header>
 
   <main>
-    <a class="back-link" href="index.html">← Back to Home</a>
+    <a class="back" href="index.html">← Back to Home</a>
 
-    <p>This section contains the foundational documents that define the vision, purpose, and ethical grounding of the Human Unity Era. These are the origin texts — written by civilians, for civilians — to guide a peaceful, coordinated future beyond war, corruption, and disinformation.</p>
+    <p class="intro">
+      <span class="kicker">Foundational documents</span> that define the vision, purpose, and ethical ground of the Human Unity Era — origin texts written by civilians, for civilians — to guide a peaceful, coordinated future beyond war, corruption, and disinformation.
+    </p>
 
-    <div class="doc-block">
-      <h3>📜 1. The Founding Declaration</h3>
-      <p>A clear, structured vision for a new historical era — written to expose system failure and offer a civilian-led alternative based on dignity, peace, and truth.</p>
-      <div class="doc-buttons">
-        <a href="downloads/founding-declaration.pdf" target="_blank">📥 Download PDF</a>
-        <a href="declaration.html" target="_blank">📝 View Online</a>
-      </div>
-    </div>
+    <section class="grid">
 
-    <div class="doc-block">
-      <h3>🧾 2. Author Statement</h3>
-      <p>A one-page personal reflection from Kaileb Abrey-Blackmore on why this work was created, who it speaks for, and how civilians can reclaim power through structure, not chaos.</p>
-      <div class="doc-buttons">
-        <a href="downloads/author-statement.pdf" target="_blank">📥 Download PDF</a>
-        <a href="author-statement.html" target="_blank">📝 View Online</a>
-      </div>
-    </div>
+      <!-- 1. Founding Declaration -->
+      <article class="card">
+        <h3><span class="subfx">📜 1. The Founding Declaration</span></h3>
+        <p>A clear, structured vision for a new historical era — exposing system failure and offering a civilian-led alternative grounded in dignity, peace, and truth.</p>
+        <div class="btns">
+          <a class="btn" href="downloads/founding-declaration.pdf" target="_blank" rel="noopener">
+            <span class="ic">📥</span> Download PDF
+          </a>
+          <!-- FIXED link here -->
+          <a class="btn" href="founding-declaration.html" target="_blank" rel="noopener">
+            <span class="ic">📝</span> View Online
+          </a>
+        </div>
+      </article>
 
-    <div class="doc-block">
-      <h3>🗺️ 3. One Page Overview</h3>
-      <p>A simplified summary of the Human Unity Era goals, systems, and guiding ideas. Designed for quick understanding and wide sharing.</p>
-      <div class="doc-buttons">
-        <a href="downloads/one-page-overview.pdf" target="_blank">📥 Download PDF</a>
-        <a href="one-page-overview.html" target="_blank">📝 View Online</a>
-      </div>
-    </div>
+      <!-- 2. Author Statement -->
+      <article class="card">
+        <h3><span class="subfx">🧾 2. Author Statement</span></h3>
+        <p>A one-page personal reflection from Kaileb Abrey-Blackmore on why this work was created, who it speaks for, and how civilians reclaim power through structure — not chaos.</p>
+        <div class="btns">
+          <a class="btn" href="downloads/author-statement.pdf" target="_blank" rel="noopener">
+            <span class="ic">📥</span> Download PDF
+          </a>
+          <a class="btn" href="author-statement.html" target="_blank" rel="noopener">
+            <span class="ic">📝</span> View Online
+          </a>
+        </div>
+      </article>
 
+      <!-- 3. One Page Overview -->
+      <article class="card">
+        <h3><span class="subfx">🗺️ 3. One-Page Overview</span></h3>
+        <p>A simplified summary of the Human Unity Era — goals, systems, and guiding ideas — designed for quick understanding and wide sharing.</p>
+        <div class="btns">
+          <a class="btn" href="downloads/one-page-overview.pdf" target="_blank" rel="noopener">
+            <span class="ic">📥</span> Download PDF
+          </a>
+          <a class="btn" href="one-page-overview.html" target="_blank" rel="noopener">
+            <span class="ic">📝</span> View Online
+          </a>
+        </div>
+      </article>
+
+    </section>
   </main>
 
 </body>
