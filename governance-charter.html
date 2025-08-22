@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Human Unity Era — Global Governance Charter</title>
+<meta name="theme-color" content="#0b0b0f" />
+<style>
+  :root{
+    /* homepage palette */
+    --bg:#07070a;
+    --ink:#e9eaef;
+    --accent:#ff5436;
+    --cyan:#46e6ff;
+    --red:#ff3b3b;
+    --ok:#36e58f;
+
+    --panel:#0d0e12bb;
+    --ring:#2b2d36;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* animated “bleeds” lines (same as homepage) */
+  .bleeds{position:fixed; inset:0; z-index:-1; pointer-events:none}
+  .bleeds span{
+    position:absolute; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, rgba(70,230,255,0), rgba(70,230,255,.35), rgba(255,84,54,.35), rgba(70,230,255,0));
+    opacity:0; filter:blur(.4px); animation:bleed 6s ease-in-out infinite;
+  }
+  .bleeds span:nth-child(1){top:12%; animation-delay:0s}
+  .bleeds span:nth-child(2){top:27%; animation-delay:1.2s}
+  .bleeds span:nth-child(3){top:41%; animation-delay:2.3s}
+  .bleeds span:nth-child(4){top:58%; animation-delay:3.6s}
+  .bleeds span:nth-child(5){top:73%; animation-delay:4.7s}
+  .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
+  @keyframes bleed{0%,100%{opacity:0; transform:translateX(-4vw)}12%{opacity:.8}25%{opacity:.25}55%{opacity:.6}80%{opacity:.18}}
+
+  /* header / nav */
+  header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center}
+  .title{font-size:clamp(32px,5vw,40px); letter-spacing:.06em; font-weight:900; margin:0; color:var(--accent); text-shadow:0 0 18px rgba(255,84,54,.15)}
+  nav{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+  nav a{background:#222;color:var(--ink);padding:.5rem 1rem;border-radius:.5rem;border:1px solid #222;font-size:.93rem;line-height:1;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
+  nav a:hover{border-color:var(--accent);color:var(--accent)}
+
+  main{max-width:1100px;margin:2rem auto;padding:0 1.2rem}
+  p{color:#cfd1d6}
+  .muted{color:#aeb2ba}
+
+  /* homepage heading effect */
+  h2,h3{margin:28px 0 12px}
+  h2{font-size:clamp(22px,3vw,28px)}
+  h3{font-size:clamp(18px,2.2vw,22px)}
+  .sub{font-weight:800; letter-spacing:.02em; display:inline-block}
+  .glitch{position:relative; isolation:isolate}
+  .glitch::before,.glitch::after{
+    content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none
+  }
+  .glitch::before{color:var(--cyan); animation:chroma1 2.2s infinite}
+  .glitch::after{color:var(--red);  animation:chroma2 2.2s infinite}
+  @keyframes chroma1{
+    0%,100%{clip-path:inset(0); transform:translate(0,0)}
+    10%{clip-path:inset(0 0 70% 0); transform:translate(2px,-1px)}
+    20%{clip-path:inset(60% 0 0 0); transform:translate(-2px,1px)}
+    35%{clip-path:inset(30% 0 40% 0)}
+    60%{clip-path:inset(0)}
+    72%{clip-path:inset(20% 0 50% 0); transform:translate(1px,0)}
+    85%{clip-path:inset(50% 0 10% 0); transform:translate(-1px,0)}
+  }
+  @keyframes chroma2{
+    0%,100%{clip-path:inset(0); transform:translate(0,0)}
+    12%{clip-path:inset(50% 0 10% 0); transform:translate(-2px,1px)}
+    22%{clip-path:inset(0 0 65% 0); transform:translate(2px,-1px)}
+    38%{clip-path:inset(25% 0 45% 0)}
+    62%{clip-path:inset(0)}
+    74%{clip-path:inset(10% 0 60% 0); transform:translate(-1px,0)}
+    88%{clip-path:inset(55% 0 5% 0); transform:translate(1px,0)}
+  }
+  .sub.glitch::before,.sub.glitch::after{font-weight:800}
+
+  /* cards, buttons, meta */
+  .card{border:1px solid var(--ring); border-radius:12px; padding:14px 16px; background:var(--panel); backdrop-filter: blur(4px)}
+  .btns{display:flex;gap:.6rem;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:.45rem;background:#101114;color:var(--ink);
+    border:1px solid #2a2c35;padding:.5rem .8rem;border-radius:.6rem;font-weight:700;
+    transition:background .2s,color .2s,border-color .2s,transform .08s
+  }
+  .btn:hover{background:#16171d;border-color:#3a3d48;color:var(--accent)}
+  .meta{font-size:13px;color:#aeb2ba}
+  .lead{font-size:18px}
+
+  /* contents list */
+  .toc{margin:16px 0 18px}
+  .toc h4{margin:0 0 8px; font-size:14px; letter-spacing:.08em; opacity:.9}
+  .toc ul{list-style:none; padding-left:0; margin:0}
+  .toc li{margin:6px 0}
+  .toc a{color:#e9eaef}
+  .toc a:hover{color:var(--accent); text-decoration:none}
+
+  /* section spacing */
+  section{scroll-margin-top:90px}
+  ul{margin:8px 0 16px}
+  li{margin:4px 0}
+</style>
+</head>
+<body>
+
+  <!-- global animated lines -->
+  <div class="bleeds" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+  <header>
+    <h1 class="title">HUMAN UNITY ERA — GOVERNANCE CHARTER</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="declaration.html">Declaration</a>
+      <a href="systems.html">Systems of Civilian Power</a>
+      <a href="cewic.html">CEWIC</a>
+      <a href="author-statement.html">Author Statement</a>
+      <a href="one-page-overview.html">One Page Overview</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="btns" style="margin-bottom:10px">
+      <a class="btn" href="Global%20Governance%20Charter.pdf" target="_blank" rel="noopener" download>📥 Download PDF</a>
+      <a class="btn" href="systems.html">← Back to Systems</a>
+    </div>
+
+    <h2 class="sub glitch" data-text="🌍 The Human Unity Era Governance Charter">🌍 The Human Unity Era Governance Charter</h2>
+    <p class="lead">Civilian Framework for Global Coordination and Peace Architecture</p>
+    <p class="meta">
+      Authored by: Kaileb Abrey-Blackmore • Status: Final Charter Text • Civilian Copyright © Reserved • Global Distribution Permitted
+    </p>
+
+    <!-- contents -->
+    <div class="card toc">
+      <h4>CONTENTS</h4>
+      <ul>
+        <li><a href="#preamble">🕊 PREAMBLE</a></li>
+        <li><a href="#art1">ARTICLE I — Purpose, Scope and Legal Character</a></li>
+        <li><a href="#art2">ARTICLE II — The Civilian Architect of Global Coordination</a></li>
+        <li><a href="#art3">ARTICLE III — The Council of Civilian Continuity (CCC)</a></li>
+        <li><a href="#art4">ARTICLE IV — Emergency Protocol</a></li>
+        <li><a href="#art5">ARTICLE V — Voting and Public Participation</a></li>
+        <li><a href="#art6">ARTICLE VI — Accountability and Justice</a></li>
+        <li><a href="#art7">ARTICLE VII — Performance Monitoring</a></li>
+        <li><a href="#art8">ARTICLE VIII — AI Use and Oversight</a></li>
+        <li><a href="#art9">ARTICLE IX — Non-Negotiable Ethics Framework</a></li>
+        <li><a href="#art10">ARTICLE X — Future Transparency Mechanisms</a></li>
+        <li><a href="#art11">ARTICLE XI — Disaster Autonomy Clause</a></li>
+        <li><a href="#art12">ARTICLE XII — Implementation and Pilot Use</a></li>
+        <li><a href="#art13">ARTICLE XIII — Entry into Effect</a></li>
+      </ul>
+    </div>
+
+    <!-- PREAMBLE -->
+    <section id="preamble">
+      <h2 class="sub glitch" data-text="🕊 PREAMBLE">🕊 PREAMBLE</h2>
+      <p>Recognising the urgent need for a global civilian framework that is transparent, accountable, non-militarised, and resilient in times of systemic collapse or international failure,</p>
+      <p>Acknowledging the moral obligation to prevent the recurrence of war, exploitation, disinformation, and civilian disempowerment,</p>
+      <p>Recalling the principles enshrined in the United Nations Charter, the Universal Declaration of Human Rights, and the Geneva Conventions,</p>
+      <p>We, the undersigned civilians and architects of the Human Unity Era, do hereby establish this Governance Charter as the foundational document for coordinated, non-violent, people-led global cooperation.</p>
+      <p>This Charter shall serve as a voluntary but enforceable governance framework that may operate in parallel with existing state structures, or independently where governments fail to protect the dignity and rights of their people.</p>
+    </section>
+
+    <!-- ARTICLE I -->
+    <section id="art1">
+      <h2 class="sub glitch" data-text="ARTICLE I — PURPOSE, SCOPE AND LEGAL CHARACTER">ARTICLE I — PURPOSE, SCOPE AND LEGAL CHARACTER</h2>
+
+      <h3>Section 1.1 — Purpose</h3>
+      <p>This Charter establishes the structural foundation, ethical boundaries, and democratic mechanisms of the Human Unity Era — a post-political civilian governance model designed for:</p>
+      <ul>
+        <li>Civilian-led global coordination in crises</li>
+        <li>Peace-building and recovery where international trust has collapsed</li>
+        <li>Restoration of dignity, transparency, and truth in global leadership</li>
+      </ul>
+
+      <h3>Section 1.2 — Scope</h3>
+      <p>This Charter may operate globally as a voluntary compact between peoples and institutions. It does not override state sovereignty but may function as a civilian safeguard in any territory where governments:</p>
+      <ul>
+        <li>Refuse democratic participation</li>
+        <li>Commit systemic human rights violations</li>
+        <li>Collapse or abandon their populations</li>
+      </ul>
+
+      <h3>Section 1.3 — Legal Character</h3>
+      <p>This Charter shall be understood as:</p>
+      <ul>
+        <li>A civilian constitution and governance framework</li>
+        <li>A non-binding political instrument unless codified through treaty or national adoption</li>
+        <li>A living document, subject to amendment under defined public procedures</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE II -->
+    <section id="art2">
+      <h2 class="sub glitch" data-text="ARTICLE II — THE CIVILIAN ARCHITECT OF GLOBAL COORDINATION">ARTICLE II — THE CIVILIAN ARCHITECT OF GLOBAL COORDINATION</h2>
+
+      <h3>Section 2.1 — Role and Mandate</h3>
+      <p>The Civilian Architect serves as the global civilian coordinator, responsible for:</p>
+      <ul>
+        <li>Coordinating global responses to humanitarian emergencies</li>
+        <li>Mobilising peace and ethical reform efforts</li>
+        <li>Representing the Human Unity Era in international fora</li>
+      </ul>
+      <p>The role is symbolic, operational, and ethical — not sovereign or militarised.</p>
+
+      <h3>Section 2.2 — Election Process</h3>
+      <p>Candidates must:</p>
+      <ul>
+        <li>Demonstrate a verifiable history of civic or humanitarian contribution</li>
+        <li>Receive nomination by at least 100,000 civilians across five regions</li>
+        <li>Participate in at least one globally broadcast Civic Forum</li>
+      </ul>
+      <p>Political party affiliation, corporate sponsorships, or military backgrounds disqualify candidates.</p>
+
+      <h3>Section 2.3 — Term</h3>
+      <ul>
+        <li>Five (5) years per term</li>
+        <li>Unlimited re-election permitted with re-endorsement by public vote</li>
+        <li>Mandatory performance review at Year 3 with civilian feedback and impact report</li>
+      </ul>
+
+      <h3>Section 2.4 — Duties and Obligations</h3>
+      <p>The Architect must:</p>
+      <ul>
+        <li>Remain publicly present and engaged, including global Civic Tours when feasible</li>
+        <li>Uphold Charter values without exception</li>
+        <li>Report annually to the public and CCC (see Article III)</li>
+      </ul>
+
+      <h3>Section 2.5 — Disability or Death</h3>
+      <p>In the event of death, disappearance, or verified incapacity:</p>
+      <ul>
+        <li>The CCC shall appoint an interim Architect (maximum 90 days)</li>
+        <li>Emergency elections must be initiated within 45 days</li>
+        <li>The interim may stand for election but holds no guaranteed tenure</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE III -->
+    <section id="art3">
+      <h2 class="sub glitch" data-text="ARTICLE III — THE COUNCIL OF CIVILIAN CONTINUITY (CCC)">ARTICLE III — THE COUNCIL OF CIVILIAN CONTINUITY (CCC)</h2>
+
+      <h3>Section 3.1 — Function</h3>
+      <p>The CCC acts as a standing body to:</p>
+      <ul>
+        <li>Oversee compliance with this Charter</li>
+        <li>Trigger early elections if misconduct or incapacity is identified</li>
+        <li>Approve emergency power activation (see Article V)</li>
+        <li>Review and publish public endorsements of policy performance</li>
+      </ul>
+
+      <h3>Section 3.2 — Structure</h3>
+      <ul>
+        <li>Composed of 12 rotating civilian members from globally diverse regions</li>
+        <li>3-year renewable terms, with mandatory rotation every 6 years</li>
+        <li>Selected via Civic Jury and verified by an independent ethics panel</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE IV -->
+    <section id="art4">
+      <h2 class="sub glitch" data-text="ARTICLE IV — EMERGENCY PROTOCOL">ARTICLE IV — EMERGENCY PROTOCOL</h2>
+
+      <h3>Section 4.1 — Activation Conditions</h3>
+      <p>Emergency decision-making powers may only be activated when:</p>
+      <ul>
+        <li>Two of the following bodies approve:
+          <ol>
+            <li>CCC</li>
+            <li>Global Humanitarian Response Network (GHRN)</li>
+            <li>Civilian Ethics Emergency Panel (CEEP)</li>
+          </ol>
+        </li>
+        <li>The crisis involves imminent or active systemic collapse, mass civilian threat, or communications blackout</li>
+      </ul>
+
+      <h3>Section 4.2 — Duration and Oversight</h3>
+      <ul>
+        <li>Emergency powers may be used for a maximum of 90 days</li>
+        <li>Day 7: Public override vote may be requested</li>
+        <li>All decisions must be transparently logged and reviewed post-crisis</li>
+      </ul>
+
+      <h3>Section 4.3 — Communications Failure</h3>
+      <ul>
+        <li>If global communications are disrupted:
+          <ul>
+            <li>The Architect may act independently for a maximum of 7 days</li>
+            <li>Thereafter, all further action must be paused or ratified retroactively upon system restoration</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE V -->
+    <section id="art5">
+      <h2 class="sub glitch" data-text="ARTICLE V — VOTING AND PUBLIC PARTICIPATION">ARTICLE V — VOTING AND PUBLIC PARTICIPATION</h2>
+
+      <h3>Section 5.1 — Voting Eligibility</h3>
+      <ul>
+        <li>All civilians aged sixteen (16) or older are eligible to vote</li>
+      </ul>
+
+      <h3>Section 5.2 — Secure Voting Protocol (SCVP)</h3>
+      <ul>
+        <li>Votes are verifiable but confidential</li>
+        <li>A unique trace code is issued per voter</li>
+        <li>Enables anonymous choice but prevents mass tampering</li>
+      </ul>
+
+      <h3>Section 5.3 — Discreet Voting Provision</h3>
+      <p>In authoritarian states or coercive settings, voters may use:</p>
+      <ul>
+        <li>Offline, sealed paper ballots</li>
+        <li>Mobile proxy systems via trusted overseers</li>
+        <li>Satellite-linked AI-verified voting booths in safe zones</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE VI -->
+    <section id="art6">
+      <h2 class="sub glitch" data-text="ARTICLE VI — ACCOUNTABILITY AND JUSTICE">ARTICLE VI — ACCOUNTABILITY AND JUSTICE</h2>
+
+      <h3>Section 6.1 — Legal Boundaries</h3>
+      <p>The Architect is subject to all laws applicable in any jurisdiction. No immunity exists. If accused of a crime:</p>
+      <ul>
+        <li>Case is transferred to a neutral international civilian court</li>
+        <li>CCC suspends powers until verdict</li>
+        <li>If guilty, the individual is removed and criminally liable</li>
+      </ul>
+
+      <h3>Section 6.2 — Capacity Reviews</h3>
+      <p>Triggered by CCC vote or public petition (min. 500,000 signatures):</p>
+      <ul>
+        <li>Assessment by independent medical and cognitive panel</li>
+        <li>Outcome determines continuation, temporary leave, or permanent removal</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE VII -->
+    <section id="art7">
+      <h2 class="sub glitch" data-text="ARTICLE VII — PERFORMANCE MONITORING">ARTICLE VII — PERFORMANCE MONITORING</h2>
+      <h3>Section 7.1 — Minimum Performance Threshold</h3>
+      <p>Failure to deliver 3 meaningful civilian-impact contributions per quarter may result in:</p>
+      <ul>
+        <li>A public review vote</li>
+        <li>Civilian-triggered early election</li>
+        <li>Suspension until civic audit is complete</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE VIII -->
+    <section id="art8">
+      <h2 class="sub glitch" data-text="ARTICLE VIII — AI USE AND OVERSIGHT">ARTICLE VIII — AI USE AND OVERSIGHT</h2>
+
+      <h3>Section 8.1 — Permitted Use</h3>
+      <p>AI may only be used for:</p>
+      <ul>
+        <li>Language translation</li>
+        <li>Logistics and coordination</li>
+        <li>Data integrity and fraud detection</li>
+      </ul>
+      <p>AI cannot make executive decisions.</p>
+
+      <h3>Section 8.2 — Independent AI Review Board (IHARB)</h3>
+      <ul>
+        <li>Quarterly review of all systems</li>
+        <li>Authority to suspend tools with risk evidence</li>
+        <li>All algorithms must be explained in human-readable terms</li>
+      </ul>
+
+      <h3>Section 8.3 — Civilian Challenge Clause</h3>
+      <p>If 100,000 civilians from 5+ global regions raise a documented concern:</p>
+      <ul>
+        <li>An investigation is launched</li>
+        <li>Tools remain operational unless credible harm is found</li>
+        <li>Investigation reports are published transparently</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE IX -->
+    <section id="art9">
+      <h2 class="sub glitch" data-text="ARTICLE IX — NON-NEGOTIABLE ETHICS FRAMEWORK (“ETHICS GENOME”)">ARTICLE IX — NON-NEGOTIABLE ETHICS FRAMEWORK (“ETHICS GENOME”)</h2>
+      <p>The following values are immune to amendment:</p>
+      <ol>
+        <li>Dignity</li>
+        <li>Truth</li>
+        <li>Transparency</li>
+        <li>Non-harm</li>
+      </ol>
+      <p>Any attempt to modify, redefine, or bypass these principles renders the change invalid.</p>
+    </section>
+
+    <!-- ARTICLE X -->
+    <section id="art10">
+      <h2 class="sub glitch" data-text="ARTICLE X — FUTURE TRANSPARENCY MECHANISMS">ARTICLE X — FUTURE TRANSPARENCY MECHANISMS</h2>
+
+      <h3>Section 10.1 — The Living Amendment Mirror</h3>
+      <p>All Charter amendments shall be published with:</p>
+      <ul>
+        <li>Before/After text comparison</li>
+        <li>Timestamp and author(s)</li>
+        <li>Public access and long-term record storage</li>
+      </ul>
+
+      <h3>Section 10.2 — The Global Civilian Wisdom Archive</h3>
+      <p>Permanent record of:</p>
+      <ul>
+        <li>Movements, testimonies, and historic decisions</li>
+        <li>Charters, revisions, and civilian-led actions</li>
+        <li>Available freely to all regions and nations</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE XI -->
+    <section id="art11">
+      <h2 class="sub glitch" data-text="ARTICLE XI — DISASTER AUTONOMY CLAUSE">ARTICLE XI — DISASTER AUTONOMY CLAUSE</h2>
+      <p>In cases of full global collapse (e.g., post-conflict anarchy, natural catastrophe):</p>
+      <ul>
+        <li>Local civilians may access shared Unity Era resources to survive</li>
+        <li>No region may claim authority, land, or political power</li>
+        <li>All assistance must align with Charter ethics and end upon system restoration</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE XII -->
+    <section id="art12">
+      <h2 class="sub glitch" data-text="ARTICLE XII — IMPLEMENTATION AND PILOT USE">ARTICLE XII — IMPLEMENTATION AND PILOT USE</h2>
+
+      <h3>Section 12.1 — Institutional Integration</h3>
+      <p>This framework may be adopted as:</p>
+      <ul>
+        <li>A voluntary civil society instrument</li>
+        <li>A coordination framework between neutral states</li>
+        <li>A rapid-response governance layer during post-war transitions</li>
+      </ul>
+
+      <h3>Section 12.2 — Pilot Proposal</h3>
+      <p>Pilot programs may be tested in:</p>
+      <ul>
+        <li>Refugee coordination zones</li>
+        <li>Post-conflict civilian-led regions</li>
+        <li>Failed-state regions with humanitarian partner support</li>
+      </ul>
+    </section>
+
+    <!-- ARTICLE XIII -->
+    <section id="art13">
+      <h2 class="sub glitch" data-text="ARTICLE XIII — ENTRY INTO EFFECT">ARTICLE XIII — ENTRY INTO EFFECT</h2>
+      <p>This Charter shall enter into effect upon public ratification by no fewer than:</p>
+      <ul>
+        <li>5,000,000 civilians</li>
+        <li>Across 15 countries</li>
+        <li>With a minimum of 100,000 per participating state or region</li>
+      </ul>
+      <p>Ratification remains open and rolling.</p>
+    </section>
+
+    <div class="btns" style="margin-top:18px">
+      <a class="btn" href="Global%20Governance%20Charter.pdf" target="_blank" rel="noopener" download>📥 Download PDF</a>
+      <a class="btn" href="systems.html">← Back to Systems</a>
+    </div>
+
+    <p class="muted" style="margin-top:10px">If you notice a typo or want a revision published to the Living Amendment Mirror, email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
+  </main>
+</body>
+</html>
