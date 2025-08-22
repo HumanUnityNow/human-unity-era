@@ -1,104 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Human Unity Era — Declaration</title>
-  <meta name="theme-color" content="#0b0b0f" />
-  <style>
-    :root{
-      /* match homepage palette */
-      --bg:#07070a;        /* was #0b0b0f */
-      --ink:#e9eaef;       /* homepage text */
-      --accent:#ff5436;    /* homepage orange */
-      --cyan:#46e6ff;
-      --red:#ff3b3b;
-      --ok:#36e58f;
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Human Unity Era — Declaration</title>
+<meta name="theme-color" content="#0b0b0f" />
+<style>
+  :root{
+    /* match homepage palette */
+    --bg:#07070a;
+    --ink:#e9eaef;
+    --accent:#ff5436;
+    --cyan:#46e6ff;
+    --red:#ff3b3b;
+    --ok:#36e58f;
 
-      /* panel + borders for cards */
-      --panel:#0d0e12bb;
-      --ring:#2b2d36;
-    }
+    --panel:#0d0e12bb;
+    --ring:#2b2d36;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
 
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
-      font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
+  /* animated “bleeds” like homepage */
+  .bleeds{position:fixed; inset:0; z-index:-1; pointer-events:none}
+  .bleeds span{
+    position:absolute; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, rgba(70,230,255,0), rgba(70,230,255,.35), rgba(255,84,54,.35), rgba(70,230,255,0));
+    opacity:0; filter:blur(.4px); animation:bleed 6s ease-in-out infinite;
+  }
+  .bleeds span:nth-child(1){top:12%; animation-delay:0s}
+  .bleeds span:nth-child(2){top:27%; animation-delay:1.2s}
+  .bleeds span:nth-child(3){top:41%; animation-delay:2.3s}
+  .bleeds span:nth-child(4){top:58%; animation-delay:3.6s}
+  .bleeds span:nth-child(5){top:73%; animation-delay:4.7s}
+  .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
+  @keyframes bleed{0%,100%{opacity:0; transform:translateX(-4vw)}12%{opacity:.8}25%{opacity:.25}55%{opacity:.6}80%{opacity:.18}}
 
-    /* ===== GLOBAL “BLEEDS” LINES (same as homepage) ===== */
-    .bleeds{position:fixed; inset:0; z-index:-1; pointer-events:none}
-    .bleeds span{
-      position:absolute; left:0; right:0; height:2px;
-      background:linear-gradient(90deg, rgba(70,230,255,0), rgba(70,230,255,.35), rgba(255,84,54,.35), rgba(70,230,255,0));
-      opacity:0; filter:blur(.4px); animation:bleed 6s ease-in-out infinite;
-    }
-    .bleeds span:nth-child(1){top:12%; animation-delay:0s}
-    .bleeds span:nth-child(2){top:27%; animation-delay:1.2s}
-    .bleeds span:nth-child(3){top:41%; animation-delay:2.3s}
-    .bleeds span:nth-child(4){top:58%; animation-delay:3.6s}
-    .bleeds span:nth-child(5){top:73%; animation-delay:4.7s}
-    .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
-    @keyframes bleed{0%,100%{opacity:0; transform:translateX(-4vw)}12%{opacity:.8}25%{opacity:.25}55%{opacity:.6}80%{opacity:.18}}
+  /* header / nav */
+  header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center}
+  .title{font-size:clamp(32px,5vw,40px); letter-spacing:.06em; font-weight:900; margin:0; color:var(--accent); text-shadow:0 0 18px rgba(255,84,54,.15)}
+  nav{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+  nav a{background:#222;color:var(--ink);padding:.5rem 1rem;border-radius:.5rem;border:1px solid #222;font-size:.93rem;line-height:1;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
+  nav a:hover{border-color:var(--accent);color:var(--accent)}
+  nav a.active{border-color:var(--accent);color:var(--accent)}
 
-    /* ===== HEADER ===== */
-    header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center;position:relative;overflow:hidden}
-    .title{font-size:clamp(32px,5vw,40px); letter-spacing:.06em; font-weight:900; margin:0; color:var(--accent); text-shadow:0 0 18px rgba(255,84,54,.15)}
-    nav{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
-    nav a{background:#222;color:var(--ink);padding:.5rem 1rem;border-radius:.5rem;border:1px solid #222;font-size:.93rem;line-height:1;text-decoration:none;transition:border-color .2s,color .2s,background .2s}
-    nav a:hover{border-color:var(--accent);color:var(--accent)}
-    nav a.active{border-color:var(--accent);color:var(--accent)}
+  main{max-width:1100px;margin:2rem auto;padding:0 1.2rem}
+  p{color:#cfd1d6}
 
-    main{max-width:860px;margin:2rem auto;padding:0 1.2rem}
-    p{color:#cfd1d6}
+  /* homepage heading effect for subheads */
+  h2,h3{margin:28px 0 12px; font-size:clamp(22px,3vw,28px)}
+  .sub{font-weight:800; letter-spacing:.02em; display:inline-block}
+  .glitch{position:relative; isolation:isolate}
+  .glitch::before,.glitch::after{
+    content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none
+  }
+  .glitch::before{color:var(--cyan); animation:chroma1 2.2s infinite}
+  .glitch::after{color:var(--red);  animation:chroma2 2.2s infinite}
+  @keyframes chroma1{
+    0%,100%{clip-path:inset(0); transform:translate(0,0)}
+    10%{clip-path:inset(0 0 70% 0); transform:translate(2px,-1px)}
+    20%{clip-path:inset(60% 0 0 0); transform:translate(-2px,1px)}
+    35%{clip-path:inset(30% 0 40% 0)}
+    60%{clip-path:inset(0)}
+    72%{clip-path:inset(20% 0 50% 0); transform:translate(1px,0)}
+    85%{clip-path:inset(50% 0 10% 0); transform:translate(-1px,0)}
+  }
+  @keyframes chroma2{
+    0%,100%{clip-path:inset(0); transform:translate(0,0)}
+    12%{clip-path:inset(50% 0 10% 0); transform:translate(-2px,1px)}
+    22%{clip-path:inset(0 0 65% 0); transform:translate(2px,-1px)}
+    38%{clip-path:inset(25% 0 45% 0)}
+    62%{clip-path:inset(0)}
+    74%{clip-path:inset(10% 0 60% 0); transform:translate(-1px,0)}
+    88%{clip-path:inset(55% 0 5% 0); transform:translate(1px,0)}
+  }
+  .sub.glitch::before,.sub.glitch::after{font-weight:800}
 
-    /* ===== EXACT HOMEPAGE HEADING EFFECT ===== */
-    h2,h3{margin:28px 0 12px; font-size:clamp(22px,3vw,28px)}
-    .sub{font-weight:800; letter-spacing:.02em; display:inline-block}
-    .glitch{position:relative; isolation:isolate}
-    .glitch::before,.glitch::after{
-      content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none
-    }
-    .glitch::before{color:var(--cyan); animation:chroma1 2.2s infinite}
-    .glitch::after{color:var(--red);  animation:chroma2 2.2s infinite}
-    @keyframes chroma1{
-      0%,100%{clip-path:inset(0); transform:translate(0,0)}
-      10%{clip-path:inset(0 0 70% 0); transform:translate(2px,-1px)}
-      20%{clip-path:inset(60% 0 0 0); transform:translate(-2px,1px)}
-      35%{clip-path:inset(30% 0 40% 0)}
-      60%{clip-path:inset(0)}
-      72%{clip-path:inset(20% 0 50% 0); transform:translate(1px,0)}
-      85%{clip-path:inset(50% 0 10% 0); transform:translate(-1px,0)}
-    }
-    @keyframes chroma2{
-      0%,100%{clip-path:inset(0); transform:translate(0,0)}
-      12%{clip-path:inset(50% 0 10% 0); transform:translate(-2px,1px)}
-      22%{clip-path:inset(0 0 65% 0); transform:translate(2px,-1px)}
-      38%{clip-path:inset(25% 0 45% 0)}
-      62%{clip-path:inset(0)}
-      74%{clip-path:inset(10% 0 60% 0); transform:translate(-1px,0)}
-      88%{clip-path:inset(55% 0 5% 0); transform:translate(1px,0)}
-    }
-    .sub.glitch::before,.sub.glitch::after{font-weight:800}
-
-    /* ===== Cards ===== */
-    .grid{display:grid;gap:14px}
-    .card{border:1px solid var(--ring); border-radius:12px; padding:14px 16px; background:var(--panel); backdrop-filter:blur(4px)}
-    .card p{margin:.45rem 0 1rem}
-    .btns{display:flex;gap:.6rem;flex-wrap:wrap}
-    .btn{
-      display:inline-flex;align-items:center;gap:.45rem;background:#101114;color:var(--ink);
-      border:1px solid #2a2c35;padding:.5rem .8rem;border-radius:.6rem;font-weight:700;
-      transition:background .2s,color .2s,border-color .2s,transform .08s
-    }
-    .btn:hover{background:#16171d;border-color:#3a3d48;color:var(--accent)}
-    .back{display:inline-block;margin-bottom:1.2rem}
-  </style>
+  /* cards */
+  .grid{display:grid; gap:14px}
+  .card{border:1px solid var(--ring); border-radius:12px; padding:14px 16px; background:var(--panel); backdrop-filter: blur(4px)}
+  .card p{margin:.45rem 0 1rem}
+  .btns{display:flex;gap:.6rem;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:.45rem;background:#101114;color:var(--ink);
+    border:1px solid #2a2c35;padding:.5rem .8rem;border-radius:.6rem;font-weight:700;
+    transition:background .2s,color .2s,border-color .2s,transform .08s
+  }
+  .btn:hover{background:#16171d;border-color:#3a3d48;color:var(--accent)}
+  .ic{font-weight:700}
+  .back{display:inline-block;margin-bottom:1.2rem}
+</style>
 </head>
 <body>
 
-  <!-- global animated lines like the homepage -->
+  <!-- global animated lines -->
   <div class="bleeds" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
   <header>
@@ -115,7 +114,7 @@
   <main>
     <a class="back" href="index.html">← Back to Home</a>
 
-    <p>This section contains the foundational documents that define the vision, purpose, and ethical grounding of the Human Unity Era. These are the origin texts — written by civilians, for civilians — to guide a peaceful, coordinated future beyond war, corruption, and disinformation.</p>
+    <p>Foundational documents that define the vision, purpose, and ethical grounding of the Human Unity Era — origin texts written by civilians, for civilians — to guide a peaceful, coordinated future beyond war, corruption, and disinformation.</p>
 
     <section class="grid">
 
@@ -124,8 +123,13 @@
         <h3 class="sub glitch" data-text="📜 1. The Founding Declaration">📜 1. The Founding Declaration</h3>
         <p>A clear, structured vision for a new historical era — exposing system failure and offering a civilian-led alternative grounded in dignity, peace, and truth.</p>
         <div class="btns">
-          <a class="btn" href="downloads/founding-declaration.pdf" target="_blank" rel="noopener">📥 Download PDF</a>
-          <a class="btn" href="founding-declaration.html" target="_blank" rel="noopener">📝 View Online</a>
+          <!-- PDF at repo root: The Human Unity Era Deceleration (3).pdf -->
+          <a class="btn" href="The%20Human%20Unity%20Era%20Deceleration%20%283%29.pdf" target="_blank" rel="noopener" download>
+            <span class="ic">📥</span> Download PDF
+          </a>
+          <a class="btn" href="founding-declaration.html" target="_blank" rel="noopener">
+            <span class="ic">📝</span> View Online
+          </a>
         </div>
       </article>
 
@@ -134,8 +138,13 @@
         <h3 class="sub glitch" data-text="🧾 2. Author Statement">🧾 2. Author Statement</h3>
         <p>A one-page personal reflection from Kaileb Abrey-Blackmore on why this work was created, who it speaks for, and how civilians reclaim power through structure — not chaos.</p>
         <div class="btns">
-          <a class="btn" href="downloads/author-statement.pdf" target="_blank" rel="noopener">📥 Download PDF</a>
-          <a class="btn" href="author-statement.html" target="_blank" rel="noopener">📝 View Online</a>
+          <!-- PDF at repo root: Author statement.pdf -->
+          <a class="btn" href="Author%20statement.pdf" target="_blank" rel="noopener" download>
+            <span class="ic">📥</span> Download PDF
+          </a>
+          <a class="btn" href="author-statement.html" target="_blank" rel="noopener">
+            <span class="ic">📝</span> View Online
+          </a>
         </div>
       </article>
 
@@ -144,8 +153,13 @@
         <h3 class="sub glitch" data-text="🗺️ 3. One-Page Overview">🗺️ 3. One-Page Overview</h3>
         <p>A simplified summary of the Human Unity Era — goals, systems, and guiding ideas — designed for quick understanding and wide sharing.</p>
         <div class="btns">
-          <a class="btn" href="downloads/one-page-overview.pdf" target="_blank" rel="noopener">📥 Download PDF</a>
-          <a class="btn" href="one-page-overview.html" target="_blank" rel="noopener">📝 View Online</a>
+          <!-- PDF at repo root: Human Unity Era - One Page Overview.pdf -->
+          <a class="btn" href="Human%20Unity%20Era%20-%20One%20Page%20Overview.pdf" target="_blank" rel="noopener" download>
+            <span class="ic">📥</span> Download PDF
+          </a>
+          <a class="btn" href="one-page-overview.html" target="_blank" rel="noopener">
+            <span class="ic">📝</span> View Online
+          </a>
         </div>
       </article>
 
