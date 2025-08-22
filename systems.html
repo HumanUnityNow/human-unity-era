@@ -40,7 +40,7 @@
   .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
   @keyframes bleed{0%,100%{opacity:0; transform:translateX(-4vw)}12%{opacity:.8}25%{opacity:.25}55%{opacity:.6}80%{opacity:.18}}
 
-  /* header / nav (same system) */
+  /* header / nav */
   header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center}
   .title{font-size:clamp(32px,5vw,40px); letter-spacing:.06em; font-weight:900; margin:0; color:var(--accent); text-shadow:0 0 18px rgba(255,84,54,.15)}
   nav{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
@@ -82,9 +82,9 @@
 
   /* layout + cards */
   .lead{max-width:86ch}
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-top:10px}
+  .grid{display:grid; grid-template-columns:1fr; gap:14px; margin-top:10px}
   .card{border:1px solid var(--ring); border-radius:12px; padding:14px 16px; background:var(--panel); backdrop-filter: blur(4px)}
-  .card p{margin:.35rem 0 1rem}
+  .card p{margin:.45rem 0 1rem}
   .btns{display:flex;gap:.6rem;flex-wrap:wrap}
   .btn{
     display:inline-flex;align-items:center;gap:.45rem;background:#101114;color:var(--ink);
@@ -92,10 +92,7 @@
     transition:background .2s,color .2s,border-color .2s,transform .08s
   }
   .btn:hover{background:#16171d;border-color:#3a3d48;color:var(--accent)}
-
-  /* section anchors */
-  .anchor{scroll-margin-top:90px}
-  .tiny{font-size:13px; color:#aeb2ba}
+  .tiny{font-size:13px;color:#aeb2ba}
 </style>
 </head>
 <body>
@@ -116,149 +113,63 @@
   </header>
 
   <main>
-    <h2 class="sub glitch" data-text="⚙️ What this page is">⚙️ What this page is</h2>
+    <h2 class="sub glitch" data-text="⚙️ Core Systems — three founding documents">⚙️ Core Systems — three founding documents</h2>
     <p class="lead">
-      A practical index of the **core systems** in the Human Unity Era. Each system is designed for enforceable peace, public oversight,
-      and non-harm — and can be implemented **modularly** or as a whole framework.
+      These are the **operational systems** that shift power back to civilians. Each is ready to adopt as a standalone module or as part of the full Human Unity Era framework.
     </p>
 
-    <!-- Quick jump cards -->
-    <div class="grid">
-      <div class="card">
-        <h3 class="sub glitch" data-text="📡 CEWIC">📡 CEWIC</h3>
-        <p>Civilian Emergency War Intervention Channel — real-time alert/review to flag escalations before they spiral.</p>
-        <div class="btns">
-          <a class="btn" href="#cewic">Jump ↓</a>
-          <a class="btn" href="cewic.html">Open CEWIC page →</a>
-        </div>
-      </div>
+    <!-- Three documents only -->
+    <section class="grid">
 
-      <div class="card">
-        <h3 class="sub glitch" data-text="🧭 MPOB">🧭 MPOB</h3>
-        <p>Mass Peace Oversight Board — neutral oversight for post-conflict zones, aid integrity, and enforcement with civilian input.</p>
+      <!-- 1) Governance Charter -->
+      <article class="card">
+        <h3 class="sub glitch" data-text="📜 Governance Charter">📜 Governance Charter</h3>
+        <p>
+          The ruleset and safeguards for civilian-led global coordination: public reasoning logs, AI-audit rails, enforcement ladders that target power not populations, and non-harm baselines.
+        </p>
         <div class="btns">
-          <a class="btn" href="#mpob">Jump ↓</a>
+          <a class="btn" href="downloads/governance-charter.pdf" target="_blank" rel="noopener">📥 Download PDF</a>
+          <a class="btn" href="governance-charter.html" target="_blank" rel="noopener">📝 View Online</a>
         </div>
-      </div>
+      </article>
 
-      <div class="card">
-        <h3 class="sub glitch" data-text="💠 Peace Dividend">💠 Peace Dividend</h3>
-        <p>Recovery for **all** civilian victims, regardless of “side,” removing war’s incentive loop and rebuilding lives.</p>
+      <!-- 2) CEWIC -->
+      <article class="card">
+        <h3 class="sub glitch" data-text="📡 CEWIC — Civilian Emergency War Intervention Channel">📡 CEWIC — Civilian Emergency War Intervention Channel</h3>
+        <p>
+          Real-time alert and review pipeline that forces public scrutiny **before** escalations go kinetic. Intake → triage → expert validation → public record and remedies.
+        </p>
         <div class="btns">
-          <a class="btn" href="#dividend">Jump ↓</a>
+          <a class="btn" href="downloads/cewic.pdf" target="_blank" rel="noopener">📥 Download PDF</a>
+          <a class="btn" href="cewic.html" target="_blank" rel="noopener">📝 View Online</a>
         </div>
-      </div>
+      </article>
 
-      <div class="card">
-        <h3 class="sub glitch" data-text="🔎 AI-Audited Governance">🔎 AI-Audited Governance</h3>
-        <p>Publicly reviewable, tamper-resistant checks on leadership decisions to prevent corruption, secrecy, and manipulation.</p>
+      <!-- 3) Treaty-Born Institutions -->
+      <article class="card">
+        <h3 class="sub glitch" data-text="🏛️ Treaty-Born Institutions">🏛️ Treaty-Born Institutions</h3>
+        <p>
+          The institutional layer created by treaty (e.g., MPOB oversight, Peace Dividend Secretariat, Sanctions Review Panel, Ombuds). Transparent mandates, audit trails, and civilian seats.
+        </p>
         <div class="btns">
-          <a class="btn" href="#ai-audit">Jump ↓</a>
+          <a class="btn" href="downloads/treaty-born-institutions.pdf" target="_blank" rel="noopener">📥 Download PDF</a>
+          <a class="btn" href="treaty-born-institutions.html" target="_blank" rel="noopener">📝 View Online</a>
         </div>
-      </div>
+      </article>
 
-      <div class="card">
-        <h3 class="sub glitch" data-text="🛡️ Civilian Enforcement">🛡️ Civilian Enforcement</h3>
-        <p>Non-violent enforcement & protective presence; sanction design that targets power, not populations.</p>
-        <div class="btns">
-          <a class="btn" href="#enforcement">Jump ↓</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3 class="sub glitch" data-text="🚨 Early Warning Network">🚨 Early Warning Network</h3>
-        <p>Signal hubs + review protocols for de-escalation before strikes, mobilisations, or blockades are executed.</p>
-        <div class="btns">
-          <a class="btn" href="#early-warning">Jump ↓</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Detail sections -->
-    <section id="cewic" class="anchor">
-      <h2 class="sub glitch" data-text="📡 CEWIC — Civilian Emergency War Intervention Channel">📡 CEWIC — Civilian Emergency War Intervention Channel</h2>
-      <p>
-        Real-time, civilian-accessible channel that forces public review of government or military escalations **before** they become kinetic.
-        Provides structured intake, triage, expert validation, and a publishable record of objections and risk analysis.
-      </p>
-      <p class="tiny">Example: During U.S.–Iran tensions (2025), CEWIC could force review of claimed threats and delay/disable immediate strikes pending verification.</p>
-      <div class="btns">
-        <a class="btn" href="cewic.html">Open the CEWIC hub →</a>
-      </div>
     </section>
 
-    <section id="mpob" class="anchor">
-      <h2 class="sub glitch" data-text="🧭 MPOB — Mass Peace Oversight Board">🧭 MPOB — Mass Peace Oversight Board</h2>
-      <p>
-        Neutral, international oversight with **civilian seats** and independent observers. Monitors ceasefires, aid flows, demobilisation,
-        and reconstruction contracts; publishes violations; can trigger targeted corrective measures without collective punishment.
-      </p>
-      <ul>
-        <li>Stop aid diversion and warlord capture (learning from Syria, Libya, parts of Sudan).</li>
-        <li>Embed audit trails for logistics, procurement, and local partner selection.</li>
-        <li>Publish public-facing dashboards for transparency.</li>
-      </ul>
-    </section>
-
-    <section id="dividend" class="anchor">
-      <h2 class="sub glitch" data-text="💠 Peace Dividend for Civilians">💠 Peace Dividend for Civilians</h2>
-      <p>
-        A universal, side-agnostic recovery package for civilian victims of war. Funds housing, healthcare, trauma support, documentation recovery,
-        and livelihood restart — removing perverse incentives that reward belligerents while civilians starve.
-      </p>
-      <ul>
-        <li>Eligibility based on harm, not allegiance.</li>
-        <li>Payments coupled with service access and identity/document repair.</li>
-        <li>Public reporting prevents political gatekeeping and theft.</li>
-      </ul>
-    </section>
-
-    <section id="ai-audit" class="anchor">
-      <h2 class="sub glitch" data-text="🔎 AI-Audited Governance Protocols">🔎 AI-Audited Governance Protocols</h2>
-      <p>
-        Digital protocols record leadership decisions and their inputs; AI systems flag inconsistencies, conflicts of interest, or secrecy violations.
-        Outputs are **publicly reviewable**, with human appeals and red-team lanes, so no leader can hide under “classified” without trace.
-      </p>
-      <ul>
-        <li>Change-logs with cryptographic integrity.</li>
-        <li>Public reasoning summaries; private data minimised and time-bound.</li>
-        <li>Independent red teams simulate failure modes and adversarial abuse.</li>
-      </ul>
-    </section>
-
-    <section id="enforcement" class="anchor">
-      <h2 class="sub glitch" data-text="🛡️ Civilian Enforcement & Safeguards">🛡️ Civilian Enforcement & Safeguards</h2>
-      <p>
-        Non-violent enforcement architecture: protective presence, procurement locks, targeted asset controls, and reputational sanctions on elites —
-        **not** collective punishment of civilians. Escalation ladders are published and appealable.
-      </p>
-      <ul>
-        <li>Priority: protect food/medical corridors; isolate perpetrators, not populations.</li>
-        <li>Automatic review timers so measures don’t become permanent poverty.</li>
-        <li>Whistleblower immunity routes with cross-border support.</li>
-      </ul>
-    </section>
-
-    <section id="early-warning" class="anchor">
-      <h2 class="sub glitch" data-text="🚨 Early Warning & De-escalation Network">🚨 Early Warning & De-escalation Network</h2>
-      <p>
-        Civilian-fed signal hubs (media, NGOs, diaspora, analysts) + verification protocols to spot escalations early and route them through CEWIC/MPOB
-        for mandatory review, public notice, and off-ramps (back-channels, monitored pauses, verification teams).
-      </p>
-    </section>
-
-    <section id="pilots" class="anchor">
+    <!-- Implementation & Pilots -->
+    <section id="pilots" style="margin-top:28px">
       <h2 class="sub glitch" data-text="🧪 Implementation & Pilots">🧪 Implementation & Pilots</h2>
       <p>
-        Systems can be piloted **modularly** (e.g., CEWIC only) or as a package. We’re open to partnering with cities, NGOs, alliances, or ministries willing
-        to run transparent trials with predefined success metrics and public reporting.
+        Run a focused pilot with your city, NGO, alliance, or ministry. We’ll define success metrics, publish transparent reports, and open independent review lanes.
       </p>
       <div class="btns">
         <a class="btn" href="mailto:humanunityera@gmail.com">Propose a pilot →</a>
       </div>
+      <p class="tiny">Prefer a sandbox first? We can simulate your use-case with red-team testing and publish the results.</p>
     </section>
-
-    <p class="tiny">Questions or media? Email: <a href="mailto:humanunityera@gmail.com">humanunityera@gmail.com</a></p>
   </main>
 
 </body>
