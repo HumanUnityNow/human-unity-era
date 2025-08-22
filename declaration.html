@@ -17,7 +17,7 @@
     a{color:var(--accent);text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* Header + Nav */
+    /* Header + Nav (match site) */
     header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center;position:relative;overflow:hidden}
     .glitch{position:relative;font-size:clamp(1.6rem,3.2vw,2.2rem);text-transform:uppercase;letter-spacing:.03em;font-weight:700;color:var(--accent);display:inline-block;line-height:1.25}
     .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none}
@@ -34,30 +34,62 @@
 
     main{max-width:860px;margin:2rem auto;padding:0 1.2rem}
 
-    /* Intro underline sweep */
+    /* Intro underline sweep (same feel as homepage subheads) */
     .intro{color:var(--muted);margin:.25rem 0 1.25rem 0;font-size:1.02rem}
     .kicker{display:inline-block;position:relative;padding-bottom:.1rem}
-    .kicker:after{content:"";position:absolute;left:0;bottom:-.2rem;height:2px;width:100%;background:linear-gradient(90deg,transparent,var(--accent),var(--accent-2),transparent);filter:drop-shadow(0 0 10px rgba(255,85,34,.25));transform-origin:left;transform:scaleX(.85);transition:transform .25s ease}
+    .kicker:after{
+      content:"";position:absolute;left:0;bottom:-.2rem;height:2px;width:100%;
+      background:linear-gradient(90deg,transparent,var(--accent),var(--accent-2),transparent);
+      filter:drop-shadow(0 0 10px rgba(255,85,34,.25));
+      transform-origin:left;transform:scaleX(.85);transition:transform .25s ease
+    }
     .kicker:hover:after{transform:scaleX(1)}
 
     /* Cards */
     .grid{display:grid;gap:1.2rem}
-    .card{background:var(--panel);border:1px solid var(--ring);border-radius:12px;padding:1.1rem 1.2rem 1rem;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:transform .15s ease,border-color .2s ease,box-shadow .2s ease}
+    .card{
+      background:var(--panel);border:1px solid var(--ring);border-radius:12px;
+      padding:1.1rem 1.2rem 1rem;box-shadow:0 4px 16px rgba(0,0,0,.25);
+      transition:transform .15s ease,border-color .2s ease,box-shadow .2s ease
+    }
     .card:hover{transform:translateY(-2px);border-color:#303036;box-shadow:0 8px 24px rgba(0,0,0,.35)}
     .card p{margin:.35rem 0 1rem;color:var(--muted)}
 
-    /* ✅ Glitchy subheadings (emoji + text) */
-    .h3g{position:relative;display:inline-block;font-weight:800;letter-spacing:.02em;margin:.1rem 0 .35rem 0;font-size:1.12rem;color:var(--fg)}
-    .h3g::before,.h3g::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
-    .h3g::before{color:#ff2a2a;animation:sm1 2.2s infinite steps(2,end)}
-    .h3g::after{color:#2affff;animation:sm2 2s infinite steps(2,end)}
-    @keyframes sm1{0%{transform:translate(0,0)}50%{transform:translate(-0.8px,0.6px)}100%{transform:translate(0,0)}}
-    @keyframes sm2{0%{transform:translate(0,0)}50%{transform:translate(0.8px,-0.6px)}100%{transform:translate(0,0)}}
-    .h3g:hover{text-shadow:0 0 18px rgba(255,85,34,.15)}
-    @media (prefers-reduced-motion:reduce){.h3g::before,.h3g::after{animation:none;display:none}}
+    /* === HOMEPAGE-STYLE SECTION TITLES (emoji + white text + animated streak) === */
+    .h3fx{
+      position:relative;display:inline-flex;align-items:center;gap:.45rem;
+      font-weight:800;letter-spacing:.02em;margin:.1rem 0 .75rem 0;
+      font-size:1.12rem;color:var(--fg);
+    }
+    .h3fx .emo{font-size:1.05rem}
+    /* static glow line under title */
+    .h3fx::after{
+      content:"";position:absolute;left:-2px;right:-2px;bottom:-6px;height:2px;
+      background:linear-gradient(90deg,transparent,rgba(255,85,34,.85),rgba(255,154,118,.7),transparent);
+      filter:blur(.15px) drop-shadow(0 0 10px rgba(255,85,34,.22));
+    }
+    /* moving highlight (streak) */
+    .h3fx::before{
+      content:"";position:absolute;bottom:-7px;height:2px;
+      left:0;right:85%;opacity:.0;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);
+      box-shadow:0 0 12px rgba(255,255,255,.45);
+      animation:streak 3.2s infinite ease-in-out;
+    }
+    @keyframes streak{
+      0%{left:0;right:90%;opacity:.05}
+      35%{left:15%;right:55%;opacity:.35}
+      60%{left:55%;right:15%;opacity:.25}
+      100%{left:90%;right:0;opacity:.08}
+    }
+    @media (prefers-reduced-motion:reduce){.h3fx::before{animation:none;display:none}}
 
     .btns{display:flex;gap:.6rem;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;gap:.45rem;background:#1d1d1f;color:var(--fg);border:1px solid #2a2a2e;padding:.5rem .8rem;border-radius:.6rem;font-size:.92rem;text-decoration:none;transition:background .2s,color .2s,border-color .2s,transform .08s}
+    .btn{
+      display:inline-flex;align-items:center;gap:.45rem;background:#1d1d1f;color:var(--fg);
+      border:1px solid #2a2a2e;padding:.5rem .8rem;border-radius:.6rem;font-size:.92rem;text-decoration:none;
+      transition:background .2s,color .2s,border-color .2s,transform .08s
+    }
     .btn:hover{background:#242428;border-color:var(--accent);color:var(--accent)}
     .btn:active{transform:translateY(1px)}
     .btn .ic{font-family:var(--mono);font-size:.95rem;opacity:.95}
@@ -91,7 +123,7 @@
 
       <!-- 1. Founding Declaration -->
       <article class="card">
-        <h3 class="h3g" data-text="📜 1. The Founding Declaration">📜 1. The Founding Declaration</h3>
+        <h3 class="h3fx"><span class="emo">📜</span><span>1. The Founding Declaration</span></h3>
         <p>A clear, structured vision for a new historical era — exposing system failure and offering a civilian-led alternative grounded in dignity, peace, and truth.</p>
         <div class="btns">
           <a class="btn" href="downloads/founding-declaration.pdf" target="_blank" rel="noopener">
@@ -106,7 +138,7 @@
 
       <!-- 2. Author Statement -->
       <article class="card">
-        <h3 class="h3g" data-text="🧾 2. Author Statement">🧾 2. Author Statement</h3>
+        <h3 class="h3fx"><span class="emo">🧾</span><span>2. Author Statement</span></h3>
         <p>A one-page personal reflection from Kaileb Abrey-Blackmore on why this work was created, who it speaks for, and how civilians reclaim power through structure — not chaos.</p>
         <div class="btns">
           <a class="btn" href="downloads/author-statement.pdf" target="_blank" rel="noopener">
@@ -120,7 +152,7 @@
 
       <!-- 3. One-Page Overview -->
       <article class="card">
-        <h3 class="h3g" data-text="🗺️ 3. One-Page Overview">🗺️ 3. One-Page Overview</h3>
+        <h3 class="h3fx"><span class="emo">🗺️</span><span>3. One-Page Overview</span></h3>
         <p>A simplified summary of the Human Unity Era — goals, systems, and guiding ideas — designed for quick understanding and wide sharing.</p>
         <div class="btns">
           <a class="btn" href="downloads/one-page-overview.pdf" target="_blank" rel="noopener">
