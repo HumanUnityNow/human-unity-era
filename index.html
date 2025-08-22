@@ -23,14 +23,7 @@
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
     overflow-x:hidden; transition:transform .12s ease;
   }
-  body.lock{overflow:hidden}
-<section style="margin: 20px 0; text-align:center;">
-  <button
-    onclick="window.location.href='declaration.html'"
-    style="cursor:pointer; padding:14px 22px; border:1px solid #888; border-radius:10px; background:transparent; color:inherit; font-weight:700;">
-    🕊️ Open “The Human Unity Era — Declaration”
-  </button>
-</section>
+
   /* ===== GLOBAL HACKER BACKGROUND ===== */
   .bg-glitch,.bg-glitch::before,.bg-glitch::after{
     position:fixed; inset:-2px; pointer-events:none; z-index:-1;
@@ -66,26 +59,6 @@
   .bleeds span:nth-child(5){top:73%; animation-delay:4.7s}
   .bleeds span:nth-child(6){top:86%; animation-delay:5.5s}
   @keyframes bleed{0%,100%{opacity:0; transform:translateX(-4vw)}12%{opacity:.8}25%{opacity:.25}55%{opacity:.6}80%{opacity:.18}}
-
-  /* ===== INTRO VIDEO OVERLAY ===== */
-  #intro{position:fixed; inset:0; z-index:1000; background:#000; display:grid; place-items:center; transition:opacity .6s ease}
-  #intro.hidden{opacity:0; pointer-events:none}
-  #intro video{width:100vw; height:100vh; object-fit:cover}
-  #intro .tv-static,#intro .tv-scan,#intro .tv-vignette{position:absolute; inset:0; pointer-events:none}
-  #intro .tv-static{
-    opacity:.22;
-    background:
-      repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 2px, rgba(0,0,0,.06) 2px 4px),
-      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, rgba(0,0,0,.02) 2px 4px);
-    animation:introNoise 2.6s steps(40,end) infinite;
-  }
-  @keyframes introNoise{0%,100%{transform:translateZ(0)}25%{transform:translateY(-1px)}50%{transform:translateY(0)}75%{transform:translateY(1px)}}
-  #intro .tv-scan{background:linear-gradient(to bottom, rgba(255,255,255,.15), rgba(255,255,255,0)); height:22%; width:120%; left:-10%; filter:blur(3px); animation:introScan 5.4s cubic-bezier(.2,.6,.2,1) infinite}
-  @keyframes introScan{0%{top:-28%}50%{top:75%}100%{top:-28%}}
-  #intro .tv-vignette{background:radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 0 60%, rgba(0,0,0,.75) 95%, rgba(0,0,0,.92) 100%)}
-  #intro .controls{position:absolute; inset:auto 16px 16px 16px; display:flex; gap:10px; align-items:center}
-  #intro button{background:#101114;border:1px solid #2a2c35;color:#e7e7ea;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
-  #intro .note{color:#c8c8ce;font-size:14px;opacity:.85}
 
   /* ===== HEADER / HERO ===== */
   header{position:relative; padding:72px 20px 40px; text-align:center; overflow:hidden;
@@ -169,25 +142,22 @@
   /* page shake */
   @keyframes pageShake{0%{transform:translate(0,0)}20%{transform:translate(-1px, 0)}40%{transform:translate(1px, 1px)}60%{transform:translate(0, -1px)}80%{transform:translate(1px, 0)}100%{transform:translate(0,0)}}
   .shake{animation:pageShake 220ms linear 1}
+
+  /* subtle fade-in of header area (replaces the intro's "moment") */
+  @media (prefers-reduced-motion: no-preference){
+    header{
+      opacity: 0;
+      transform: translateY(4px);
+      animation: heroFade .35s ease-out .05s forwards;
+    }
+    @keyframes heroFade{ to { opacity: 1; transform: none; } }
+  }
 </style>
 </head>
-<body class="lock">
+<body>
   <!-- global background -->
   <div class="bg-glitch" id="bg"></div>
   <div class="bleeds" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-
-  <!-- INTRO VIDEO OVERLAY -->
-  <div id="intro" aria-hidden="true">
-    <video id="introVid" autoplay muted playsinline preload="auto">
-      <source src="media/hack-intro.mp4" type="video/mp4">
-    </video>
-    <div class="tv-static"></div><div class="tv-scan"></div><div class="tv-vignette"></div>
-    <div class="controls" id="introCtrls" hidden>
-      <button id="startBtn">Tap to Start ▷</button>
-      <button id="skipBtn">Skip</button>
-      <span class="note">Autoplay was blocked by your browser.</span>
-    </div>
-  </div>
 
   <header>
     <div class="hero-emblem">
@@ -211,6 +181,15 @@
     </div>
   </header>
 
+  <!-- Quick access button to the Declaration (moved out of <style>) -->
+  <section style="margin: 20px 0; text-align:center;">
+    <button
+      onclick="window.location.href='declaration.html'"
+      style="cursor:pointer; padding:14px 22px; border:1px solid #2b2d36; border-radius:10px; background:#0e0f14; color:#e9eaef; font-weight:900;">
+      🕊️ Open “The Human Unity Era — Declaration”
+    </button>
+  </section>
+
   <main>
     <h2 class="sub glitch" data-text="🌍 The Human Unity Era">🌍 The Human Unity Era</h2>
     <p><strong>Civilian-led. Peace-driven. AI-readable.</strong><br/>Created by Kaileb Abrey-Blackmore — Civilian Architect of Global Coordination.</p>
@@ -221,10 +200,9 @@
     <h2 class="sub glitch" data-text="📚 Explore the Framework">📚 Explore the Framework</h2>
     <div class="nav-grid">
       <div class="card">
-  <a class="clickable" href="declaration.html">🕊️ The Human Unity Era — Declaration</a>
-  <br>
-  <small>Founding Declaration • Author Statement • One-Page Overview</small>
-</div>
+        <a class="clickable" href="declaration.html">🕊️ The Human Unity Era — Declaration</a>
+        <br><small>Founding Declaration • Author Statement • One-Page Overview</small>
+      </div>
       <div class="card"><a href="systems.html">⚙️ Systems of Civilian Power</a><br><small>Governance Charter • CEWIC • Treaty-born Institutions</small></div>
       <div class="card"><a href="#framework">🌍 Ukraine–Russia Peace Framework</a><br><small>UN-style Treaty • Post-Treaty Agenda • Peace Dividend • Sanctions & Reconstruction</small></div>
       <div class="card"><a href="#tools">💡 Civilian Involvement Tools</a><br><small>Join the Movement • Protest Toolkit • Templates</small></div>
@@ -265,26 +243,6 @@
   </main>
 
 <script>
-  /* ===== Config: paste your Formspree endpoint here to receive emails =====
-     Get one free at https://formspree.io (create form, copy POST endpoint)
-     Example: const FORMSPREE_ENDPOINT = "https://formspree.io/f/abcdwxyz";
-  */
-  const FORMSPREE_ENDPOINT = ""; // ← put your endpoint between the quotes
-
-  /* ----- Intro overlay ----- */
-  const overlay=document.getElementById('intro');
-  const vid=document.getElementById('introVid');
-  const ctrls=document.getElementById('introCtrls');
-  const startBtn=document.getElementById('startBtn');
-  const skipBtn=document.getElementById('skipBtn');
-  function hideIntro(){overlay.classList.add('hidden'); document.body.classList.remove('lock'); setTimeout(()=>overlay.remove(),700);}
-  function tryPlay(){ vid.play().then(()=>{ctrls.hidden=true;}).catch(()=>{ctrls.hidden=false;}); }
-  if(document.readyState==='complete') tryPlay(); else window.addEventListener('load', tryPlay, {once:true});
-  vid.addEventListener('ended', hideIntro);
-  skipBtn?.addEventListener('click', hideIntro);
-  startBtn?.addEventListener('click', ()=>{vid.muted=true; tryPlay();});
-  setTimeout(()=>{ if(!overlay.classList.contains('hidden')) hideIntro(); }, 14000);
-
   /* ----- TV slides rotation (final slide 7s) ----- */
   const slides=[...document.querySelectorAll('.slide')];
   let idx=0; const durations=[4500,4500,4500,4500,7000];
@@ -326,6 +284,7 @@
     const alias = document.getElementById('alias').value.trim();
     if(!email){ status.textContent="Email required."; status.className="tiny err"; return; }
 
+    const FORMSPREE_ENDPOINT = ""; // put your endpoint between the quotes
     if(FORMSPREE_ENDPOINT){
       try{
         const res = await fetch(FORMSPREE_ENDPOINT, {
