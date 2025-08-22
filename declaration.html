@@ -9,16 +9,16 @@
     :root{
       --bg:#0b0b0f; --panel:#141416; --fg:#f4f4f4; --muted:#cfcfcf;
       --accent:#ff5522; --accent-2:#ff9a76; --ring:#2a2a2a;
-      --font: ui-serif, Georgia, "Times New Roman", serif;
       --ui: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --serif: ui-serif, Georgia, "Times New Roman", serif;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.7}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:var(--serif);line-height:1.7}
     a{color:var(--accent);text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* Header + Nav (glitch title) */
+    /* Header + Nav (same as other subpages) */
     header{background:#111;padding:2.25rem 1rem 1.25rem;text-align:center;position:relative;overflow:hidden}
     .glitch{position:relative;font-size:clamp(1.6rem,3.2vw,2.2rem);text-transform:uppercase;letter-spacing:.03em;font-weight:700;color:var(--accent);display:inline-block;line-height:1.25}
     .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none}
@@ -35,7 +35,7 @@
 
     main{max-width:860px;margin:2rem auto;padding:0 1.2rem}
 
-    /* Intro underline sweep */
+    /* Intro text with subtle underline sweep */
     .intro{color:var(--muted);margin:.25rem 0 1.25rem 0;font-size:1.02rem}
     .kicker{display:inline-block;position:relative;padding-bottom:.1rem}
     .kicker:after{
@@ -55,48 +55,47 @@
     .card:hover{transform:translateY(-2px);border-color:#303036;box-shadow:0 8px 24px rgba(0,0,0,.35)}
     .card p{margin:.55rem 0 1rem;color:var(--muted)}
 
-    /* === HOMEPAGE-MATCHED ANIMATED SUBHEADS ===
-       White title with animated red/cyan copies + thin teal base line.
+    /* === HOMEPAGE-STYLE ANIMATED SUBHEADS ===
+       White heavy text + animated red/cyan duplicates + thin teal baseline.
     */
-    .submega{
+    .hx{
       position:relative;display:flex;align-items:center;gap:.55rem;
       margin:.1rem 0 1.35rem 0;
       font-family:var(--ui); font-weight:900; letter-spacing:.005em;
       font-size: clamp(1.0rem, 1.8vw, 1.25rem); line-height:1.1;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
-    .submega .emo{font-size:1.1rem}
-    .submega .txt{
-      position:relative; color:#fff;
-    }
-    /* animated chroma layers */
-    .submega .txt::before,
-    .submega .txt::after{
+    .hx .emo{font-size:1.1rem}
+    .hx .txt{ position:relative; color:#fff }
+
+    /* animated chromatic layers (like homepage headings) */
+    .hx .txt::before,
+    .hx .txt::after{
       content:attr(data-text); position:absolute; inset:0; pointer-events:none;
-      filter: blur(.15px);
+      filter:blur(.15px);
     }
-    .submega .txt::before{ color:#ff3b30; animation:chromaR 1.9s steps(2,end) infinite }
-    .submega .txt::after { color:#00e5ff; animation:chromaC 2.1s steps(2,end) infinite reverse }
-    @keyframes chromaR{
+    .hx .txt::before{ color:#ff3b30; animation:crtR 1.85s steps(2,end) infinite }
+    .hx .txt::after { color:#00e5ff; animation:crtC 2.05s steps(2,end) infinite reverse }
+    @keyframes crtR{
       0%{ transform:translate(-1.2px,0) }
-      48%{ transform:translate(-2px,0) }
-      52%{ transform:translate(-.6px,0) }
+      45%{ transform:translate(-2px,0) }
+      55%{ transform:translate(-.6px,0) }
       100%{ transform:translate(-1.2px,0) }
     }
-    @keyframes chromaC{
+    @keyframes crtC{
       0%{ transform:translate(1.2px,0) }
-      35%{ transform:translate(.6px,0) }
+      30%{ transform:translate(.6px,0) }
       70%{ transform:translate(2px,0) }
       100%{ transform:translate(1.2px,0) }
     }
-    /* thin teal baseline + shimmering sweep */
-    .submega .line{
+
+    /* thin teal baseline under the heading + white sweep */
+    .hx .line{
       position:absolute; left:2%; right:2%; bottom:-8px; height:1px;
-      background: linear-gradient(90deg,transparent,rgba(0,230,255,.18) 15%, rgba(0,230,255,.30) 50%, rgba(0,230,255,.18) 85%, transparent);
-      transform: scaleY(.6);
-      pointer-events:none;
+      background:linear-gradient(90deg,transparent,rgba(0,230,255,.18) 15%, rgba(0,230,255,.30) 50%, rgba(0,230,255,.18) 85%, transparent);
+      transform:scaleY(.6); pointer-events:none;
     }
-    .submega::after{
+    .hx::after{
       content:""; position:absolute; bottom:-8px; height:2px; left:2%; width:10%;
       background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);
       box-shadow:0 0 10px rgba(255,255,255,.35); opacity:.45; pointer-events:none;
@@ -109,7 +108,7 @@
       100%{ left:98%; width:4% }
     }
     @media (prefers-reduced-motion:reduce){
-      .submega .txt::before,.submega .txt::after,.submega::after{animation:none}
+      .hx .txt::before,.hx .txt::after,.hx::after{animation:none}
     }
 
     .btns{display:flex;gap:.6rem;flex-wrap:wrap}
@@ -149,8 +148,9 @@
 
     <section class="grid">
 
+      <!-- 1. Founding Declaration -->
       <article class="card">
-        <h3 class="submega">
+        <h3 class="hx">
           <span class="emo">📜</span>
           <span class="txt" data-text="1. The Founding Declaration">1. The Founding Declaration</span>
           <span class="line" aria-hidden="true"></span>
@@ -162,8 +162,9 @@
         </div>
       </article>
 
+      <!-- 2. Author Statement -->
       <article class="card">
-        <h3 class="submega">
+        <h3 class="hx">
           <span class="emo">🧾</span>
           <span class="txt" data-text="2. Author Statement">2. Author Statement</span>
           <span class="line" aria-hidden="true"></span>
@@ -175,8 +176,9 @@
         </div>
       </article>
 
+      <!-- 3. One-Page Overview -->
       <article class="card">
-        <h3 class="submega">
+        <h3 class="hx">
           <span class="emo">🗺️</span>
           <span class="txt" data-text="3. One-Page Overview">3. One-Page Overview</span>
           <span class="line" aria-hidden="true"></span>
@@ -190,5 +192,6 @@
 
     </section>
   </main>
+
 </body>
 </html>
