@@ -1,43 +1,117 @@
-<main>
-  <h2 class="glitch" data-text="🤖 Ask an AI">🤖 Ask an AI</h2>
-  <p>Use the buttons below to copy everything you need. Paste into ChatGPT (or any AI) and ask what it thinks.</p>
-
-  <div class="row">
-    <button class="btn" onclick="copyDocs()">📑 Copy All Documents</button>
-    <button class="btn" onclick="copyPromptAndDocs()">📝 Copy Prompt + Documents</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ask an AI — Human Unity Era (Chunked Copy)</title>
+<meta name="theme-color" content="#0b0b0f" />
+<meta name="robots" content="index,follow" />
+<style>
+  :root{
+    --bg:#07070a; --ink:#e9eaef; --muted:#cfd1d6;
+    --accent:#ff5436; --cyan:#46e6ff; --card:#0d0e12bb; --bd:#2b2d36;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+  a{color:var(--ink); text-decoration:none}
+  header{position:sticky;top:0;z-index:5;background:linear-gradient(#0b0b0f,rgba(11,11,15,.88));border-bottom:1px solid #262830}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px 18px}
+  nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .btn{display:inline-block;padding:10px 14px;border:1px solid var(--bd);border-radius:10px;background:#101114;color:var(--ink);font-weight:800;cursor:pointer}
+  .btn.link{display:inline-block}
+  main{max-width:1100px;margin:0 auto;padding:18px}
+  .card{border:1px solid var(--bd);border-radius:14px;background:var(--card);padding:16px;margin:18px 0}
+  .muted{color:var(--muted)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .sep{opacity:.6; user-select:none}
+  pre.doc, textarea.prompt{
+    width:100%;background:#0a0b10;border:1px solid #222531;border-radius:10px;color:#e9eaef;
+    padding:12px;font:14px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    white-space:pre-wrap;word-wrap:break-word;margin:10px 0 0 0
+  }
+  .doc-actions{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 12px}
+  .status{font-size:14px;color:#aeb2ba;margin-top:6px;min-height:20px}
+  h2,h3{margin:16px 0 10px}
+  .glitch{position:relative;isolation:isolate;display:inline-block;font-weight:900;letter-spacing:.02em}
+  .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none}
+  .glitch::before{color:#00e5ff;animation:chroma1 2.2s infinite}
+  .glitch::after{color:#ff3b3b;animation:chroma2 2.2s infinite}
+  @keyframes chroma1{0%,100%{clip-path:inset(0);transform:translate(0,0)}10%{clip-path:inset(0 0 70% 0);transform:translate(2px,-1px)}20%{clip-path:inset(60% 0 0 0);transform:translate(-2px,1px)}35%{clip-path:inset(30% 0 40% 0)}60%{clip-path:inset(0)}72%{clip-path:inset(20% 0 50% 0);transform:translate(1px,0)}85%{clip-path:inset(50% 0 10% 0);transform:translate(-1px,0)}}
+  @keyframes chroma2{0%,100%{clip-path:inset(0);transform:translate(0,0)}12%{clip-path:inset(50% 0 10% 0);transform:translate(-2px,1px)}22%{clip-path:inset(0 0 65% 0);transform:translate(2px,-1px)}38%{clip-path:inset(25% 0 45% 0)}62%{clip-path:inset(0)}74%{clip-path:inset(10% 0 60% 0);transform:translate(-1px,0)}88%{clip-path:inset(55% 0 5% 0);transform:translate(1px,0)}}
+  /* make buttons wrap nicely on phones */
+  .copybar .btn{flex:1 1 auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1 class="glitch" data-text="🤖 Ask an AI to Review the Human Unity Era">🤖 Ask an AI to Review the Human Unity Era</h1>
+    <nav>
+      <a class="btn link" href="/human-unity-era/index.html">Home</a>
+      <a class="btn link" href="/human-unity-era/declaration.html">Declaration</a>
+      <a class="btn link" href="/human-unity-era/systems.html">Systems of Civilian Power</a>
+      <a class="btn link" href="/human-unity-era/all-documents.html">Single-Page View</a>
+    </nav>
   </div>
-  <div id="status" class="status"></div>
+</header>
 
-  <!-- Prompt -->
-  <h3 class="glitch" data-text="The Prompt">The Prompt</h3>
-  <pre id="prompt">
-I’ve come across a set of documents called the *Human Unity Era*. 
-I actually found it through photos that had been left in public — 
-pictures of smiling children, with their names, where they were from, 
-what they wanted in life, and what war claimed their lives. 
-Each photo had a QR code that led here.
+<main>
+  <!-- TOP COPY BAR (Prompt + 5 chunks) -->
+  <section class="card">
+    <h2 class="glitch" data-text="🎯 Copy in this order">🎯 Copy in this order</h2>
+    <p class="muted">Paste these into ChatGPT (or any AI) one after another. The prompt asks it to wait until all five sections arrive before responding.</p>
+    <div class="row copybar">
+      <button class="btn" onclick="copyById('promptText')">📝 Prompt</button>
+      <span class="sep">→</span>
+      <button class="btn" onclick="copyById('docFounding')">📜 Founding Declaration</button>
+      <span class="sep">→</span>
+      <button class="btn" onclick="copyById('docASOPO')">🧾 AS + 🗺 One-Pager</button>
+      <span class="sep">→</span>
+      <button class="btn" onclick="copyById('docGGC')">📘 GGC (Governance Charter)</button>
+      <span class="sep">→</span>
+      <button class="btn" onclick="copyById('docCEWIC')">📡 CEWIC</button>
+      <span class="sep">→</span>
+      <button class="btn" onclick="copyById('docTBI')">🏛 TBI (Treaty-Born)</button>
+    </div>
+    <div id="status" class="status"></div>
+  </section>
 
-The documents include a Founding Declaration, an Author Statement, 
-a Governance Charter, CEWIC, and a Treaty-Born Institutions summary.
+  <!-- The Prompt (with the “send in 5 sections” instruction) -->
+  <section class="card">
+    <h2 class="glitch" data-text="📝 The Prompt">📝 The Prompt</h2>
+    <textarea class="prompt" id="promptText" readonly>
+I’ve come across a set of documents called the Human Unity Era. I actually found it through photos that had been left in public — pictures of smiling children, with their names, where they were from, what they wanted in life, and what war claimed their lives. Each photo had a QR code that led here.
 
-Could you read through them and explain in plain terms what’s being proposed? 
-Do these ideas make sense, and could they realistically work in the world as it is today?
+I’m going to send you the text in FIVE sections:
+1) Founding Declaration
+2) Author Statement + One-Page Overview
+3) Global Governance Charter (GGC)
+4) CEWIC
+5) Treaty-Born Institutions (TBI)
 
-What are the biggest strengths and the biggest weaknesses? 
-Could this really be the start of a new era, or would it collapse once tested?
+Please DO NOT respond until I’ve sent all five. Just acknowledge with “OK—waiting for all 5 parts” after each paste. When you have all five, please answer:
 
-What’s your honest opinion on whether people should take this seriously?
-  </pre>
+• In plain terms, what’s actually being proposed?
+• Do these ideas make sense, and could they realistically work today?
+• Biggest strengths and biggest weaknesses?
+• Could this be the start of a new era, or would it collapse once tested?
+• Your honest opinion: should people take this seriously?
+    </textarea>
+  </section>
 
-  <!-- Documents -->
-  <h3 class="glitch" data-text="The Documents">The Documents</h3>
-  <pre id="docs"><!-- ============ 1. FOUNDING DECLARATION (INLINE) ============ -->
-  <section id="founding" class="card">
-    <h2 class="glitch" data-text="📜 1) The Founding Declaration">📜 1) The Founding Declaration</h2>
+  <!-- Documents area (each is a clean, copyable block) -->
+  <section class="card">
+    <h2 class="glitch" data-text="📚 The Documents (Copy Sections Below)">📚 The Documents (Copy Sections Below)</h2>
+
+    <!-- 1) Founding Declaration -->
+    <h3 class="glitch" data-text="📜 1) Founding Declaration">📜 1) Founding Declaration</h3>
     <div class="doc-actions">
-      <a class="btn" href="/human-unity-era/founding-declaration.html">📝 Source page</a>
-      <a class="btn" href="/human-unity-era/The%20Human%20Unity%20Era%20Deceleration%20(3).pdf">📥 Download PDF</a>
-    </div>Declaration of the Human Unity Era
+      <a class="btn link" href="/human-unity-era/founding-declaration.html">📝 Source page</a>
+      <a class="btn link" href="/human-unity-era/The%20Human%20Unity%20Era%20Deceleration%20(3).pdf">📥 Download PDF</a>
+      <button class="btn" onclick="copyById('docFounding')">Copy Section</button>
+    </div>
+    <pre class="doc" id="docFounding">Declaration of the Human Unity Era
 A Civilian-Led Transition from the War Era to an Age of Global Repair
 Authored by Kaileb Abrey-Blackmore | May 2025
 Section 1: Opening Statement
@@ -252,18 +326,18 @@ It’s waiting.
 Let this be the chapter where the world chose something better.
 This is the end of the War Era.
 This is the beginning of the Human Unity Era.
-And history will remember that it started with all of us.
-</pre>
-  </section>
+And history will remember that it started with all of us.</pre>
 
-  <!-- ============ 2. AUTHOR STATEMENT ============ -->
-  <section id="author" class="card">
-    <h2 class="glitch" data-text="🧾 2) Author Statement">🧾 2) Author Statement</h2>
+    <!-- 2) Author Statement + One-Page Overview -->
+    <h3 class="glitch" data-text="🧾 + 🗺 2) Author Statement + One-Page Overview">🧾 + 🗺 2) Author Statement + One-Page Overview</h3>
     <div class="doc-actions">
-      <a class="btn" href="/human-unity-era/author-statement.html">📝 Source page</a>
-      <a class="btn" href="/human-unity-era/Author%20statement.pdf">📥 Download PDF</a>
+      <a class="btn link" href="/human-unity-era/author-statement.html">📝 Author Statement page</a>
+      <a class="btn link" href="/human-unity-era/Author%20statement.pdf">📥 Author PDF</a>
+      <a class="btn link" href="/human-unity-era/one-page-overview.html">📝 One-Pager page</a>
+      <a class="btn link" href="/human-unity-era/Human%20Unity%20Era%20-%20One%20Page%20Overview.pdf">📥 One-Pager PDF</a>
+      <button class="btn" onclick="copyById('docASOPO')">Copy Section</button>
     </div>
-    <pre class="doc">Author Statement
+    <pre class="doc" id="docASOPO">Author Statement
 Kaileb Abrey-Blackmore
 Independent Civilian Architect | Founder, The Human Unity Era
 Rochford, Essex, United Kingdom
@@ -285,17 +359,9 @@ This is not a dream on paper. This is a battle plan for a better world.
 And I will not wait for permission to build it.
 
 — Kaileb Abrey-Blackmore
-Rochford, Essex, United Kingdom — August 2025</pre>
-  </section>
-
-  <!-- ============ 3. ONE-PAGE OVERVIEW ============ -->
-  <section id="onepager" class="card">
-    <h2 class="glitch" data-text="🗺️ 3) One-Page Overview">🗺️ 3) One-Page Overview</h2>
-    <div class="doc-actions">
-      <a class="btn" href="/human-unity-era/one-page-overview.html">📝 Source page</a>
-      <a class="btn" href="/human-unity-era/Human%20Unity%20Era%20-%20One%20Page%20Overview.pdf">📥 Download PDF</a>
-    </div>
-    <pre class="doc">🗺 The Human Unity Era — One Page Overview
+Rochford, Essex, United Kingdom — August 2025
+    
+   🗺 The Human Unity Era — One Page Overview
 
 What It Is:
 A civilian-led global framework designed to replace war-era systems with enforceable peace, people-first leadership, and international cooperation. It’s not a dream it’s fully structured, pressure-tested, and ready to implement.
@@ -319,17 +385,16 @@ A civilian-led global framework designed to replace war-era systems with enforce
 ✅ What Makes This Different
 • 200+ post-conflict cases studied; AI pressure-tested; independent of states/ideologies/corporations; modular or full adoption
 
-📂 Created by: Kaileb Abrey-Blackmore</pre>
-  </section>
+📂 Created by: Kaileb Abrey-Blackmore </pre>
 
-  <!-- ============ 4. GOVERNANCE CHARTER ============ -->
-  <section id="charter" class="card">
-    <h2 class="glitch" data-text="📜 4) Global Governance Charter">📜 4) Global Governance Charter</h2>
+    <!-- 3) Global Governance Charter -->
+    <h3 class="glitch" data-text="📘 3) Global Governance Charter (GGC)">📘 3) Global Governance Charter (GGC)</h3>
     <div class="doc-actions">
-      <a class="btn" href="/human-unity-era/governance-charter.html">📝 Source page</a>
-      <a class="btn" href="/human-unity-era/Global%20Governance%20Charter.pdf">📥 Download PDF</a>
+      <a class="btn link" href="/human-unity-era/governance-charter.html">📝 Source page</a>
+      <a class="btn link" href="/human-unity-era/Global%20Governance%20Charter.pdf">📥 Download PDF</a>
+      <button class="btn" onclick="copyById('docGGC')">Copy Section</button>
     </div>
-    <pre class="doc">🌍 The Human Unity Era Governance Charter
+    <pre class="doc" id="docGGC">🌍 The Human Unity Era Governance Charter
 Civilian Framework for Global Coordination and Peace Architecture
 Authored by: Kaileb Abrey-Blackmore
 Status: Final Charter Text | Civilian Copyright © Reserved | Global Distribution Permitted
@@ -512,16 +577,15 @@ This Charter shall enter into effect upon public ratification by no fewer than:
 ●Across 15 countries
 ●With a minimum of 100,000 per participating state or region
 Ratification remains open and rolling.</pre>
-  </section>
 
-  <!-- ============ 5. CEWIC ============ -->
-  <section id="cewic" class="card">
-    <h2 class="glitch" data-text="📡 5) CEWIC — Civilian Early Warning Input Channel">📡 5) CEWIC — Civilian Early Warning Input Channel</h2>
+    <!-- 4) CEWIC -->
+    <h3 class="glitch" data-text="📡 4) CEWIC — Civilian Early Warning Input Channel">📡 4) CEWIC — Civilian Early Warning Input Channel</h3>
     <div class="doc-actions">
-      <a class="btn" href="/human-unity-era/cewic.html">📝 Source page</a>
-      <a class="btn" href="/human-unity-era/Civilian%20Early%20Warning%20Input%20Channel%20(CEWIC).pdf">📥 Download PDF</a>
+      <a class="btn link" href="/human-unity-era/cewic.html">📝 Source page</a>
+      <a class="btn link" href="/human-unity-era/Civilian%20Early%20Warning%20Input%20Channel%20(CEWIC).pdf">📥 Download PDF</a>
+      <button class="btn" onclick="copyById('docCEWIC')">Copy Section</button>
     </div>
-    <pre class="doc">CIVILIAN EARLY WARNING INPUT CHANNEL (CEWIC)
+    <pre class="doc" id="docCEWIC">CIVILIAN EARLY WARNING INPUT CHANNEL (CEWIC)
 A Global System of Civilian Insight, Prevention & Protective Response
 Human Unity Era — Final Implementation Draft
 I. Purpose
@@ -635,16 +699,15 @@ atrocity.
 This document reflects our final implementation vision for the CEWIC system under the
 Human Unity Era.
 Let the world know: civilians are no longer passive observers.</pre>
-  </section>
 
-  <!-- =========== 6. TREATY-BORN INSTITUTIONS ============ -->
-  <section id="tbi" class="card">
-    <h2 class="glitch" data-text="🏛️ 6) Treaty-Born Institutions — Summary">🏛️ 6) Treaty-Born Institutions — Summary</h2>
+    <!-- 5) Treaty-Born Institutions -->
+    <h3 class="glitch" data-text="🏛 5) Treaty-Born Institutions (Summary)">🏛 5) Treaty-Born Institutions (Summary)</h3>
     <div class="doc-actions">
-      <a class="btn" href="/human-unity-era/treaty-born-institutions.html">📝 Source page</a>
-      <a class="btn" href="/human-unity-era/Formal%20Treaty%20Born%20Institutions%20Summary.pdf">📥 Download PDF</a>
+      <a class="btn link" href="/human-unity-era/treaty-born-institutions.html">📝 Source page</a>
+      <a class="btn link" href="/human-unity-era/Formal%20Treaty%20Born%20Institutions%20Summary.pdf">📥 Download PDF</a>
+      <button class="btn" onclick="copyById('docTBI')">Copy Section</button>
     </div>
-    <pre class="doc">Treaty-Born Institutions
+    <pre class="doc" id="docTBI">Treaty-Born Institutions
 Prepared by: Kaileb Abrey-Blackmore
 Purpose: Clarify the structure, function, cost, and global relevance of peace-focused
 institutions created by the treaty
@@ -773,17 +836,34 @@ received $470 million in grants. The PDC’s $400–600 million annual target
 reflects a similar scale, but with broader employment and trauma recovery
 objectives.
 All figures in this framework reflect achievable, scalable targets based on global precedent designed not to expand bureaucracy, but to replace war with results.</pre>
-  </section></pre>
+  </section>
 </main>
 
 <script>
-function copyDocs(){
-  const text=document.getElementById("docs").innerText;
-  navigator.clipboard.writeText(text).then(()=>{document.getElementById("status").innerText="✅ Documents copied";});
+async function copyById(id){
+  const el = document.getElementById(id);
+  const txt = el.value !== undefined ? el.value : el.innerText;
+  const status = document.getElementById('status');
+  try{
+    await navigator.clipboard.writeText(txt.trim());
+    if(status) status.textContent = '✅ Copied: ' + labelFor(id);
+  }catch(e){
+    // Fallback
+    if(el.select) { el.select(); document.execCommand('copy'); if(status) status.textContent='✅ Copied (fallback): ' + labelFor(id); }
+    else { if(status) status.textContent='⚠️ Copy failed. Long-press/select and copy manually.'; }
+  }
 }
-function copyPromptAndDocs(){
-  const prompt=document.getElementById("prompt").innerText;
-  const docs=document.getElementById("docs").innerText;
-  navigator.clipboard.writeText(prompt + "\n\n" + docs).then(()=>{document.getElementById("status").innerText="✅ Prompt + Documents copied";});
+function labelFor(id){
+  switch(id){
+    case 'promptText': return 'Prompt';
+    case 'docFounding': return 'Founding Declaration';
+    case 'docASOPO': return 'Author Statement + One-Pager';
+    case 'docGGC': return 'Global Governance Charter';
+    case 'docCEWIC': return 'CEWIC';
+    case 'docTBI': return 'Treaty-Born Institutions';
+    default: return '';
+  }
 }
 </script>
+</body>
+</html>
